@@ -1,5 +1,14 @@
-import { InputFieldProps } from '@/app/types/types';
-import React, { ChangeEvent } from 'react';
+import React, { useState } from "react";
+import { Input, Form } from "antd";
+import {
+  UserOutlined,
+  MailOutlined,
+  LockOutlined,
+  EyeOutlined,
+  EyeInvisibleOutlined,
+  CalendarOutlined,
+} from "@ant-design/icons";
+import { InputFieldProps } from "@/app/types/types";
 
 const InputField: React.FC<InputFieldProps> = ({
   label,
@@ -7,24 +16,64 @@ const InputField: React.FC<InputFieldProps> = ({
   value,
   onChange,
   placeholder,
-  required = false, 
+  required = false,
 }) => {
+  const iconMap = {
+    text: <UserOutlined className="text-primary" />,
+    email: <MailOutlined className="text-primary" />,
+    password: <LockOutlined className="text-primary" />,
+    date: <CalendarOutlined className="text-primary" />,
+  };
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
-    <div className="mb-6">
-      <label htmlFor={label} className="block text-sm font-medium text-gray-700 text-left">
-        {label}
-      </label>
-      <input
-        type={type}
-        id={label}
-        name={label}
+    <Form.Item
+      label={label}
+      name={label}
+      //@ts-ignore
+      rules={
+        required
+          ? [
+              { required: true, message: `Por favor ingrese su ${label}` },
+              type === "email" && {
+                type: "email",
+                message: "Correo electrónico no válido",
+              },
+              type === "date" && { type: "date", message: "Fecha no válida" },
+            ]
+          : []
+      }
+      labelCol={{ span: 24 }}
+    >
+      <Input
+        //@ts-ignore
+        prefix={iconMap[type]}
+        type={type === "password" ? (showPassword ? "text" : "password") : type}
         value={value}
+        //@ts-ignore
         onChange={onChange}
-        className="w-full px-4 py-3 border rounded-md shadow-sm focus:ring focus:ring-primary-500 focus:bg-primary-100 hover:bg-primary-100 transition-colors duration-300 text-left"
         placeholder={placeholder}
-        required={required}
+        suffix={
+          type === "password" && (
+            <div
+              onClick={togglePasswordVisibility}
+              style={{ cursor: "pointer" }}
+            >
+              {showPassword ? (
+                <EyeOutlined className="text-primary" />
+              ) : (
+                <EyeInvisibleOutlined className="text-primary" />
+              )}
+            </div>
+          )
+        }
       />
-    </div>
+    </Form.Item>
   );
 };
 

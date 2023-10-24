@@ -10,5 +10,14 @@ export interface InputFieldProps {
 export interface AuthModalProps {
   isOpen: boolean;
   onClose: () => void;
-  initialTab: number
+  initialTab: number;
+}
+export interface NewUserProps {
+  name: string;
+  lastName: string;
+  username: string;
+  email: string;
+  password: string;
+  birthdate: string;
+  isRegistered: boolean;
 }

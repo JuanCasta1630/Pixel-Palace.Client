@@ -1,11 +1,6 @@
 "use client";
-import Header from "./components/Header";
+import GameContainer from "./components/GameContainer";
 
 export default function Home() {
-  return (
-    <>
-      <Header />
-    </>
-  
-  )
+  return  <GameContainer />;
 }
