@@ -70,7 +70,7 @@ const GameContainer: React.FC = () => {
     showSizeChanger={false}
     className="mt-8 text-center"
   />
-  <Footer className="bg-primary text-white p-4 text-center flex justify-between items-center mt-8">
+  <Footer className="bg-green-600 text-white p-4 text-center flex justify-between items-center mt-8">
     <div className="flex-1 text-center">
       Hecho con <HeartOutlined /> grupo 3
     </div>

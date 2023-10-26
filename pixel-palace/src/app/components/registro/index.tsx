@@ -47,7 +47,7 @@ const RegistrationForm: React.FC<AuthModalProps> = ({onClose}) => {
 
   return (
     <div className="bg-white p-8 rounded text-center w-100 h-100">
-      <h1 className="text-4xl font-semibold text-primary mb-6">Registro</h1>
+      <h1 className="text-4xl font-semibold text-green-600 mb-6">Registro</h1>
       {isRegistered ? (
         <>
           <img
@@ -55,7 +55,7 @@ const RegistrationForm: React.FC<AuthModalProps> = ({onClose}) => {
             alt="Avatar"
             className="w-16 h-16 rounded-full mx-auto"
           />
-          <p className="text-primary mt-4 mb-4">¡Registro exitoso!</p>
+          <p className="text-green-600 mt-4 mb-4">¡Registro exitoso!</p>
         </>
       ) : (
         <form className="grid grid-cols-2 gap-4">
@@ -134,7 +134,7 @@ const RegistrationForm: React.FC<AuthModalProps> = ({onClose}) => {
               <button
                 type="button"
                 onClick={handleBack}
-                className="bg-primary hover:bg-primary-700 text-white w-1/3 py-3 rounded-md transition-colors duration-300 focus:outline-none focus:ring focus:ring-primary-500"
+                className="bg-green-600 hover:bg-green-500 text-white w-1/3 py-3 rounded-md transition-colors duration-300 focus:outline-none focus:ring focus:ring-primary-500"
               >
                 Atrás
               </button>
@@ -142,7 +142,7 @@ const RegistrationForm: React.FC<AuthModalProps> = ({onClose}) => {
             <button
               type="button"
               onClick={handleNext}
-              className="bg-primary hover-bg-primary-700 text-white w-1/3 py-3 rounded-md transition-colors duration-300 focus:outline-none focus:ring focus:ring-primary-500"
+              className="bg-green-600 hover:bg-green-500 text-white w-1/3 py-3 rounded-md transition-colors duration-300 focus:outline-none focus:ring focus:ring-primary-500"
             >
               {step === 1 ? 'Siguiente' : 'Finalizar'}
             </button>

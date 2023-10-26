@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import InputField from '../../components/Inputs/InputField';
+import InputField from '../components/Inputs/InputField';
 import { Form, Button, Alert } from 'antd';
 import { handleResetPassword } from '@/app/services/firebase';
 

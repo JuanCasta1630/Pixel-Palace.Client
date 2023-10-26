@@ -28,10 +28,10 @@ const Login: React.FC<AuthModalProps> = ({onClose}) => {
 
   return (
     <div className="bg-white p-8 rounded text-center w-100 h-100">
-      <h1 className="text-4xl font-semibold text-primary mb-6">
+      <h1 className="text-4xl font-semibold text-green-600 mb-6">
         Iniciar Sesión
       </h1>
-      <Form form={form} onFinish={handleSubmit} className="w-96 mx-auto">
+      <Form form={form} onFinish={handleSubmit} className="w-full mx-auto sm:w-1/2">
         <InputField
           label="Correo electrónico"
           type="email"
@@ -52,7 +52,7 @@ const Login: React.FC<AuthModalProps> = ({onClose}) => {
 
         <button
           type="submit"
-          className="bg-primary hover-bg-primary-700 text-white w-full py-3 rounded-md transition-colors duration-300 focus:outline-none focus:ring focus:ring-primary-500"
+          className="bg-green-600 hover:bg-green-500 text-white w-full py-3 rounded-md transition-colors duration-300 focus:outline-none focus:ring focus:ring-primary-500"
         >
           Iniciar Sesión
         </button>
@@ -60,7 +60,7 @@ const Login: React.FC<AuthModalProps> = ({onClose}) => {
       {error && <Alert message={error} type="error" className="mt-2" />}
       {loginSuccess && ( message.info("Inicio de sesión exitoso"))}
         
-      <Link className="text-green-500" href="/forgot-password">
+      <Link className="text-green-600" href="/forgot-password">
         ¿Olvidaste tu contraseña?
       </Link>
     </div>

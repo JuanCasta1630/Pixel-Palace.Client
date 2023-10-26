@@ -30,7 +30,6 @@ export const registerUser = async (
   userName,
   birthdate
 ) => {
-  console.log(email, password, name, lastName, userName, birthdate);
   try {
     // Crea un usuario en Firebase Authentication
     const userCredential = await createUserWithEmailAndPassword(
@@ -51,7 +50,6 @@ export const registerUser = async (
       email: email,
       userName: userName,
     };
-    console.log();
     await setDoc(userDocRef, userData);
 
     return { success: true };
@@ -63,15 +61,11 @@ export const registerUser = async (
 // Función para el inicio de sesión y registro
 
 export const signIn = async (data, pass, createUser) => {
-  console.log(data);
-  console.log(pass);
-  console.log(createUser);
   try {
     const method = createUser
       ? createUserWithEmailAndPassword
       : signInWithEmailAndPassword;
     const result = await method(auth, data.email, pass);
-    console.log(result);
     // Si estás creando un usuario, se configura su información aquí
     if (createUser) {
       // Agregar información del usuario a Firestore después de un inicio de sesión exitoso
@@ -117,7 +111,7 @@ export const handleResetPassword = async () => {
 
 export const useAuth = () => {
   const [user, setUser] = useState(null);
-
+    log
   useEffect(() => {
     // Escucha cambios en el estado de autenticación
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {

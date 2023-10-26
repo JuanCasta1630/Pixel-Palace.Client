@@ -54,8 +54,9 @@ const HeaderLayout = () => {
     console.log("Buscar:", searchQuery);
   };
 
+
   return (
-    <div className="bg-primary border-black p-4 flex items-center justify-between fixed w-full top-0 z-10">
+    <div className="bg-green-600 border-black p-4 flex items-center justify-between fixed w-full top-0 z-10">
       <nav className="lg:hidden">
         <button onClick={toggleMobileMenu} className="text-white">
           <MenuOutlined className="text-3xl" />
@@ -121,7 +122,7 @@ const HeaderLayout = () => {
                 onPressEnter={handleSearch}
               />
             </li>
-            {user ? ( // Verifica si hay un usuario autenticado
+            {user ? (
               <li>
                 <button
                   onClick={cerrarSesion}
@@ -143,7 +144,7 @@ const HeaderLayout = () => {
                 <li>
                   <button
                     onClick={openRegisterModal}
-                    className="text-white bg-primary rounded p-2 w-full"
+                    className="text-white bg-green-600 rounded p-2 w-full"
                   >
                     Registrarse
                   </button>
@@ -152,7 +153,7 @@ const HeaderLayout = () => {
             )}
           </ul>
         </Drawer>
-        {user ? ( // Verifica si hay un usuario autenticado
+        {user || !user ? (
           <button onClick={toggleMobileUser} className="text-white">
             <UserOutlined className="text-3xl" />
           </button>
@@ -169,7 +170,7 @@ const HeaderLayout = () => {
           addonBefore={<SearchOutlined className="text-white text-3xl" />}
           onPressEnter={handleSearch}
         />
-        {user ? ( // Verifica si hay un usuario autenticado
+        {user ? ( 
           <>
             <img
               src="/nallis.jpeg"
