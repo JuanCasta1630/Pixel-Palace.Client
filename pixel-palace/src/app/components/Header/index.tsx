@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import AuthModal from "../AuthModal";
 import { Input, Drawer } from "antd";
 import {
@@ -10,36 +10,16 @@ import {
   BulbFilled,
   BulbOutlined
 } from "@ant-design/icons";
+import { useAuth } from "@/app/services/firebase";
 
 const HeaderLayout = () => {
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
   const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
-  const [isUserLoggedIn, setUserLoggedIn] = useState(false);
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isMobileUserOpen, setMobileUserOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const { user, cerrarSesion } = useAuth(); 
 
-
-  useEffect(() => {
-    // Verificar si el usuario está registrado en el localStorage
-    const userRegistered = localStorage.getItem("userRegistered");
-    if (userRegistered === "true") {
-      setUserLoggedIn(true);
-    }
-  }, []);
-  useEffect(() => {
-    // Verificar si el usuario está registrado en el localStorage
-    const userLoggedIn = localStorage.getItem("userLoggedIn");
-    if (userLoggedIn === "true") {
-      setUserLoggedIn(true);
-    }
-  }, []);
-
-  const handleLogout = () => {
-    // Cuando el usuario cierra sesión, borra la información del localStorage
-    localStorage.removeItem("userRegistered");
-    setUserLoggedIn(false);
-  };
   const openLoginModal = () => {
     setLoginModalOpen(true);
     if (isMobileUserOpen) {
@@ -65,6 +45,7 @@ const HeaderLayout = () => {
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!isMobileMenuOpen);
   };
+
   const toggleMobileUser = () => {
     setMobileUserOpen(!isMobileUserOpen);
   };
@@ -140,10 +121,10 @@ const HeaderLayout = () => {
                 onPressEnter={handleSearch}
               />
             </li>
-            {isUserLoggedIn ? (
+            {user ? ( // Verifica si hay un usuario autenticado
               <li>
                 <button
-                  onClick={handleLogout}
+                  onClick={cerrarSesion}
                   className="text-primary border rounded border-primary p-2 w-full"
                 >
                   Salir
@@ -171,11 +152,12 @@ const HeaderLayout = () => {
             )}
           </ul>
         </Drawer>
-        <button onClick={toggleMobileUser} className="text-white">
-          <UserOutlined className="text-3xl" />
-        </button>
+        {user ? ( // Verifica si hay un usuario autenticado
+          <button onClick={toggleMobileUser} className="text-white">
+            <UserOutlined className="text-3xl" />
+          </button>
+        ) : null}
       </div>
-      
 
       <div className="lg:flex hidden items-center space-x-4">
         <Input
@@ -187,14 +169,14 @@ const HeaderLayout = () => {
           addonBefore={<SearchOutlined className="text-white text-3xl" />}
           onPressEnter={handleSearch}
         />
-        {isUserLoggedIn ? (
+        {user ? ( // Verifica si hay un usuario autenticado
           <>
             <img
               src="/nallis.jpeg"
               alt="Avatar"
               className="w-10 h-10 rounded-full"
             />
-            <button onClick={handleLogout} className="text-white">
+            <button onClick={cerrarSesion} className="text-white">
               Salir
             </button>
           </>

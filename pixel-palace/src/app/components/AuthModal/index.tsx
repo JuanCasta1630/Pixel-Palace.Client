@@ -3,7 +3,7 @@ import Login from "../login";
 import RegistrationForm from "../registro";
 import { AuthModalProps } from "@/app/types/types";
 import { Tabs, Button, Modal } from "antd";
-import { CloseCircleFilled } from "@ant-design/icons"; // Importa el icono de Ant Design
+import { CloseCircleFilled } from "@ant-design/icons"; 
 
 const { TabPane } = Tabs;
 
@@ -42,7 +42,7 @@ const AuthModal: React.FC<AuthModalProps> = ({
           }
           key="0"
         >
-          <Login />
+          <Login onClose={onClose} isOpen={false} initialTab={0}/>
         </TabPane>
         <TabPane
           tab={
@@ -50,7 +50,7 @@ const AuthModal: React.FC<AuthModalProps> = ({
           }
           key="1"
         >
-          <RegistrationForm />
+          <RegistrationForm onClose={onClose} isOpen={false} initialTab={0}/>
         </TabPane>
       </Tabs>
     </Modal>

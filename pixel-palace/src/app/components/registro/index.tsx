@@ -1,10 +1,11 @@
-/* eslint-disable @next/next/no-img-element */
 import React, { useState } from 'react';
 import InputField from '../Inputs/InputField';
-import usersData from '@/app/services/users.json';
-import { NewUserProps } from '@/app/types/types';
 import { Alert } from 'antd';
-const RegistrationForm: React.FC = () => {
+import { signIn } from '@/app/services/firebase';
+import { AuthModalProps } from '@/app/types/types';
+import { message } from "antd";
+
+const RegistrationForm: React.FC<AuthModalProps> = ({onClose}) => {
   const [step, setStep] = useState(1);
   const [name, setName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -14,50 +15,27 @@ const RegistrationForm: React.FC = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [birthdate, setBirthdate] = useState('');
   const [isRegistered, setIsRegistered] = useState(false);
-
   const [error, setError] = useState('');
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (step === 1) {
       // Validar campos del primer paso
       if (!name || !lastName || !username || !email) {
         setError('Por favor complete todos los campos.');
         return;
       }
-      setError('');
       setStep(2);
     } else if (step === 2) {
       // Validar campos del segundo paso
-      if (!password || !confirmPassword || password !== confirmPassword) {
-        setError('Las contraseñas no coinciden o faltan datos.');
+      if (password !== confirmPassword) {
+        setError('Las contraseñas no coinciden.');
         return;
       }
-      // Crear un nuevo usuario con los datos ingresados
-      const newUser: NewUserProps = {
-        name,
-        lastName,
-        username,
-        email,
-        password,
-        birthdate,
-        isRegistered,
-      };
-
-      // Agregar el nuevo usuario al arreglo de usuarios en el archivo JSON
-      //@ts-ignore
-      usersData.users.push(newUser);
-      localStorage.setItem('userData', JSON.stringify(newUser));
-      setName('');
-      setLastName('');
-      setUsername('');
-      setEmail('');
-      setPassword('');
-      setConfirmPassword('');
-      setBirthdate('');
-      setIsRegistered(true);
-
-      // Guardar una bandera que indica que el usuario se ha registrado
-      localStorage.setItem('userRegistered', 'true');
+      const data = {email, password, name, lastName, username, birthdate}
+      // Realizar el registro de usuario en Firebase
+      signIn(data, password, true)
+      setIsRegistered(true)
+      onClose();
     }
   };
 
@@ -87,7 +65,6 @@ const RegistrationForm: React.FC = () => {
                 label="Nombre"
                 type="text"
                 value={name}
-                //@ts-ignore
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Tu nombre"
                 required
@@ -97,7 +74,6 @@ const RegistrationForm: React.FC = () => {
                 label="Apellido"
                 type="text"
                 value={lastName}
-                //@ts-ignore
                 onChange={(e) => setLastName(e.target.value)}
                 placeholder="Tu apellido"
                 required
@@ -107,7 +83,6 @@ const RegistrationForm: React.FC = () => {
                 label="Nombre de Usuario"
                 type="text"
                 value={username}
-                //@ts-ignore
                 onChange={(e) => setUsername(e.target.value)}
                 placeholder="Tu nombre de usuario"
                 required
@@ -116,7 +91,6 @@ const RegistrationForm: React.FC = () => {
                 label="Correo electrónico"
                 type="email"
                 value={email}
-                //@ts-ignore
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Tu correo electrónico"
                 required
@@ -130,7 +104,6 @@ const RegistrationForm: React.FC = () => {
                 label="Contraseña"
                 type="password"
                 value={password}
-                //@ts-ignore
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Tu contraseña"
                 required
@@ -140,7 +113,6 @@ const RegistrationForm: React.FC = () => {
                 label="Confirmar Contraseña"
                 type="password"
                 value={confirmPassword}
-                //@ts-ignore
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="Confirma tu contraseña"
                 required
@@ -150,7 +122,6 @@ const RegistrationForm: React.FC = () => {
                 label="Fecha de Cumpleaños"
                 type="date"
                 value={birthdate}
-                //@ts-ignore
                 onChange={(e) => setBirthdate(e.target.value)}
                 placeholder="Tu fecha de cumpleaños"
                 required
@@ -171,14 +142,14 @@ const RegistrationForm: React.FC = () => {
             <button
               type="button"
               onClick={handleNext}
-              className="bg-primary hover:bg-primary-700 text-white w-1/3 py-3 rounded-md transition-colors duration-300 focus:outline-none focus:ring focus:ring-primary-500"
+              className="bg-primary hover-bg-primary-700 text-white w-1/3 py-3 rounded-md transition-colors duration-300 focus:outline-none focus:ring focus:ring-primary-500"
             >
               {step === 1 ? 'Siguiente' : 'Finalizar'}
             </button>
           </div>
         </form>
       )}
-      {error && <Alert type='success' className="text-red-500 mt-2" message={error}/>}
+      {error && message.info("Hubo un problema, revisa tus datos")}
     </div>
   );
 };
