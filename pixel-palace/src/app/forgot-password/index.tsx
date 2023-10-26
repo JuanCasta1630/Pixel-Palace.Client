@@ -13,7 +13,7 @@ const ForgotPassword: React.FC = () => {
 
   return (
     <div className="bg-white p-8 rounded text-center w-100 h-100">
-      <h1 className="text-4xl font-semibold text-primary mb-6">Restablecer Contraseña</h1>
+      <h1 className="text-4xl font-semibold text-green-600 mb-6">Restablecer Contraseña</h1>
       <Form form={form}>
         <InputField
           label="Correo electrónico"
@@ -24,13 +24,12 @@ const ForgotPassword: React.FC = () => {
           required
         />
 
-        <Button
-          type="primary"
+        <button
           onClick={handleResetPassword}
-          className="w-full"
+          className="text-white bg-green-600 rounded p-2 w-full"
         >
           Restablecer Contraseña
-        </Button>
+        </button>
       </Form>
 
       {successMessage && (
