@@ -18,7 +18,9 @@ const RegistrationForm: React.FC<AuthModalProps> = ({onClose}) => {
   const [error, setError] = useState('');
 
   const handleNext = async () => {
+    
     if (step === 1) {
+      console.log(step); 
       // Validar campos del primer paso
       if (!name || !lastName || !username || !email) {
         setError('Por favor complete todos los campos.');
@@ -149,7 +151,7 @@ const RegistrationForm: React.FC<AuthModalProps> = ({onClose}) => {
           </div>
         </form>
       )}
-      {error && message.info("Hubo un problema, revisa tus datos")}
+      {error && <Alert type='success' className="text-red-500 mt-2" message={error}/>}
     </div>
   );
 };

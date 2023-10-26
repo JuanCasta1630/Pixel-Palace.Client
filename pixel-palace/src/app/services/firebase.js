@@ -111,7 +111,6 @@ export const handleResetPassword = async () => {
 
 export const useAuth = () => {
   const [user, setUser] = useState(null);
-    log
   useEffect(() => {
     // Escucha cambios en el estado de autenticación
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
