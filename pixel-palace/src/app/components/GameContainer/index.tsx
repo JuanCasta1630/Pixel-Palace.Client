@@ -33,7 +33,7 @@ const GameContainer: React.FC = () => {
     
   <ThemeProvider enableSystem={true} attribute="class">
 
-   <Layout className=" w-full min-h-screen flex flex-col dark:bg-white bg-gray-700">
+   <Layout className=" w-full min-h-screen flex flex-col dark:bg-gray-700 bg-white">
   <HeaderLayout />
   <Content className="p-4 flex-1 overflow-y-auto mt-24 flex justify-center items-center">
 

@@ -107,7 +107,7 @@ const HeaderLayout = () => {
         <img
           src="/logo.png"
           alt="Logo"
-          className="w-10 h-10 mr-2 flex items-center dark:bg-white bg-gray-700"
+          className="w-10 h-10 mr-2 flex items-center dark:bg-gray-700 bg-white"
         />
         <h1 className="text-white text-xl font-bold dark:text-black">Mejor si es posible</h1>
       </div>
