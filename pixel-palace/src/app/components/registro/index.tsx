@@ -48,8 +48,8 @@ const RegistrationForm: React.FC<AuthModalProps> = ({onClose}) => {
   };
 
   return (
-    <div className="bg-white p-8 rounded text-center w-100 h-100">
-      <h1 className="text-4xl font-semibold text-green-600 mb-6">Registro</h1>
+    <div className="bg-white p-8 rounded text-center w-100 h-100 dark:bg-gray-700">
+      <h1 className="text-4xl font-semibold text-green-600 mb-6 dark:text-primary">Registro</h1>
       {isRegistered ? (
         <>
           <img
@@ -57,7 +57,7 @@ const RegistrationForm: React.FC<AuthModalProps> = ({onClose}) => {
             alt="Avatar"
             className="w-16 h-16 rounded-full mx-auto"
           />
-          <p className="text-green-600 mt-4 mb-4">¡Registro exitoso!</p>
+          <p className="text-green-600 mt-4 mb-4 dark:text-primary">¡Registro exitoso!</p>
         </>
       ) : (
         <form className="grid grid-cols-2 gap-4">
@@ -136,7 +136,7 @@ const RegistrationForm: React.FC<AuthModalProps> = ({onClose}) => {
               <button
                 type="button"
                 onClick={handleBack}
-                className="bg-green-600 hover:bg-green-500 text-white w-1/3 py-3 rounded-md transition-colors duration-300 focus:outline-none focus:ring focus:ring-primary-500"
+                className="bg-green-600 hover:bg-green-500 text-white dark:bg-primary dark:hover:bg-green-700 dark:text-black w-1/3 py-3 rounded-md transition-colors duration-300 focus:outline-none focus:ring focus:ring-primary-500"
               >
                 Atrás
               </button>
@@ -144,7 +144,7 @@ const RegistrationForm: React.FC<AuthModalProps> = ({onClose}) => {
             <button
               type="button"
               onClick={handleNext}
-              className="bg-green-600 hover:bg-green-500 text-white w-1/3 py-3 rounded-md transition-colors duration-300 focus:outline-none focus:ring focus:ring-primary-500"
+              className="bg-green-600 hover:bg-green-500 text-white w-1/3 dark:bg-primary dark:hover:bg-green-700 dark:text-black py-3 rounded-md transition-colors duration-300 focus:outline-none focus:ring focus:ring-primary-500"
             >
               {step === 1 ? 'Siguiente' : 'Finalizar'}
             </button>

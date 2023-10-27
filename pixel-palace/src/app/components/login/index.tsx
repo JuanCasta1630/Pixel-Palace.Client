@@ -27,8 +27,8 @@ const Login: React.FC<AuthModalProps> = ({onClose}) => {
   };
 
   return (
-    <div className="bg-white p-8 rounded text-center w-100 h-100">
-      <h1 className="text-4xl font-semibold text-green-600 mb-6">
+    <div className="bg-white p-8 rounded text-center w-100 h-100 dark:bg-gray-600 dark:text-primary">
+      <h1 className="text-4xl font-semibold text-green-600 mb-6 dark:text-primary">
         Iniciar Sesión
       </h1>
       <Form form={form} onFinish={handleSubmit} className="w-full mx-auto sm:w-1/2">
@@ -52,7 +52,7 @@ const Login: React.FC<AuthModalProps> = ({onClose}) => {
 
         <button
           type="submit"
-          className="bg-green-600 hover:bg-green-500 text-white w-full py-3 rounded-md transition-colors duration-300 focus:outline-none focus:ring focus:ring-primary-500"
+          className="bg-green-600 hover:bg-green-500 text-white dark:bg-primary dark:hover:bg-green-700 dark:text-black w-full py-3 rounded-md tranition-colors duration-300 focus:outline-none focus:ring focus:ring-primary-500"s
         >
           Iniciar Sesión
         </button>
