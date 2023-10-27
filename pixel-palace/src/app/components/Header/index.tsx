@@ -114,7 +114,7 @@ const HeaderLayout = () => {
           alt="Logo"
           className="w-10 h-10 mr-2 flex items-center bg-white"
         />
-        <h1 className="text-white text-xl font-bold">Mejor si es posible</h1>
+        <h1 className="text-white text-xl font-bold hidden sm:block">Mejor si es posible</h1>
       </div>
 
       <div className="lg:hidden flex items-center space-x-4">

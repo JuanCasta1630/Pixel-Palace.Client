@@ -15,7 +15,7 @@ const config: Config = {
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
       borderColor:{
-       ' green-950': '#023107',
+        ' green-950': '#023107',
       },
       colors: {
         primary: '#08F60A',
@@ -39,5 +39,15 @@ const config: Config = {
     },
   },
   plugins: [],
+  screens: {
+    xs: { minWidth: 0 }, // para dispositivos moviles de 576 pix o menos
+    sm: { minWidth: 576 }, // para tablets de 768 pix o menos
+    md: { minWidth: 768 }, // para compus de 992 pix o menos
+    lg: { minWidth: 992 },
+    xl: { minWidth: 1200 },
+  },
+  utilities: {
+    
+  },
 }
 export default config
