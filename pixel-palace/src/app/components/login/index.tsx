@@ -41,13 +41,13 @@
       }
     }, []);
   
-    return (
+    return (           
       <div className="bg-white p-8 rounded text-center w-100 h-100">
-        <h1 className="text-4xl font-semibold text-green-600 mb-6">Iniciar Sesión</h1>
+        <h1 className="text-2xl sm:text-4xl font-semibold text-green-600 mb-4 sm:mb-6">Iniciar Sesión</h1>
         <Form
           form={form}
           onFinish={handleSubmit}
-          className="w-96 mx-auto"
+          className="w-full sm:w-96 mx-auto"
           initialValues={{ email: 'test@example.com', password: 'password' }}
         >
           <InputField

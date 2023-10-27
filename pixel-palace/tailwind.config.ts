@@ -40,9 +40,9 @@ const config: Config = {
   },
   plugins: [],
   screens: {
-    xs: { minWidth: 0 }, // para dispositivos moviles de 576 pix o menos
-    sm: { minWidth: 576 }, // para tablets de 768 pix o menos
-    md: { minWidth: 768 }, // para compus de 992 pix o menos
+    xs: { minWidth: 0 }, 
+    sm: { minWidth: 576 },
+    md: { minWidth: 768 },
     lg: { minWidth: 992 },
     xl: { minWidth: 1200 },
   },
