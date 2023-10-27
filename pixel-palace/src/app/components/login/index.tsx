@@ -7,7 +7,7 @@ import { signIn } from "@/app/services/firebase";
 import Link from "next/link";
 import { AuthModalProps } from "@/app/types/types";
 
-const Login: React.FC<AuthModalProps> = ({onClose}) => {
+const Login: React.FC<AuthModalProps> = ({ onClose }) => {
   const [form] = Form.useForm();
   const [error, setError] = useState<string | null>(null);
   const [loginSuccess, setLoginSuccess] = useState(false);
@@ -17,11 +17,20 @@ const Login: React.FC<AuthModalProps> = ({onClose}) => {
 
   const handleLogin = async () => {
     const data = { email };
-    signIn(data, password, false);
-    setLoginSuccess(true)
-    onClose();
+    try {
+      const user = await signIn(data, password, false);
+      // Si llegamos a este punto, el inicio de sesión fue exitoso
+      if (user) {
+        setLoginSuccess(true);
+        onClose();
+      } else {
+        message.error("Inicio de sesión fallido. Verifica tus credenciales.");
+      }
+    } catch (error) {
+      console.error("Error al iniciar sesión:", error);
+    }
   };
-  
+
   const handleSubmit = () => {
     handleLogin();
   };
@@ -31,7 +40,11 @@ const Login: React.FC<AuthModalProps> = ({onClose}) => {
       <h1 className="text-4xl font-semibold text-green-600 mb-6">
         Iniciar Sesión
       </h1>
-      <Form form={form} onFinish={handleSubmit} className="w-full mx-auto sm:w-1/2">
+      <Form
+        form={form}
+        onFinish={handleSubmit}
+        className="w-full mx-auto sm:w-1/2"
+      >
         <InputField
           label="Correo electrónico"
           type="email"
@@ -58,8 +71,8 @@ const Login: React.FC<AuthModalProps> = ({onClose}) => {
         </button>
       </Form>
       {error && <Alert message={error} type="error" className="mt-2" />}
-      {loginSuccess && ( message.info("Inicio de sesión exitoso"))}
-        
+      {loginSuccess && message.info("Inicio de sesión exitoso")}
+
       <Link className="text-green-600" href="/forgot-password">
         ¿Olvidaste tu contraseña?
       </Link>
