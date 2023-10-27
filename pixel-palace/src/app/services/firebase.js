@@ -86,7 +86,7 @@ export const signIn = async (data, pass, createUser) => {
 
     return result;
   } catch (error) {
-    message.info("Hubo un problema, revisa tus datos");
+    console.error("Hubo un problema, revisa tus datos");
   }
 };
 

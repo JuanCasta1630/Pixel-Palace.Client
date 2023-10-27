@@ -35,9 +35,14 @@ const RegistrationForm: React.FC<AuthModalProps> = ({onClose}) => {
       }
       const data = {email, password, name, lastName, username, birthdate}
       // Realizar el registro de usuario en Firebase
-      signIn(data, password, true)
-      setIsRegistered(true)
-      onClose();
+      const result = await signIn(data, password, true)
+      if (result) {
+        
+        setIsRegistered(true)
+        onClose();
+      }else{
+        message.error("Registro fallido. El correo electrónico proporcionado ya está asociado a una cuenta existente.");
+      }
     }
   };
 
