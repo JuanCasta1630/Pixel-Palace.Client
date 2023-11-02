@@ -21,9 +21,7 @@ const GameContainer: React.FC = () => {
   const onChangePage = (page: number) => {
     setCurrentPage(page);
   };
-  const toggleDarkMode = () => {
-    document.documentElement.classList.toggle('dark');
-  };
+
   const gamesToShow = juegos.slice(
     (currentPage - 1) * pageSize,
     currentPage * pageSize
@@ -43,23 +41,23 @@ const GameContainer: React.FC = () => {
     >
       {gamesToShow.map((game, index) => (
         <Col span={24} xs={24} xxl={24} md={12} xl={12} lg={4} key={index}>
-          <Card className=" bg-gray-300 shadow-lg w-96 h-full mx-2 md:mx-2 lg:mx-4 dark:bg-primary">
+          <Card className="bg-gray-300 shadow-lg w-96 h-full mx-2 md:mx-2 lg:mx-4 dark:bg-gray-500">
             <img
               alt={game.nombre}
               src={game.imagen}
               className="w-full h-48 md:h-64 lg:h-80 object-cover"
             />
-            <Typography className="text-xl font-semibold mt-2">
+            <Typography className="text-xl font-semibold mt-2  dark:text-white">
               {game.nombre}
             </Typography>
-            <Typography className="text-sm">
+            <Typography className="text-sm dark:text-white">
               {game.desarrollador}
             </Typography>
-            <Typography className="text-sm"> {game.precio}</Typography>
-            <Typography className="text-sm">
+            <Typography className="text-sm dark:text-white"> {game.precio}</Typography>
+            <Typography className="text-sm dark:text-white">
               {game.fecha_lanzamiento}
             </Typography>
-            <Typography className="text-sm">
+            <Typography className="text-sm dark:text-white">
               Categoría: {game.categoria.join(", ")}
             </Typography>
           </Card>
@@ -75,27 +73,26 @@ const GameContainer: React.FC = () => {
     showSizeChanger={false}
     className="mt-8 text-center"
   />
-  <Footer className="bg-green-600 text-white p-4 text-center flex justify-between items-center mt-8 dark:bg-primary dark:text-black">
+  <Footer className="bg-blue-800 text-black p-4 text-center flex justify-between items-center mt-8 dark:bg-gray-900 dark:text-white">
     <div className="flex-1 text-center">
-      Hecho con <HeartOutlined /> grupo 3
+      Made with <HeartOutlined/> Team 3
     </div>
-    <div className="flex items-center space-x-4 text-3xl">
+    <div className="dark:text-white flex items-center space-x-4 text-3xl">
       <Button
-        className="text-white dark:text-black"
+        className="dark:text-white text-white dark:text-black"
         type="link"
         icon={<FacebookOutlined />}
       />
       <Button
-        className="text-white dark:text-black"
+        className="dark:text-white text-white dark:text-black"
         type="link"
         icon={<TwitterOutlined />}
       />
       <Button
-        className="text-white dark:text-black"
+        className="dark:text-white text-white dark:text-black"
         type="link"
         icon={<InstagramOutlined />}
       />
-      {/* <Button title={'dark'}onClick={toggleDarkMode}/> */}
     </div>
   </Footer>
 </Layout>

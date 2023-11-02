@@ -7,13 +7,11 @@ import {
   SearchOutlined,
   MenuOutlined,
   CloseCircleOutlined,
-  BulbFilled,
-  BulbOutlined
 } from "@ant-design/icons";
 import { useAuth } from "@/app/services/firebase";
 import Image from "next/image";
 import { ThemeProvider } from "next-themes";
-import { useTheme } from "next-themes"
+import { useTheme } from "next-themes";
 
 const HeaderLayout = () => {
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
@@ -21,7 +19,7 @@ const HeaderLayout = () => {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isMobileUserOpen, setMobileUserOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const { user, cerrarSesion } = useAuth(); 
+  const { user, cerrarSesion } = useAuth();
 
   const openLoginModal = () => {
     setLoginModalOpen(true);
@@ -54,7 +52,7 @@ const HeaderLayout = () => {
   };
 
   const handleSearch = () => {
-    console.log("Buscar:", searchQuery);
+    console.log("Search:", searchQuery);
   };
 
   const { systemTheme, theme, setTheme } = useTheme();
@@ -65,177 +63,188 @@ const HeaderLayout = () => {
   }, []);
 
   if (!mounted) return null;
-  const currentTheme = theme === 'system' ? systemTheme : theme;
+  const currentTheme = theme === "system" ? systemTheme : theme;
 
   return (
     <ThemeProvider enableSystem={true} attribute="class">
-    <div className=" bg-green-600 border-black p-4 flex items-center justify-between fixed w-full top-0 z-10 dark:bg-primary" >
-      <nav className="lg:hidden">
-        <button onClick={toggleMobileMenu} className="text-white">
-          <MenuOutlined className="text-3xl" />
-        </button>
-        {isMobileMenuOpen && (
+      <div className=" bg-gradient-to-r from-teal-800 via-transparent to-indigo-800 p-4 flex items-center justify-between fixed w-full top-0 z-10 dark:bg-gradient-dark">
+        <nav className="lg:hidden bg-teal-500">
+          <button onClick={toggleMobileMenu} className="bg-gray-900">
+            <MenuOutlined className="text-3xl dark: text-white" />
+          </button>
+          {isMobileMenuOpen && (
+            <Drawer
+              className="bg-white absolute top-16 p-4 rounded shadow-md dark:bg-gray-900 text-gray-900"
+              placement="left"
+              closable={true}
+              onClose={toggleMobileMenu}
+              open={isMobileMenuOpen}
+              closeIcon={
+                <CloseCircleOutlined className="text-white text-3xl" />
+              }
+            >
+              <ul className="space-y-2 text-white">
+                <li>
+                  <a href="#">Library</a>
+                </li>
+                <li>
+                  <a href="#">News</a>
+                </li>
+                <li>
+                  <a href="#">Community</a>
+                </li>
+                <li>
+                  <a href="#">Support</a>
+                </li>
+              </ul>
+            </Drawer>
+          )}
+        </nav>
+
+        <div className="flex items-center">
+          <img
+            src="/logo.png"
+            alt="Logo"
+            className="w-10 h-10 mr-2 flex items-center dark:bg-gray-700 bg-white"
+          />
+          <h1 className="text-black text-xl font-bold dark:text-white">
+            Better if possible
+          </h1>
+        </div>
+
+        <div className="lg:hidden flex items-center space-x-4">
           <Drawer
-            className="bg-white absolute top-16 p-4 rounded shadow-md dark:bg-black"
-            placement="left"
+            className="bg-white absolute top-16 p-4 rounded shadow-md dark:bg-gray-900 text-gray-900"
+            placement="right"
             closable={true}
-            onClose={toggleMobileMenu}
-            open={isMobileMenuOpen}
-            closeIcon={
-              <CloseCircleOutlined className="text-primary text-3xl" />
-            }
+            onClose={toggleMobileUser}
+            open={isMobileUserOpen}
+            closeIcon={<CloseCircleOutlined className="text-white text-3xl" />}
           >
             <ul className="space-y-2">
               <li>
-                <a href="#">Libreria</a>
+                <Input
+                  type="text"
+                  placeholder="Search"
+                  className="input-field dark:text-white text-white border border-green-500 rounded "
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  addonBefore={
+                    <SearchOutlined className="text-white text-3xl" />
+                  }
+                  onPressEnter={handleSearch}
+                />
               </li>
-              <li>
-                <a href="#">Noticias</a>
-              </li>
-              <li>
-                <a href="#">Comunidad</a>
-              </li>
-              <li>
-                <a href="#">Soporte</a>
-              </li>
-            </ul>
-          </Drawer>
-        )}
-      </nav>
-
-      <div className="flex items-center">
-        <img
-          src="/logo.png"
-          alt="Logo"
-          className="w-10 h-10 mr-2 flex items-center dark:bg-gray-700 bg-white"
-        />
-        <h1 className="text-white text-xl font-bold dark:text-black">Mejor si es posible</h1>
-      </div>
-
-      <div className="lg:hidden flex items-center space-x-4">
-        <Drawer
-          className="bg-white absolute top-16 p-4 rounded shadow-md dark:bg-black"
-          placement="right"
-          closable={true}
-          onClose={toggleMobileUser}
-          open={isMobileUserOpen}
-          closeIcon={<CloseCircleOutlined className="text-primary text-3xl" />}
-        >
-          <ul className="space-y-2">
-            <li>
-              <Input
-                type="text"
-                placeholder="Buscar"
-                className="border border-green-500 rounded "
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                addonBefore={
-                  <SearchOutlined className="text-green-500 text-3xl" />
-                }
-                onPressEnter={handleSearch}
-              />
-            </li>
-            {user ? (
-              <li>
-                <button
-                  onClick={cerrarSesion}
-                  className="text-primary border rounded border-primary p-2 w-full"
-                >
-                  Salir
-                </button>
-              </li>
-            ) : (
-              <>
+              {user ? (
                 <li>
                   <button
-                    onClick={openLoginModal}
+                    onClick={cerrarSesion}
                     className="text-primary border rounded border-primary p-2 w-full"
                   >
-                    Entrar
+                    Sign out
                   </button>
                 </li>
-                <li>
-                  <button
-                    onClick={openRegisterModal}
-                    className="text-white bg-green-600 rounded p-2 w-full"
-                  >
-                    Registrarse
-                  </button>
-                </li>
-              </>
+              ) : (
+                <>
+                  <li>
+                    <button
+                      onClick={openLoginModal}
+                      className="button1 border rounded border-white p-2 w-full bg-white text-bold"
+                    >
+                      Sign in
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      onClick={openRegisterModal}
+                      className="button2 text-white bg-gray-900 rounded p-2 w-full"
+                    >
+                      Sign up
+                    </button>
+                  </li>
+                </>
+              )}
+            </ul>
+          </Drawer>
+          {user || !user ? (
+            <button onClick={toggleMobileUser} className="text-white">
+              <UserOutlined className="text-3xl" />
+            </button>
+          ) : null}
+        </div>
+        <div className="lg:flex hidden items-center space-x-4">
+          <Input
+            type="text"
+            placeholder="Search"
+            className=" dark:text-black border border-gray-900 rounded"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            addonBefore={
+              <SearchOutlined className="text-white text-3xl dark:text-white" />
+            }
+            onPressEnter={handleSearch}
+          />
+          <div>
+            {currentTheme === "dark" ? (
+              <button
+                className="bg-black-700 hover:bg-gray-300 w-12 rounded-md border-primary border-2 p-3 dark:border-gray-600"
+                onClick={() => setTheme("light")}
+              >
+                {" "}
+                <Image src="/sun.svg" alt="logo" height="20" width="20" />
+              </button>
+            ) : (
+              <button
+                className="bg-black-700 w-12 rounded-md border-primary border-2 p-3 hover:bg-gray-300 dark:border-gray-600"
+                onClick={() => setTheme("dark")}
+              >
+                <Image src="/moon.svg" alt="logo" height="20" width="20" />
+              </button>
             )}
-          </ul>
-        </Drawer>
-        {user || !user ? (
-          <button onClick={toggleMobileUser} className="text-white">
-            <UserOutlined className="text-3xl" />
-          </button>
-        ) : null}
-      </div>
-      <div className="lg:flex hidden items-center space-x-4">
-        <Input
-          type="text"
-          placeholder="Buscar"
-          className="border border-gray-300 rounded dark:border-black"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          addonBefore={<SearchOutlined className="text-white text-3xl dark:text-black" />}
-          onPressEnter={handleSearch}
-        />
-      <div>
-      {currentTheme === 'dark' ? (
-      <button
-              className="bg-black-700 hover:bg-gray-300 w-12 rounded-md border-primary border-2 p-3 dark:border-green-600"
-              onClick={() => setTheme('light')}
-            >
-              {' '}
-              <Image src="/sun.svg" alt="logo" height="20" width="20" />
-            </button>
+          </div>
+          {user ? (
+            <>
+              <img
+                src="/nallis.jpeg"
+                alt="Avatar"
+                className="w-10 h-10 rounded-full"
+              />
+              <button onClick={cerrarSesion} className="text-white">
+                Sign out
+              </button>
+            </>
           ) : (
-            <button
-              className="bg-black-700 w-12 rounded-md border-primary border-2 p-3 hover:bg-gray-300 dark:border-green-600"
-              onClick={() => setTheme('dark')}
-            >
-              <Image src="/moon.svg" alt="logo" height="20" width="20" />
-            </button>
+            <>
+              <button
+                onClick={openLoginModal}
+                className="text-black dark:text-white"
+                style={{width: '100px'}}
+              >
+                Sign in
+              </button>
+              <span className="text-black dark:text-white">|</span>
+              <button
+                onClick={openRegisterModal}
+                className="text-black dark:text-white "
+                style={{width: '100px'}}
+              >
+                Sign up
+              </button>
+            </>
           )}
-      </div>
-        {user ? ( 
-          <>
-            <img
-              src="/nallis.jpeg"
-              alt="Avatar"
-              className="w-10 h-10 rounded-full"
-            />
-            <button onClick={cerrarSesion} className="text-white">
-              Salir
-            </button>
-          </>
-        ) : (
-          <>
-            <button onClick={openLoginModal} className="text-white dark:text-black">
-              Entrar
-            </button>
-            <span className="text-white">|</span>
-            <button onClick={openRegisterModal} className="text-white dark:text-black">
-              Registrarse
-            </button>
-          </>
-        )}
-      </div>
+        </div>
 
-      <AuthModal
-        isOpen={isLoginModalOpen}
-        onClose={closeLoginModal}
-        initialTab={0}
-      />
-      <AuthModal
-        isOpen={isRegisterModalOpen}
-        onClose={closeRegisterModal}
-        initialTab={1}
-      />
-    </div>
-    
+        <AuthModal
+          isOpen={isLoginModalOpen}
+          onClose={closeLoginModal}
+          initialTab={0}
+        />
+        <AuthModal
+          isOpen={isRegisterModalOpen}
+          onClose={closeRegisterModal}
+          initialTab={1}
+        />
+      </div>
     </ThemeProvider>
   );
 };
