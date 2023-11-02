@@ -43,7 +43,7 @@ const GameContainer: React.FC = () => {
     >
       {gamesToShow.map((game, index) => (
         <Col span={24} xs={24} xxl={24} md={12} xl={12} lg={4} key={index}>
-          <Card className="bg-gray-300 shadow-lg w-96 h-full mx-2 md:mx-2 lg:mx-4 dark:bg-primary">
+          <Card className=" bg-gray-300 shadow-lg w-96 h-full mx-2 md:mx-2 lg:mx-4 dark:bg-primary">
             <img
               alt={game.nombre}
               src={game.imagen}
