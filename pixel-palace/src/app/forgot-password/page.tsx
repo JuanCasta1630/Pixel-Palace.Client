@@ -1,3 +1,4 @@
+'use client';
 import React, { useState } from 'react';
 import InputField from '../components/Inputs/InputField';
 import { Form, Button, Alert } from 'antd';
