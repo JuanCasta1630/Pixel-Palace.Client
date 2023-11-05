@@ -1,42 +1,105 @@
-import React, { useState, useEffect } from 'react';
-
+import React, { useEffect, useState } from "react";
+import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 const Carousel = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const items = [
-    { image: '/foto1.jpg', title: 'Slide 1', content: 'Contenido del primer slide' },
-    { image: '/foto2.jpg', title: 'Slide 2', content: 'Contenido del segundo slide' },
-    { image: '/foto3.jpg', title: 'Slide 3', content: 'Contenido del tercer slide' },
-    { image: '/foto1.jpg', title: 'Slide 4', content: 'Contenido del cuarto slide' },
-    { image: '/foto2.jpg', title: 'Slide 5', content: 'Contenido del quinto slide' },
-    { image: '/foto3.jpg', title: 'Slide 6', content: 'Contenido del sexto slide' },
+  const slides = [
+    {
+      url: "/foto1.jpg",
+    },
+    {
+      url: "/foto2.jpg",
+    },
+    {
+      url: "/foto3.jpg",
+    },
+
+    {
+      url: "https://images.unsplash.com/photo-1512756290469-ec264b7fbf87?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2253&q=80",
+    },
+    {
+      url: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2671&q=80",
+    },
   ];
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex === items.length - 1 ? 0 : prevIndex + 1));
-    }, 5000); // Cambia cada 5 segundos (5000 ms)
-    return () => clearInterval(interval);
-  }, []);
-
-  const nextSlide = () => {
-    setCurrentIndex((prevIndex) => (prevIndex === items.length - 1 ? 0 : prevIndex + 1));
-  };
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   const prevSlide = () => {
-    setCurrentIndex((prevIndex) => (prevIndex === 0 ? items.length - 1 : prevIndex - 1));
+    const isFirstSlide = currentIndex === 0;
+    const newIndex = isFirstSlide ? slides.length - 1 : currentIndex - 1;
+    setCurrentIndex(newIndex);
   };
 
+  const nextSlide = () => {
+    const isLastSlide = currentIndex === slides.length - 1;
+    const newIndex = isLastSlide ? 0 : currentIndex + 1;
+    setCurrentIndex(newIndex);
+  };
+
+  const goToSlide = (slideIndex: any) => {
+    setCurrentIndex(slideIndex);
+  };
+  useEffect(() => {
+    const autoPlay = () => {
+      nextSlide();
+    };
+    const interval = setInterval(autoPlay,5000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [currentIndex]);
+
   return (
-    <div className="relative w-full max-w-screen-md mx-auto overflow-hidden mt-20">
-      <div className="carousel flex transform transition-transform translate-x-0">
-        {items.map((item, index) => (
-          <div key={index} className="w-full  relative">
-            <img src={item.image} alt={item.title} className="w-full h-screen object-cover" />
-            <div className="absolute top-0 left-0 w-full bg-black opacity-50" />
-            <div className="absolute top-0 left-0 p-4 text-white">
-              <h2 className="text-2xl font-bold dark:text-white">{item.title}</h2>
-              <p>{item.content}</p>
-            </div>
+    <div className="h-96 w-full p-2 mx-auto relative group mt-24">
+      <div
+        style={{ backgroundImage: `url(${slides[currentIndex].url})` }}
+        className="w-full h-full rounded-2xl bg-center bg-cover transition duration-500"
+      ></div>
+      {/* Left Arrow */}
+      <div className="ml-10 hidden group-hover:block absolute top-1/2 -translate-x-1/2 -translate-y-1/2 left-5 text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer">
+        <svg
+          onClick={prevSlide}
+          className="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M15 19l-7-7 7-7"
+          ></path>
+        </svg>
+      </div>
+      {/* Right Arrow */}
+      <div className="hidden group-hover:block absolute top-1/2 -translate-x-1/2 -translate-y-1/2 right-5 text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer">
+        <svg
+          onClick={nextSlide}
+          className="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M9 5l7 7-7 7"
+          ></path>
+        </svg>
+      </div>
+      <div className="flex top-4 justify-center py-2">
+        {slides.map((slide, slideIndex) => (
+          <div
+            key={slideIndex}
+            onClick={() => goToSlide(slideIndex)}
+            className="text-2xl cursor-pointer"
+          >
+            {/* <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+          <path fillRule="evenodd" clipRule="evenodd" d="M3 10a7 7 0 1114 0 7 7 0 01-14 0zm7-6a1 1 0 00-1 1v4a1 1 0 001 1h4a1 1 0 100-2H9V5a1 1 0 00-1-1z"></path>
+        </svg> */}
           </div>
         ))}
       </div>
