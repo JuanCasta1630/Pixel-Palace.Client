@@ -14,6 +14,7 @@ import { ThemeProvider } from "next-themes";
 import Carousel from "../Carrusel";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import CategoriasPage from "../Categories/indext";
 
 const { Content, Footer } = Layout;
 
@@ -31,16 +32,16 @@ const GameContainer: React.FC = () => {
   );
 
   // Filtrar juegos populares, recomendaciones y tarjetas de regalo
-  const juegosPopulares = juegos.filter((game) => game).slice(0, 4); // Supongamos que tienes una propiedad "popular" en tus datos
-  const recomendaciones = juegos.filter((game) => game).slice(0, 4); // Supongamos que tienes una propiedad "recomendado" en tus datos
-  const tarjetasDeRegalo = regalos.filter((game) => game).slice(0, 4); // Supongamos que tienes una propiedad "regalo" en tus datos
+  const juegosPopulares = juegos.filter((game) => game).slice(0, 4);
+  const recomendaciones = juegos.filter((game) => game).slice(0, 4);
+  const tarjetasDeRegalo = regalos.filter((game) => game).slice(0, 4);
 
   return (
     <ThemeProvider enableSystem={true} attribute="class">
       <Layout className="w-full min-h-screen dark:bg-gray-700 bg-white">
         <HeaderLayout />
         <Carousel />
-        <Content className="p-4 mt-8 ">
+        <Content className="p-4">
           {/* Sección de Tarjetas de Regalo */}
           <h2 className="text-2xl font-semibold mb-4">Gift Cards</h2>
           <div className="flex flex-col justify-center items-center">
@@ -95,7 +96,7 @@ const GameContainer: React.FC = () => {
               className="md:grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-4"
             >
               {juegosPopulares.map((game, index) => (
-                <Col  key={index}>
+                <Col key={index}>
                   <div className="card-home card2 border border-gray-300 shadow-md rounded-xl dark:bg-gray-900 h-96">
                     <Link href={`/best-games`}>
                       <img
@@ -137,7 +138,7 @@ const GameContainer: React.FC = () => {
           <h2 className="text-2xl font-semibold mb-4">
             Recommendations for you
           </h2>
-          <div className="flex flex-col justify-center items-center">
+          <div className="flex flex-col justify-center items-center ">
             <Row
               gutter={[16, 16]}
               className="md:grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-4"
@@ -181,6 +182,7 @@ const GameContainer: React.FC = () => {
               Read More
             </Button>
           </div>
+          <CategoriasPage />
         </Content>
         {/* <Pagination
           current={currentPage}
