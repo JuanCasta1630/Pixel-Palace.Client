@@ -1,17 +1,40 @@
 "use client"
-import React from 'react';
+import React, { useState } from 'react';
 import HeaderLayout from '../components/Header';
 import { HeartOutlined, FacebookOutlined, TwitterOutlined, InstagramOutlined } from "@ant-design/icons";
-import { Layout, Col, Row, Button } from "antd";
+import { Layout, Col, Row, Button, Pagination } from "antd";
 import { ThemeProvider } from "next-themes";
 import Filters from '../components/Filters';
 import Tarjetas from '../../../../gift-cards.json';
 
+interface FilterProps {
+  id: number;
+  codigo: string;
+  valor: number;
+  moneda: string;
+  fecha_expiracion: string;
+  estado: string;
+  image: string;
+  juego_relacionado: string;
+}
+
 export default function GiftCards() {
   const { Content, Footer } = Layout;
 
-  // Define el número máximo de elementos por página
-  const itemsPerPage = 20;
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const itemsPerPage: number = 12;
+
+  const startIndex: number = (currentPage - 1) * itemsPerPage;
+  const endIndex: number = currentPage * itemsPerPage;
+
+  const cardsPaginados: FilterProps[] = Tarjetas.slice(startIndex, endIndex);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const handleFilterChange = (filters: FilterProps) => {
+  };
 
   return (
     <ThemeProvider enableSystem={true} attribute="class">
@@ -29,42 +52,35 @@ export default function GiftCards() {
                   gutter={[16, 16]}
                   className="md:grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-4"
                 >
-                  {Tarjetas.map((card, index) => (
-                    <Col key={index} className="mb-4">
-                      <div className="card-home card2 border border-gray-300 shadow-md rounded-xl dark:bg-gray-900 h-96">
-                        <img
-                          alt={card.juego_relacionado}
-                          src={card.image}
-                          className="w-full h-48 object-cover rounded-t-xl border border-gray-300"
-                        />
-                        <div className="p-4">
-                          <h2 className="text-xl font-semibold mb-2">
-                            {card.juego_relacionado}
-                          </h2>
-                          <p className="text-gray-100">
-                            {card.fecha_expiracion}
-                          </p>
-                          <p className="text-red-500 font-semibold mt-2">
-                            ${card.valor} {card.moneda}
-                          </p>
-                        </div>
-                      </div>
-                    </Col>
+                {cardsPaginados.map((card, index) => (
+                  <Col key={index} className="mb-4">
+                            <div className="card-home card2 border border-gray-300 shadow-md rounded-xl dark:bg-gray-900 h-96">
+                              <img
+                                alt={card.juego_relacionado}
+                                src={card.image}
+                                className="w-full h-48 object-cover rounded-t-xl border border-gray-300"
+                              />
+                              <div className="p-4">
+                                <h2 className="text-xl font-semibold mb-2">
+                                  {card.juego_relacionado}
+                                </h2>
+                                <p className="text-gray-100">
+                                  {card.fecha_expiracion}
+                                </p>
+                                <p className="text-red-500 font-semibold mt-2">
+                                  ${card.valor} {card.moneda}
+                                </p>
+                              </div>
+                            </div>
+                          </Col>
                   ))}
                 </Row>
-
-                {/* Condición para mostrar la paginación si hay más de 20 elementos */}
-                {Tarjetas.length > itemsPerPage && (
-                  <Button
-                    type="primary"
-                    block
-                    size="large"
-                    className="my-4 button1 dark:w-48 md:hidden lg:hidden 2xl:hidden"
-                    onClick={() => (window.location.href = "/forgot-password")}
-                  >
-                    Read More
-                  </Button>
-                )}
+                <Pagination
+                current={currentPage}
+                total={Tarjetas.length}
+                pageSize={itemsPerPage}
+                onChange={(page) => setCurrentPage(page)}
+                />
               </div>
             </div>
           </div>
