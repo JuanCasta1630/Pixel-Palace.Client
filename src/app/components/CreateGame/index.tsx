@@ -15,7 +15,7 @@ import {
   uploadImageToFirebaseStorage,
 } from "@/app/services/firebase";
 import InputField from "../Inputs/InputField";
-import { categorias } from "@/app/services/categories.json";
+import { categorias } from "../../services/categories.json";
 
 const { Option } = Select;
 

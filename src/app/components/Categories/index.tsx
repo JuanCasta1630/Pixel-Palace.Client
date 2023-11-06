@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { categorias } from "@/app/services/categories.json";
+import { categorias } from "../../services/categories.json";
 
 const CategoriasPage = () => {
 

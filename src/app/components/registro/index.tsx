@@ -72,7 +72,7 @@ const RegistrationForm: React.FC<AuthModalProps> = ({ onClose }) => {
                   label="Name"
                   type="text"
                   value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  onChange={(e:any) => setName(e.target.value)}
                   placeholder="Your name"
                   required
                 />
@@ -81,7 +81,7 @@ const RegistrationForm: React.FC<AuthModalProps> = ({ onClose }) => {
                   label="Lastname"
                   type="text"
                   value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
+                  onChange={(e:any) => setLastName(e.target.value)}
                   placeholder="Your lastname"
                   required
                 />
@@ -90,7 +90,7 @@ const RegistrationForm: React.FC<AuthModalProps> = ({ onClose }) => {
                   label="User's Name"
                   type="text"
                   value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  onChange={(e:any) => setUsername(e.target.value)}
                   placeholder="Your User's Name"
                   required
                 />
@@ -98,7 +98,7 @@ const RegistrationForm: React.FC<AuthModalProps> = ({ onClose }) => {
                   label="Email"
                   type="email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e:any) => setEmail(e.target.value)}
                   placeholder="Your email"
                   required
                 />
@@ -111,7 +111,7 @@ const RegistrationForm: React.FC<AuthModalProps> = ({ onClose }) => {
                   label="Password"
                   type="password"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e:any) => setPassword(e.target.value)}
                   placeholder="Your password"
                   required
                 />
@@ -120,7 +120,7 @@ const RegistrationForm: React.FC<AuthModalProps> = ({ onClose }) => {
                   label="Password confirm"
                   type="password"
                   value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  onChange={(e:any) => setConfirmPassword(e.target.value)}
                   placeholder="Confirm your password"
                   required
                 />
@@ -129,7 +129,7 @@ const RegistrationForm: React.FC<AuthModalProps> = ({ onClose }) => {
                   label="Birthday"
                   type="date"
                   value={birthdate}
-                  onChange={(e) => setBirthdate(e.target.value)}
+                  onChange={(e:any) => setBirthdate(e.target.value)}
                   placeholder="Your birthday"
                   required
                 />

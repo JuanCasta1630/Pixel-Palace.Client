@@ -61,7 +61,7 @@ const HeaderLayout = () => {
       return;
     }
   
-    const results = await searchGamesByName(searchQuery);
+    const results: any = await searchGamesByName(searchQuery);
   
     setSearchResults(results);
   };

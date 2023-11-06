@@ -12,6 +12,15 @@ export interface AuthModalProps {
   onClose: () => void;
   initialTab: number;
 }
+export interface Game  {
+  categoria: string[];
+  desarrollador: string;
+  fecha_lanzamiento: string;
+  imagen: string;
+  nombre: string;
+  precio: number;
+};
+
 export interface NewUserProps {
   name: string;
   lastName: string;
