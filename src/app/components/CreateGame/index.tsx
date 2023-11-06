@@ -34,7 +34,7 @@ function CreateGame() {
     setModalVisible(false);
   };
 
-  const handleSave = async (values) => {
+  const handleSave = async (values:any) => {
     try {
       if (imagen) {
         const downloadURL = await uploadImageToFirebaseStorage(imagen);
@@ -121,6 +121,7 @@ function CreateGame() {
               label="Birthday"
               type="date"
               value={birthdate}
+              //@ts-ignore
               onChange={(e) => setBirthdate(e.target.value)}
               placeholder="Your birthday"
               required
@@ -144,7 +145,7 @@ function CreateGame() {
           </Form.Item>
           <Form.Item name="imagen">
             <Upload
-              beforeUpload={(file) => {
+              beforeUpload={(file: any) => {
                 setImagen(file);
                 return false; 
               }}

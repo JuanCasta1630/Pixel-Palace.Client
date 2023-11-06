@@ -10,7 +10,7 @@ import {
 import { Layout, Col, Row, Button, Pagination } from "antd";
 import { ThemeProvider } from "next-themes";
 import Filters from "../components/Filters";
-import JuegosRecomendados from "../../../../juegos.json";
+import JuegosRecomendados from "../../../juegos.json";
 import FooterLayout from "../components/Footer";
 import GameList from "../components/GameList";
 
