@@ -1,18 +1,18 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { Children, Component, useState, useEffect } from "react";
-import { Layout, Card, Col, Row, Pagination, Typography, Button } from "antd";
-import {
-  HeartOutlined,
-  FacebookOutlined,
-  TwitterOutlined,
-  InstagramOutlined,
-} from "@ant-design/icons";
+import React, { useEffect, useState } from "react";
+import { Layout, Col, Row, Button } from "antd";
 import juegos from "@/app/services/juegos.json";
+import regalos from "@/app/services/regalos.json";
 import HeaderLayout from "../Header";
 import { ThemeProvider } from "next-themes";
+import Carousel from "../Carrusel";
+import Link from "next/link";
+import CategoriasPage from "../Categories/index";
+import FooterLayout from "../Footer";
+import CreateGame from "../CreateGame";
+import { getGames } from "@/app/services/firebase";
 
- 
-const { Header, Content, Footer } = Layout;
+const { Content } = Layout;
 
 const GameContainer: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -27,76 +27,194 @@ const GameContainer: React.FC = () => {
     currentPage * pageSize
   );
 
+  const [games, setGames] = useState([]); // Define un estado para almacenar los juegos
+  const [loading, setLoading] = useState(true); // Estado para controlar la carga de los juegos
+
+  useEffect(() => {
+    getGames()
+      .then((result) => {
+        if (result.success) {
+          setGames(result.games);
+        } else {
+          console.error("Error al obtener los juegos:", result.error);
+        }
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error al obtener los juegos:", error);
+        setLoading(false);
+      });
+  }, [games]); 
+
+
+  // Filtrar juegos populares, recomendaciones y tarjetas de regalo
+  const juegosPopulares = games.filter((game) => game).slice(0, 4);
+  const recomendaciones = games.filter((game) => game).slice(0, 4);
+  const tarjetasDeRegalo = regalos.filter((game) => game).slice(0, 4);
+
   return (
-    
-  <ThemeProvider enableSystem={true} attribute="class">
+    <ThemeProvider enableSystem={true} attribute="class">
+      <Layout className="w-full min-h-screen dark:bg-gray-700 bg-white">
+        <HeaderLayout />
+        <Carousel />
+        <Content className="p-4">
+         <CreateGame/>
+          {/* Sección de Tarjetas de Regalo */}
+          <h2 className="text-2xl font-semibold mb-4">Gift Cards</h2>
+          <div className="flex flex-col justify-center items-center">
+            <Row
+              gutter={[8, 8]}
+              className="sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 2xl:grid-cols-4 "
+            >
+              {tarjetasDeRegalo.map((game, index) => (
+                <Col className="mx-2 sm:mx-4 md:mx-2 lg:mx-4 " key={index}>
+                  <div className="card-home card2 border border-gray-300 shadow-md rounded-xl dark:bg-gray-900 dark:w-24 dark:h-24 ">
+                    <Link href={`/gift-cards`}>
+                      <div className="border border-gray-300 shadow-md rounded-xl dark:bg-gray-900 dark:w-24 dark:h-24 hover:shadow-lg transition duration-300">
+                        <img
+                          alt={game.nombre}
+                          src={game.imagen}
+                          className="dark:w-24 dark:h-24 object-contain rounded-xl"
+                        />
+                      </div>
+                    </Link>
+                    {/* <div className="p-4">
+                    <h2 className="text-xl font-semibold mb-2">
+                      {game.nombre}
+                    </h2>
+                    <p className="text-gray-100">{game.categoria.join(", ")}</p>
+                    <p className="text-gray-100">{game.fecha_lanzamiento}</p>
+                    <p className="text-red-500 font-semibold mt-2">
+                      ${game.precio}
+                    </p>
+                  </div> */}
+                  </div>
+                </Col>
+              ))}
+            </Row>
 
-   <Layout className=" w-full min-h-screen flex flex-col dark:bg-gray-700 bg-white">
-  <HeaderLayout />
-  <Content className="p-4 flex-1 overflow-y-auto mt-24 flex justify-center items-center">
+            <Button
+              type="primary"
+              block
+              size="large"
+              className="my-4 button1 dark:w-48 md:hidden lg:hidden 2xl:hidden"
+              onClick={() => (window.location.href = "/forgot-password")}
+            >
+              Read More
+            </Button>
+          </div>
+          {/* Sección de Juegos Populares */}
+          <h2 className="text-2xl font-semibold mb-4">
+            The best games (Digital)
+          </h2>
+          <div className="flex flex-col justify-center items-center">
+            <Row
+              gutter={[16, 16]}
+              className="md:grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-4"
+            >
+              {juegosPopulares.map((game, index) => (
+                <Col
+                  className="w-full sm:mx-2 md:mx-2 lg:mx-4 2xl:mx-4"
+                  key={index}
+                >
+                  <div className="card-home card2 border border-gray-300 shadow-md rounded-xl dark:bg-gray-900 h-96">
+                    <Link href={`/best-games`}>
+                      <img
+                        alt={game.nombre}
+                        src={game.imagen}
+                        className="w-full h-48 object-cover rounded-t-xl border border-gray-300"
+                      />
+                      <div className="p-4">
+                        <h2 className="text-xl font-semibold mb-2">
+                          {game.nombre}
+                        </h2>
+                        <p className="text-gray-100">
+                          {game.categoria.join(", ")}
+                        </p>
+                        <p className="text-gray-100">
+                          {game.fecha_lanzamiento}
+                        </p>
+                        <p className="text-red-500 font-semibold mt-2">
+                          ${game.precio}
+                        </p>
+                      </div>
+                    </Link>
+                  </div>
+                </Col>
+              ))}
+            </Row>
 
-    <Row
-      gutter={[16, 16]}
-      className="md:grid md:grid-cols-2 lg:grid-cols-3"
-    >
-      {gamesToShow.map((game, index) => (
-        <Col span={24} xs={24} xxl={24} md={12} xl={12} lg={4} key={index}>
-          <Card className="bg-gray-300 shadow-lg w-96 h-full mx-2 md:mx-2 lg:mx-4 dark:bg-gray-500">
-            <img
-              alt={game.nombre}
-              src={game.imagen}
-              className="w-full h-48 md:h-64 lg:h-80 object-cover"
-            />
-            <Typography className="text-xl font-semibold mt-2  dark:text-white">
-              {game.nombre}
-            </Typography>
-            <Typography className="text-sm dark:text-white">
-              {game.desarrollador}
-            </Typography>
-            <Typography className="text-sm dark:text-white"> {game.precio}</Typography>
-            <Typography className="text-sm dark:text-white">
-              {game.fecha_lanzamiento}
-            </Typography>
-            <Typography className="text-sm dark:text-white">
-              Categoría: {game.categoria.join(", ")}
-            </Typography>
-          </Card>
-        </Col>
-      ))}
-    </Row>
-  </Content>
-  <Pagination
-    current={currentPage}
-    total={juegos.length}
-    pageSize={pageSize}
-    onChange={onChangePage}
-    showSizeChanger={false}
-    className="mt-8 text-center"
-  />
-  <Footer className="bg-blue-800 text-black p-4 text-center flex justify-between items-center mt-8 dark:bg-gray-900 dark:text-white">
-    <div className="flex-1 text-center">
-      Made with <HeartOutlined/> Team 3
-    </div>
-    <div className="dark:text-white flex items-center space-x-4 text-3xl">
-      <Button
-        className="dark:text-white text-white dark:text-black"
-        type="link"
-        icon={<FacebookOutlined />}
-      />
-      <Button
-        className="dark:text-white text-white dark:text-black"
-        type="link"
-        icon={<TwitterOutlined />}
-      />
-      <Button
-        className="dark:text-white text-white dark:text-black"
-        type="link"
-        icon={<InstagramOutlined />}
-      />
-    </div>
-  </Footer>
-</Layout>
-</ThemeProvider>
+            <Button
+              type="primary"
+              block
+              size="large"
+              className="my-4 button1 dark:w-48 md:hidden lg:hidden 2xl:hidden"
+              onClick={() => (window.location.href = "/forgot-password")}
+            >
+              Read More
+            </Button>
+          </div>
+          {/* Sección de Recomendaciones */}
+          <h2 className="text-2xl font-semibold mb-4">
+            Recommendations for you
+          </h2>
+          <div className="flex flex-col justify-center items-center ">
+            <Row
+              gutter={[16, 16]}
+              className="md:grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-4"
+            >
+              {recomendaciones.map((game, index) => (
+                <Col className=" mx-2 sm:mx-4 md:mx-2 lg:mx-4" key={index}>
+                  <div className="card-home card2 border border-gray-300 shadow-md rounded-xl dark:bg-gray-900 h-96">
+                    <Link href={`/recommendations`}>
+                      <img
+                        alt={game.nombre}
+                        src={game.imagen}
+                        className="w-full h-48 object-cover rounded-t-xl border border-gray-300"
+                      />
+                      <div className="p-4">
+                        <h2 className="text-xl font-semibold mb-2">
+                          {game.nombre}
+                        </h2>
+                        <p className="text-gray-100">
+                          {game.categoria.join(", ")}
+                        </p>
+                        <p className="text-gray-100">
+                          {game.fecha_lanzamiento}
+                        </p>
+                        <p className="text-red-500 font-semibold mt-2">
+                          ${game.precio}
+                        </p>
+                      </div>
+                    </Link>
+                  </div>
+                </Col>
+              ))}
+            </Row>
+
+            <Button
+              type="primary"
+              block
+              size="large"
+              className="my-4 button1 dark:w-48 md:hidden lg:hidden 2xl:hidden"
+              onClick={() => (window.location.href = "/forgot-password")}
+            >
+              Read More
+            </Button>
+          </div>
+          <CategoriasPage />
+        </Content>
+        {/* <Pagination
+          current={currentPage}
+          total={juegos.length}
+          pageSize={pageSize}
+          onChange={onChangePage}
+          showSizeChanger={false}
+          className="text-center"
+        /> */}
+        <FooterLayout />
+      </Layout>
+    </ThemeProvider>
   );
 };
 
