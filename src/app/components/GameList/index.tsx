@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Col, Row, Pagination, message } from "antd";
 import Link from "next/link";
-import { deleteGame, getGames, updateGame } from "@/app/services/firebase";
 import EditGameModal from "../EditGameModal";
 import { ModalConfirm } from "../ModalConfirm";
+import { deleteGame, getGames } from "@/app/services/firebase";
 
 const GameList: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -20,29 +20,7 @@ const [filters, setFilters] = useState({
   platform: "all",
 });
 
-const applyFilters = () => {
-  const { category, price, platform } = filters;
-  let filtered = games;
 
-  if (category !== "all") {
-    filtered = filtered.filter((game) =>
-      game.categoria.includes(category)
-    );
-  }
-
-  if (price > 0) {
-    filtered = filtered.filter((game) => game.precio <= price);
-  }
-
-  if (platform !== "all") {
-    filtered = filtered.filter((game) => game.desarrollador === platform);
-  }
-
-  setFilteredGames(filtered);
-};
-useEffect(() => {
-  applyFilters();
-}, [filters, games]);
 
 const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
   setFilters({ ...filters, category: e.target.value });

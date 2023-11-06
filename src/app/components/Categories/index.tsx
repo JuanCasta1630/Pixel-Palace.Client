@@ -2,22 +2,24 @@ import React, { useState } from "react";
 import { categorias } from "@/app/services/categories.json";
 
 const CategoriasPage = () => {
+
+  const length = categorias.length;
   const [numCategorias, setNumCategorias] = useState(5);
-  const mostrarTodas = numCategorias === categorias.length;
+  const mostrarTodas = numCategorias === length;
 
   const handleVerMasClick = () => {
     if (mostrarTodas) {
       setNumCategorias(5);
     } else {
-      setNumCategorias(categorias.length);
+      setNumCategorias(length);
     }
   };
-
+ const categories = categorias.slice(0, numCategorias)
   return (
     <div className="flex flex-col mt-6 justify-center items-center">
       <h1 className="text-2xl font-semibold mb-4">Categories</h1>
       <div className="flex flex-wrap justify-center items-center gap-4">
-        {categorias.slice(0, numCategorias).map((category) => (
+        {categories.map((category) => (
           <div
             key={category.id}
             className="card-home card2 bg-white dark:bg-gray-900 p-4 rounded-lg shadow-md max-w-xs w-48"
