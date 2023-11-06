@@ -22,13 +22,14 @@ const AuthModal: React.FC<AuthModalProps> = ({
       centered
       width={800}
       closeIcon={false}
+      className="bg-white dark:bg-gray-500 rounded-md"
     >
       <div className="text-right">
         <Button
           type="text"
           onClick={onClose}
         >
-          <CloseCircleFilled className="text-gray-900"/> 
+          <CloseCircleFilled className="dark:text-gray-100 text-gray-900"/> 
         </Button>
       </div>
       <Tabs
@@ -38,7 +39,7 @@ const AuthModal: React.FC<AuthModalProps> = ({
       >
         <TabPane
           tab={
-            <span className="text-gray-900">Sign In</span> 
+            <span className="dark:text-gray-100 text-gray-900">Sign In</span> 
           }
           key="0"
         >
@@ -46,7 +47,7 @@ const AuthModal: React.FC<AuthModalProps> = ({
         </TabPane>
         <TabPane
           tab={
-            <span className="text-gray-900">Sign Up</span> 
+            <span className="text-gray-900 dark:text-gray-100">Sign Up</span> 
           }
           key="1"
         >

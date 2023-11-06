@@ -2,10 +2,21 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { signInWithEmailAndPassword } from "firebase/auth/cordova";
-import { getFirestore, doc, setDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  addDoc,
+  collection,
+  query,
+  getDocs,
+  deleteDoc,
+} from "firebase/firestore";
 import { message } from "antd";
 import { useEffect, useState } from "react";
 import { onAuthStateChanged, signOut } from "firebase/auth";
+import { getDownloadURL, getStorage, getURL } from "firebase/storage";
+import { ref, uploadBytes } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyB4G-wTDBmEoVObZMEUYKR8x1_KO8hyhMo",
@@ -21,7 +32,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const firestore = getFirestore(app); // Agrega Firestore a tu instancia de Firebase
-
+const storage = getStorage(app);
 export const registerUser = async (
   email,
   password,
@@ -57,6 +68,19 @@ export const registerUser = async (
     return { success: false, error: error.message };
   }
 };
+
+export async function uploadImageToFirebaseStorage(file) {
+  const storageRef = ref(storage, file.name);
+
+  try {
+    await uploadBytes(storageRef, file);
+    const downloadURL = await getDownloadURL(storageRef);
+    return downloadURL;
+  } catch (error) {
+    console.error("Error al subir la imagen", error);
+    return null; 
+  }
+}
 
 // Función para el inicio de sesión y registro
 
@@ -127,4 +151,49 @@ export const useAuth = () => {
   };
 
   return { user, cerrarSesion };
+};
+
+export const createGame = async (gameData) => {
+  console.log(gameData, "firebase");
+  try {
+    const gameDocRef = await addDoc(collection(firestore, "juegos"), gameData);
+    return { success: true, gameId: gameDocRef.id };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+};
+export const deleteGame = async (gameId) => {
+  try {
+    await deleteDoc(doc(firestore, "juegos", gameId));
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+};
+
+export const updateGame = async (gameId, updatedGameData) => {
+  try {
+    await updateDoc(doc(firestore, "juegos", gameId), updatedGameData);
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+};
+export const getGames = async () => {
+  try {
+    const gamesCollection = collection(firestore, "juegos");
+    const gamesQuery = query(gamesCollection);
+
+    const snapshot = await getDocs(gamesQuery);
+    const games = [];
+
+    snapshot.forEach((doc) => {
+      const gameData = doc.data();
+      games.push({ id: doc.id, ...gameData });
+    });
+
+    return { success: true, games };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
 };

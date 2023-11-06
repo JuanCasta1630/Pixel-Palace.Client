@@ -5,7 +5,12 @@
 .ant-tabs-nav .ant-tabs-ink-bar {
   background-color: #111827; 
 }
-
+.ant-modal .ant-modal-content{
+  background-color: transparent;
+}
+.ant-btn-primary.ant-btn-dangerous:disabled{
+  color: white;
+}
 .form {
   display: flex;
   flex-direction: column;

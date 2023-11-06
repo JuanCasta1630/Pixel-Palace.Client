@@ -18,6 +18,7 @@ const config: Config = {
        ' green-950': '#023107',
       },
       colors: {
+        custom_red: '#FF6B6B',
         primary: '#08F60A',
         black: '#000',
         white: '#fff',

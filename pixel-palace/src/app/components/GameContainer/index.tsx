@@ -1,22 +1,18 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useState } from "react";
-import { Layout, Col, Row, Pagination, Button } from "antd";
-import {
-  HeartOutlined,
-  FacebookOutlined,
-  TwitterOutlined,
-  InstagramOutlined,
-} from "@ant-design/icons";
+import React, { useEffect, useState } from "react";
+import { Layout, Col, Row, Button } from "antd";
 import juegos from "@/app/services/juegos.json";
 import regalos from "@/app/services/regalos.json";
 import HeaderLayout from "../Header";
 import { ThemeProvider } from "next-themes";
 import Carousel from "../Carrusel";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import CategoriasPage from "../Categories/indext";
+import CategoriasPage from "../Categories/index";
+import FooterLayout from "../Footer";
+import CreateGame from "../CreateGame";
+import { getGames } from "@/app/services/firebase";
 
-const { Content, Footer } = Layout;
+const { Content } = Layout;
 
 const GameContainer: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -31,9 +27,29 @@ const GameContainer: React.FC = () => {
     currentPage * pageSize
   );
 
+  const [games, setGames] = useState([]); // Define un estado para almacenar los juegos
+  const [loading, setLoading] = useState(true); // Estado para controlar la carga de los juegos
+
+  useEffect(() => {
+    getGames()
+      .then((result) => {
+        if (result.success) {
+          setGames(result.games);
+        } else {
+          console.error("Error al obtener los juegos:", result.error);
+        }
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error al obtener los juegos:", error);
+        setLoading(false);
+      });
+  }, [games]); 
+
+
   // Filtrar juegos populares, recomendaciones y tarjetas de regalo
-  const juegosPopulares = juegos.filter((game) => game).slice(0, 4);
-  const recomendaciones = juegos.filter((game) => game).slice(0, 4);
+  const juegosPopulares = games.filter((game) => game).slice(0, 4);
+  const recomendaciones = games.filter((game) => game).slice(0, 4);
   const tarjetasDeRegalo = regalos.filter((game) => game).slice(0, 4);
 
   return (
@@ -42,6 +58,7 @@ const GameContainer: React.FC = () => {
         <HeaderLayout />
         <Carousel />
         <Content className="p-4">
+         <CreateGame/>
           {/* Sección de Tarjetas de Regalo */}
           <h2 className="text-2xl font-semibold mb-4">Gift Cards</h2>
           <div className="flex flex-col justify-center items-center">
@@ -96,7 +113,10 @@ const GameContainer: React.FC = () => {
               className="md:grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-4"
             >
               {juegosPopulares.map((game, index) => (
-                <Col key={index}>
+                <Col
+                  className="w-full sm:mx-2 md:mx-2 lg:mx-4 2xl:mx-4"
+                  key={index}
+                >
                   <div className="card-home card2 border border-gray-300 shadow-md rounded-xl dark:bg-gray-900 h-96">
                     <Link href={`/best-games`}>
                       <img
@@ -192,28 +212,7 @@ const GameContainer: React.FC = () => {
           showSizeChanger={false}
           className="text-center"
         /> */}
-        <Footer className="bg-blue-800 text-white p-4 text-center flex justify-between items-center dark:bg-gray-900">
-          <div className="flex-1 text-center">
-            Made with <HeartOutlined /> Team 3
-          </div>
-          <div className="dark:text-white flex items-center space-x-4 text-3xl">
-            <Button
-              className="dark:text-white text-white"
-              type="link"
-              icon={<FacebookOutlined />}
-            />
-            <Button
-              className="dark:text-white text-white"
-              type="link"
-              icon={<TwitterOutlined />}
-            />
-            <Button
-              className="dark:text-white text-white"
-              type="link"
-              icon={<InstagramOutlined />}
-            />
-          </div>
-        </Footer>
+        <FooterLayout />
       </Layout>
     </ThemeProvider>
   );
