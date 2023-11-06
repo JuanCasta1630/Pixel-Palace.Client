@@ -20,8 +20,8 @@ const ForgotPassword: React.FC = () => {
           label="Correo electrónico"
           type="email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Tu correo electrónico"
+          onChange={(e: any) => setEmail(e.target.value)}
+          placeholder="Your email"
           required
         />
 

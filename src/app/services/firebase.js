@@ -260,4 +260,13 @@ export const searchGamesByName = async (searchQuery) => {
   }
 };
 
+export const deleteGame = async (gameId) => {
+  try {
+    await deleteDoc(doc(firestore, "juegos", gameId));
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+};
+
 

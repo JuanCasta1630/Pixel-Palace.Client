@@ -44,7 +44,7 @@ export default function GiftCards() {
   const handleFilterChange = (filters: FilterProps) => {};
   useEffect(() => {
     getCards()
-      .then((result) => {
+      .then((result: any) => {
         if (result.success) {
           setCards(result.card);
         } else {
@@ -75,24 +75,25 @@ export default function GiftCards() {
                   gutter={[16, 16]}
                   className="md:grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-4"
                 >
-                  {cards.map((card, index) => (
+                  {cards.map((card: any, index) => (
                     <Col key={index} className="mb-4">
                       <div className="card-home card2 border border-gray-300 shadow-md rounded-xl dark:bg-gray-900 h-96">
                         <img
-                          alt={card.fecha_lanzamiento}
-                          src={card.imagen}
-                          className="w-full h-48 object-cover rounded-t-xl border border-gray-300"
+                        alt={card.fecha_lanzamiento}
+                        src={card.imagen}
+                        className="w-full h-48 object-cover rounded-t-xl border border-gray-300"
                         />
                         <div className="p-4">
                         <h2 className="text-xl font-semibold mb-2">
+                        
                             {card.nombre}
                           </h2>
                           <h2 className="text-xl font-semibold mb-2">
                             {card.fecha_lanzamiento}
                           </h2>
-                          <p className="text-gray-100">
+                          {/* <p className="text-gray-100">
                             {card.fecha_expiracion}
-                          </p>
+                          </p> */}
                           <p className="text-red-500 font-semibold mt-2">
                             ${card.precio}
                           </p>

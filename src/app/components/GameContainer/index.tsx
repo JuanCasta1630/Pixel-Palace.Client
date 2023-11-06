@@ -11,10 +11,11 @@ import CategoriasPage from "../Categories/index";
 import FooterLayout from "../Footer";
 import CreateGame from "../CreateGame";
 import { getCards, getGames } from "@/app/services/firebase";
+import { Game } from "@/app/types/types";
 
 const { Content } = Layout;
 
-const GameContainer: React.FC = () => {
+const GameContainer: React.FC= () => {
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 12;
 
@@ -27,12 +28,12 @@ const GameContainer: React.FC = () => {
     currentPage * pageSize
   );
 
-  const [games, setGames] = useState([]); 
-  const [loading, setLoading] = useState(true); 
+  const [games, setGames] = useState<Game[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getGames()
-      .then((result) => {
+      .then((result: any) => {
         if (result.success) {
           setGames(result.games);
         } else {
@@ -44,12 +45,12 @@ const GameContainer: React.FC = () => {
         console.error("Error al obtener los juegos:", error);
         setLoading(false);
       });
-  }, []); 
-  const [cards, setCards] = useState([])
+  }, []);
+  const [cards, setCards] = useState([]);
 
   useEffect(() => {
     getCards()
-      .then((result) => {
+      .then((result: any) => {
         if (result.success) {
           setCards(result.card);
         } else {
@@ -74,7 +75,7 @@ const GameContainer: React.FC = () => {
         <HeaderLayout />
         <Carousel />
         <Content className="p-4">
-         <CreateGame/>
+          <CreateGame />
           {/* Sección de Tarjetas de Regalo */}
           <h2 className="text-2xl font-semibold mb-4">Gift Cards</h2>
           <div className="flex flex-col justify-center items-center">
@@ -88,7 +89,9 @@ const GameContainer: React.FC = () => {
                     <Link href={`/gift-cards`}>
                       <div className="border border-gray-300 shadow-md rounded-xl dark:bg-gray-900 dark:w-24 dark:h-24 hover:shadow-lg transition duration-300">
                         <img
+                          //@ts-expect-error
                           alt={game.nombre}
+                          //@ts-expect-error
                           src={game.imagen}
                           className="dark:w-24 dark:h-24 object-contain rounded-xl"
                         />
