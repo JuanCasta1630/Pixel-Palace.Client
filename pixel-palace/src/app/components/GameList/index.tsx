@@ -13,10 +13,53 @@ const GameList: React.FC = () => {
   const [games, setGames] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedGameId, setSelectedGameId] = useState(null);
+  const [filteredGames, setFilteredGames] = useState(games);
+const [filters, setFilters] = useState({
+  category: "all",
+  price: 50,
+  platform: "all",
+});
+
+const applyFilters = () => {
+  const { category, price, platform } = filters;
+  let filtered = games;
+
+  if (category !== "all") {
+    filtered = filtered.filter((game) =>
+      game.categoria.includes(category)
+    );
+  }
+
+  if (price > 0) {
+    filtered = filtered.filter((game) => game.precio <= price);
+  }
+
+  if (platform !== "all") {
+    filtered = filtered.filter((game) => game.desarrollador === platform);
+  }
+
+  setFilteredGames(filtered);
+};
+useEffect(() => {
+  applyFilters();
+}, [filters, games]);
+
+const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  setFilters({ ...filters, category: e.target.value });
+};
+
+const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  setFilters({ ...filters, price: parseInt(e.target.value, 10) });
+};
+
+const handlePlatformChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  setFilters({ ...filters, platform: e.target.value });
+};
+
 
   useEffect(() => {
     getGames()
-      .then((result) => {
+      .then((result: any) => {
         if (result.success) {
           setGames(result.games);
         } else {
@@ -33,14 +76,10 @@ const GameList: React.FC = () => {
   const handleDeleteItem = async () => {
     if (selectedGameId) {
       try {
-        // Realizar la lógica de eliminación aquí, pasando el ID del juego
         await deleteGame(selectedGameId);
-
-        // Mostrar mensaje de éxito
         message.success("Se eliminó correctamente", 3);
         setDeleteModalVisible(false);
       } catch (error) {
-        // Mostrar mensaje de error
         message.error("No se pudo eliminar, inténtelo más tarde", 3);
       }
     }
@@ -75,10 +114,10 @@ const GameList: React.FC = () => {
 
   return (
     <div className="l mt-16">
-      <div className="flex justify-center space-x-8 m-10 lg:mr-20 lg:ml-20 2xl:mr-60 2xl:ml-60">
+      <div className="flex justify-center space-x-8 2xl:mr-60 2xl:ml-60">
         <Row
           gutter={[16, 16]}
-          className="md:grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-4 "
+          className="md:grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 "
         >
           {games.map((game: any, index) => (
             <Col

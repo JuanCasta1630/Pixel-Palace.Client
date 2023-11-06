@@ -8,17 +8,19 @@ import {
   MenuOutlined,
   CloseCircleOutlined,
 } from "@ant-design/icons";
-import { useAuth } from "@/app/services/firebase";
+import { getGames, searchGamesByName, useAuth } from "@/app/services/firebase";
 import Image from "next/image";
 import { ThemeProvider } from "next-themes";
 import { useTheme } from "next-themes";
+import RandomAvatar from "../Avatars";
 
 const HeaderLayout = () => {
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
   const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isMobileUserOpen, setMobileUserOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
   const { user, cerrarSesion } = useAuth();
 
   const openLoginModal = () => {
@@ -27,7 +29,10 @@ const HeaderLayout = () => {
       toggleMobileUser();
     }
   };
-
+  const handleSignOut = async () => {
+    await cerrarSesion();
+    window.location.href = '/';
+  }
   const openRegisterModal = () => {
     setRegisterModalOpen(true);
     if (isMobileUserOpen) {
@@ -50,11 +55,17 @@ const HeaderLayout = () => {
   const toggleMobileUser = () => {
     setMobileUserOpen(!isMobileUserOpen);
   };
-
-  const handleSearch = () => {
-    console.log("Search:", searchQuery);
+  const handleSearch = async () => {
+    if (searchQuery.trim() === '') {
+      setSearchResults([]); 
+      return;
+    }
+  
+    const results = await searchGamesByName(searchQuery);
+  
+    setSearchResults(results);
   };
-
+  
   const { systemTheme, theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
@@ -139,7 +150,7 @@ const HeaderLayout = () => {
               {user ? (
                 <li>
                   <button
-                    onClick={cerrarSesion}
+                    onClick={handleSignOut}
                     className="text-primary border rounded border-primary p-2 w-full"
                   >
                     Sign out
@@ -205,11 +216,7 @@ const HeaderLayout = () => {
           </div>
           {user ? (
             <>
-              <img
-                src="/nallis.jpeg"
-                alt="Avatar"
-                className="w-10 h-10 rounded-full"
-              />
+              <RandomAvatar />
               <button onClick={cerrarSesion} className="text-white">
                 Sign out
               </button>

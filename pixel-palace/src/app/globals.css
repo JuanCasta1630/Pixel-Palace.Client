@@ -1,7 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+/* Estilo predeterminado */
+.ant-upload-list-item-done {
+  border: 1px solid green; /* Verde para completado */
+}
+.ant-form .ant-upload-list-item-name{
+  color: #00ffff;
+}
+.ant-select:not(.ant-select-customize-input) .ant-select-selector{
+  background-color: #9ca3af;
+}
+.ant-form .ant-form-item label{
+  color: white;
+font-weight: 600;}
+/* Estilo para mostrar error */
+.ant-upload-list-item-error {
+  border: 1px solid red; /* Rojo para error */
+}
 .ant-tabs-nav .ant-tabs-ink-bar {
   background-color: #111827; 
 }

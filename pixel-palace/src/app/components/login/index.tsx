@@ -90,7 +90,7 @@ const Login: React.FC<AuthModalProps> = ({ onClose }) => {
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Login&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </button>
           </div>
-          <button className="button3" onClick={() => window.location.href = '/forgot-password'}>Forgot Password</button>
+          <button className="button3" onClick={() => window.location.href = 'password'}>Forgot Password</button>
         </Form>
         {error && <Alert message={error} type="error" className="mt-2" />}
         {loginSuccess && message.info("Inicio de sesión exitoso")}

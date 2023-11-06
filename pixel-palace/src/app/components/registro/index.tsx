@@ -4,6 +4,7 @@ import { Alert } from "antd";
 import { signIn } from "@/app/services/firebase";
 import { AuthModalProps } from "@/app/types/types";
 import { message } from "antd";
+import RandomAvatar from "../Avatars";
 
 const RegistrationForm: React.FC<AuthModalProps> = ({ onClose }) => {
   const [step, setStep] = useState(1);
@@ -40,7 +41,7 @@ const RegistrationForm: React.FC<AuthModalProps> = ({ onClose }) => {
         onClose();
       } else {
         message.error(
-          "Registro fallido. El correo electrónico proporcionado ya está asociado a una cuenta existente."
+          "Registration failed. The provided email is already associated with an existing account."
         );
       }
     }
@@ -58,11 +59,7 @@ const RegistrationForm: React.FC<AuthModalProps> = ({ onClose }) => {
         <h1 className="heading text-gray-900 dark:text-white">Register</h1>
         {isRegistered ? (
           <>
-            <img
-              src="/nallis.jpeg"
-              alt="Avatar"
-              className="w-16 h-16 rounded-full mx-auto"
-            />
+            <RandomAvatar/>
             <p className="text-green-600 mt-4 mb-4 dark:text-primary">
               ¡Successful registration!
             </p>
@@ -146,7 +143,7 @@ const RegistrationForm: React.FC<AuthModalProps> = ({ onClose }) => {
                   onClick={handleBack}
                   className="button1 bg-green-600 hover:bg-green-500 text-white dark:bg-primary dark:hover:bg-green-700 dark:text-black w-1/3 py-3 rounded-md transition-colors duration-300 focus:outline-none focus:ring focus:ring-primary-500"
                 >
-                  Atrás
+                  Back
                 </button>
               )}
               <button

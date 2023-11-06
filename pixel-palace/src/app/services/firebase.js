@@ -18,16 +18,23 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { getDownloadURL, getStorage, getURL } from "firebase/storage";
 import { ref, uploadBytes } from "firebase/storage";
 
+// const firebaseConfig = {
+//   apiKey: "AIzaSyB4G-wTDBmEoVObZMEUYKR8x1_KO8hyhMo",
+//   authDomain: "pixel-palace-d6bff.firebaseapp.com",
+//   projectId: "pixel-palace-d6bff",
+//   storageBucket: "pixel-palace-d6bff.appspot.com",
+//   messagingSenderId: "273766258888",
+//   appId: "1:273766258888:web:81ca0568c914fbceacedfd",
+//   measurementId: "G-2P1CY9ZRG0",
+// };
 const firebaseConfig = {
-  apiKey: "AIzaSyB4G-wTDBmEoVObZMEUYKR8x1_KO8hyhMo",
-  authDomain: "pixel-palace-d6bff.firebaseapp.com",
-  projectId: "pixel-palace-d6bff",
-  storageBucket: "pixel-palace-d6bff.appspot.com",
-  messagingSenderId: "273766258888",
-  appId: "1:273766258888:web:81ca0568c914fbceacedfd",
-  measurementId: "G-2P1CY9ZRG0",
+  apiKey: "AIzaSyB-fA9kv0DVDRqragYCgii_C6Qgj-pBG1s",
+  authDomain: "pixel-palacebaclup.firebaseapp.com",
+  projectId: "pixel-palacebaclup",
+  storageBucket: "pixel-palacebaclup.appspot.com",
+  messagingSenderId: "372391412137",
+  appId: "1:372391412137:web:ef0490cc6f1a104b6ac4b8"
 };
-
 // Inicializa Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
@@ -156,16 +163,15 @@ export const useAuth = () => {
 export const createGame = async (gameData) => {
   console.log(gameData, "firebase");
   try {
-    const gameDocRef = await addDoc(collection(firestore, "juegos"), gameData);
+    let collectionName = "juegos"; 
+
+    if (gameData.type === "Card") {
+      collectionName = "tarjeta";
+    }
+    const gameDocRef = await addDoc(collection(firestore, collectionName), gameData);
+    console.log(gameDocRef.id);
+
     return { success: true, gameId: gameDocRef.id };
-  } catch (error) {
-    return { success: false, error: error.message };
-  }
-};
-export const deleteGame = async (gameId) => {
-  try {
-    await deleteDoc(doc(firestore, "juegos", gameId));
-    return { success: true };
   } catch (error) {
     return { success: false, error: error.message };
   }
@@ -197,3 +203,61 @@ export const getGames = async () => {
     return { success: false, error: error.message };
   }
 };
+export const getCards = async () => {
+  try {
+    const gamesCollection = collection(firestore, "tarjeta");
+    const gamesQuery = query(gamesCollection);
+
+    const snapshot = await getDocs(gamesQuery);
+    const card = [];
+
+    snapshot.forEach((doc) => {
+      const gameData = doc.data();
+      card.push({ id: doc.id, ...gameData });
+    });
+
+    return { success: true, card };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+};
+export const getGameDetails = async (gameId) => {
+  try {
+    const gameDocRef = doc(firestore, "juegos", gameId)
+    const gameDocSnapshot = await getDocs(gameDocRef);
+
+    if (gameDocSnapshot.exists()) {
+      // El documento del juego existe
+      return gameDocSnapshot.data()
+    } else {
+      // El documento del juego no existe
+      return null;
+    }
+  } catch (error) {
+    console.error("Error al obtener detalles del juego", error);
+    return null;
+  }
+};
+
+
+export const searchGamesByName = async (searchQuery) => {
+  try {
+    const gamesCollection = collection(firestore, "juegos");
+    const gamesQuery = query(gamesCollection, where("nombre", ">=", searchQuery).where("nombre", "<=", searchQuery + '\uf8ff'));
+    const snapshot = await getDocs(gamesQuery);
+ console.log(gamesQuery);
+    const results = [];
+
+    snapshot.forEach((doc) => {
+      const gameData = doc.data();
+      results.push({ id: doc.id, ...gameData });
+    });
+
+    return results;
+  } catch (error) {
+    console.error('Error al buscar juegos:', error);
+    return [];
+  }
+};
+
+

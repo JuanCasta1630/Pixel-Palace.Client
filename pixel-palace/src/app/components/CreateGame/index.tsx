@@ -13,16 +13,19 @@ import { useState } from "react";
 import {
   createGame,
   uploadImageToFirebaseStorage,
-} from "@/app/services/firebase"; // Importa uploadImageToFirebaseStorage
+} from "@/app/services/firebase";
 import InputField from "../Inputs/InputField";
+import { categorias } from "@/app/services/categories.json";
 
 const { Option } = Select;
 
 function CreateGame() {
   const [modalVisible, setModalVisible] = useState(false);
   const [birthdate, setBirthdate] = useState("");
-  const [imagen, setImagen] = useState(null); 
-
+  const [imagen, setImagen] = useState(null);
+  const [gameType, setGameType] = useState(null); 
+  const modalCloseStyles =
+    "absolute right-2 top-0.5 text-gray-400 hover:text-red-500 text-2xl";
   const handleOpenModal = () => {
     setModalVisible(true);
   };
@@ -31,7 +34,7 @@ function CreateGame() {
     setModalVisible(false);
   };
 
-  const handleSave = async (values: any) => {
+  const handleSave = async (values) => {
     try {
       if (imagen) {
         const downloadURL = await uploadImageToFirebaseStorage(imagen);
@@ -39,6 +42,7 @@ function CreateGame() {
           ...values,
           imagen: downloadURL,
           fecha_lanzamiento: birthdate,
+          type: gameType,
         };
 
         const result = await createGame(gameDataWithImage);
@@ -66,39 +70,53 @@ function CreateGame() {
         icon={<PlusOutlined />}
         onClick={handleOpenModal}
       >
-        Agregar Juego
+        Add Game
       </Button>
       <Modal
-        title="Agregar Juego"
-        visible={modalVisible} // Debe ser "visible" en lugar de "open"
+        title={
+          <div className="dark:bg-gray-900 p-4 text-white">Add Game</div>
+        }
+        open={modalVisible}
         onCancel={handleCancel}
         footer={null}
         className="bg-white dark:bg-gray-900 rounded-md text-center"
+        closeIcon={<span className={modalCloseStyles}>&times;</span>}
       >
         <Form onFinish={handleSave}>
           <Form.Item
-            label="Nombre"
+            label="Name"
             name="nombre"
+            className="dark:text-black"
             rules={[
               {
                 required: true,
-                message: "Por favor, ingresa el nombre del juego",
+                message: "Please enter the game name",
               },
             ]}
           >
-            <Input />
+            <Input className="bg-gray-400 border-none outline-none w-full text-white dark:text-black" />
           </Form.Item>
-          <Form.Item label="Categoría" name="categoria">
+          <Form.Item label="Category" name="categoria">
             <Select
               mode="tags"
               style={{ width: "100%" }}
-              placeholder="Selecciona o escribe las categorías"
-            />
+              placeholder="Select or enter categories"
+            >
+              {categorias.map((category) => (
+                <Option
+                  key={category.id}
+                  value={category.name}
+                  className="bg-gray-400 border-none outline-none w-full text-white dark:text-black"
+                >
+                  {category.name}
+                </Option>
+              ))}
+            </Select>
           </Form.Item>
-          <Form.Item label="Desarrollador" name="desarrollador">
-            <Input />
+          <Form.Item label="Developer" name="desarrollador">
+            <Input className="bg-gray-400 border-none outline-none w-full text-white dark:text-black" />
           </Form.Item>
-          <Form.Item label="Fecha de Lanzamiento" name="fecha_lanzamiento">
+          <Form.Item label="Release date" name="fecha_lanzamiento">
             <InputField
               label="Birthday"
               type="date"
@@ -108,24 +126,53 @@ function CreateGame() {
               required
             />
           </Form.Item>
-          <Form.Item label="Precio" name="precio">
-            <InputNumber style={{ width: "100%" }} />
+          <Form.Item label="Price" name="precio">
+            <InputNumber
+              style={{ width: "100%" }}
+              className="bg-gray-400 border-none outline-none w-full text-white dark:text-black"
+            />
           </Form.Item>
-          <Form.Item label="Imagen" name="imagen">
-            <Upload
-              beforeUpload={(file: any) => {
-                setImagen(file);
-                return false;
-              }}
+          <Form.Item label="Type" name="gameType">
+            <Select
+              style={{ width: "100%" }}
+              
+              onChange={(value) => setGameType(value)}
             >
-              {imagen ? null : (
-                <Button icon={<PlusOutlined />}>Subir Imagen</Button>
+              <Option value="Game">Game</Option>
+              <Option value="Card">Card</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item name="imagen">
+            <Upload
+              beforeUpload={(file) => {
+                setImagen(file);
+                return false; 
+              }}
+              showUploadList={false}
+            >
+              {imagen ? (
+                <Button className="button1" icon={<PlusOutlined />}>
+                  Change image
+                </Button>
+              ) : (
+                <Button className="button1" icon={<PlusOutlined />}>
+                  Upload Image
+                </Button>
               )}
             </Upload>
+            {imagen && (
+              <Button
+                type="link"
+                onClick={() => setImagen(null)}
+                className="text-red-500"
+              >
+                Delete image
+              </Button>
+           ) }
           </Form.Item>
           <Form.Item>
-            <Button type="primary" htmlType="submit">
-              Guardar
+            <Button type="primary" htmlType="submit" className="button1 w-full">
+              Save
             </Button>
           </Form.Item>
         </Form>

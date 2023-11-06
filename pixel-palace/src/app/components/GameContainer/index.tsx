@@ -10,7 +10,7 @@ import Link from "next/link";
 import CategoriasPage from "../Categories/index";
 import FooterLayout from "../Footer";
 import CreateGame from "../CreateGame";
-import { getGames } from "@/app/services/firebase";
+import { getCards, getGames } from "@/app/services/firebase";
 
 const { Content } = Layout;
 
@@ -27,8 +27,8 @@ const GameContainer: React.FC = () => {
     currentPage * pageSize
   );
 
-  const [games, setGames] = useState([]); // Define un estado para almacenar los juegos
-  const [loading, setLoading] = useState(true); // Estado para controlar la carga de los juegos
+  const [games, setGames] = useState([]); 
+  const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
     getGames()
@@ -44,8 +44,24 @@ const GameContainer: React.FC = () => {
         console.error("Error al obtener los juegos:", error);
         setLoading(false);
       });
-  }, [games]); 
+  }, []); 
+  const [cards, setCards] = useState([])
 
+  useEffect(() => {
+    getCards()
+      .then((result) => {
+        if (result.success) {
+          setCards(result.card);
+        } else {
+          console.error("Error al obtener los juegos:", result.error);
+        }
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error al obtener los juegos:", error);
+        setLoading(false);
+      });
+  }, []);
 
   // Filtrar juegos populares, recomendaciones y tarjetas de regalo
   const juegosPopulares = games.filter((game) => game).slice(0, 4);
@@ -66,7 +82,7 @@ const GameContainer: React.FC = () => {
               gutter={[8, 8]}
               className="sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 2xl:grid-cols-4 "
             >
-              {tarjetasDeRegalo.map((game, index) => (
+              {cards.map((game, index) => (
                 <Col className="mx-2 sm:mx-4 md:mx-2 lg:mx-4 " key={index}>
                   <div className="card-home card2 border border-gray-300 shadow-md rounded-xl dark:bg-gray-900 dark:w-24 dark:h-24 ">
                     <Link href={`/gift-cards`}>
@@ -98,7 +114,7 @@ const GameContainer: React.FC = () => {
               block
               size="large"
               className="my-4 button1 dark:w-48 md:hidden lg:hidden 2xl:hidden"
-              onClick={() => (window.location.href = "/forgot-password")}
+              onClick={() => (window.location.href = "/gift-cards")}
             >
               Read More
             </Button>
@@ -149,7 +165,7 @@ const GameContainer: React.FC = () => {
               block
               size="large"
               className="my-4 button1 dark:w-48 md:hidden lg:hidden 2xl:hidden"
-              onClick={() => (window.location.href = "/forgot-password")}
+              onClick={() => (window.location.href = "/best-games")}
             >
               Read More
             </Button>
@@ -197,7 +213,7 @@ const GameContainer: React.FC = () => {
               block
               size="large"
               className="my-4 button1 dark:w-48 md:hidden lg:hidden 2xl:hidden"
-              onClick={() => (window.location.href = "/forgot-password")}
+              onClick={() => (window.location.href = "//recommendations")}
             >
               Read More
             </Button>

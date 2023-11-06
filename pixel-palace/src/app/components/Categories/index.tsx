@@ -15,7 +15,7 @@ const CategoriasPage = () => {
 
   return (
     <div className="flex flex-col mt-6 justify-center items-center">
-      <h1 className="text-2xl font-semibold mb-4">Categorías</h1>
+      <h1 className="text-2xl font-semibold mb-4">Categories</h1>
       <div className="flex flex-wrap justify-center items-center gap-4">
         {categorias.slice(0, numCategorias).map((category) => (
           <div
@@ -40,7 +40,7 @@ const CategoriasPage = () => {
         onClick={handleVerMasClick}
         className="my-4 button3 dark:w-48"
       >
-        {mostrarTodas ? "Ver menos" : "Ver más"}
+        {mostrarTodas ? "See less" : "See more"}
       </button>
     </div>
   );
