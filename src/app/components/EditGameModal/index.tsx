@@ -49,6 +49,7 @@ const EditGameModal = ({ game, visible, onOk, onCancel }: any) => {
               label="Birthday"
               type="date"
               value={birthdate}
+              //@ts-ignore
               onChange={(e) => setBirthdate(e.target.value)}
               placeholder="Your birthday"
               required

@@ -10,7 +10,7 @@ import {
 import { Layout, Col, Row, Pagination, Button } from "antd";
 import { ThemeProvider } from "next-themes";
 import Filters from "../components/Filters";
-import JuegosRecomendados from "../../../../juegos.json";
+import JuegosRecomendados from "../../../juegos.json";
 
 interface FilterProps {
   id: number;

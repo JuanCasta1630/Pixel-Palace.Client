@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 import React, { useEffect, useState } from "react";
 import HeaderLayout from "../components/Header";
@@ -10,7 +11,7 @@ import {
 import { Layout, Col, Row, Button, Pagination } from "antd";
 import { ThemeProvider } from "next-themes";
 import Filters from "../components/Filters";
-import Tarjetas from "../../../../gift-cards.json";
+import Tarjetas from "../../../gift-cards.json";
 import { getCards } from "../services/firebase";
 
 interface FilterProps {
