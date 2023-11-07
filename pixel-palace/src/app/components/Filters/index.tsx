@@ -1,8 +1,18 @@
 import React, { useState } from 'react';
 
-const Filters: React.FC = () => {
-  const [category, setCategory] = useState('all');
-  const [price, setPrice] = useState(50);
+export interface FiltersProps {
+  onFilterChange: (filters: FiltersData) => void;
+  filters: FiltersData;
+}
+
+interface FiltersData {
+  plataforma: string;
+  precio: number;
+}
+
+const Filters: React.FC<FiltersProps> = ({ onFilterChange, filters }) => {
+  const [plataforma, setCategory] = useState(filters.plataforma);
+  const [precio, setPrice] = useState(filters.precio);
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setCategory(e.target.value);
@@ -12,67 +22,38 @@ const Filters: React.FC = () => {
     setPrice(parseInt(e.target.value, 10));
   };
 
+  const handleFilterChange = () => {
+    onFilterChange({ plataforma, precio });
+  };
+
   return (
     <div className="p-4">
       <h2 className="text-2xl font-semibold mb-4">Filtros</h2>
       <form className="mb-4">
         <div className="mb-4">
-          <label className="block text-sm font-bold text-white">Nombre del producto</label>
-          <input
-            type="text"
+          <label className="block text-sm font-bold text-white">Pais</label>
+          <select
+            value={plataforma}
+            onChange={handleCategoryChange}
             className="mt-1 p-2 border border-gray-300 rounded w-full focus:ring focus:ring-indigo-300 focus:outline-none"
-          />
+          >
+            <option value="all">Todos</option>
+            <option value="Playstation">Playstation</option>
+            <option value="Xbox">Xbox</option>
+            <option value="Nintendo">Nintendo</option>
+          </select>
         </div>
         <div className="mb-4">
           <label className="block text-sm font-bold text-white">Precio</label>
           <input
             type="number"
-            value={price}
+            value={precio}
             onChange={handlePriceChange}
             className="mt-1 p-2 border border-gray-300 rounded w-full focus:ring focus:ring-indigo-300 focus:outline-none"
           />
         </div>
-        <div className="mb-4">
-          <label className="block text-sm font-bold text-white">País</label>
-          <select
-            value={category}
-            onChange={handleCategoryChange}
-            className="mt-1 p-2 border border-gray-300 rounded w-full focus:ring focus:ring-indigo-300 focus:outline-none"
-          >
-            <option value="all">Todos</option>
-            <option value="argentina">Argentina</option>
-            <option value="chile">Chile</option>
-            <option value="uruguay">Uruguay</option>
-            <option value="brasil">Brasil</option>
-          </select>
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-bold text-white">Tipo</label>
-          <select
-            value={category}
-            onChange={handleCategoryChange}
-            className="mt-1 p-2 border border-gray-300 rounded w-full focus:ring focus:ring-indigo-300 focus:outline-none"
-          >
-            <option value="all">Todos</option>
-            <option value="tarjeta">Tarjeta</option>
-            <option value="codigo">Código</option>
-          </select>
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-bold text-white">Plataforma</label>
-          <select
-            value={category}
-            onChange={handleCategoryChange}
-            className="mt-1 p-2 border border-gray-300 rounded w-full focus:ring focus:ring-indigo-300 focus:outline-none"
-          >
-            <option value="all">Todos</option>
-            <option value="steam">Steam</option>
-            <option value="playstation">Playstation</option>
-            <option value="xbox">Xbox</option>
-            <option value="nintendo">Nintendo</option>
-          </select>
-        </div>
       </form>
+      <button onClick={handleFilterChange}>Aplicar filtros</button>
     </div>
   );
 };
