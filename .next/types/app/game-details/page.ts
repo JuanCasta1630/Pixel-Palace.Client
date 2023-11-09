@@ -1,4 +1,4 @@
-// File: C:\Users\lidan\Documents\PI2\Pixel-Palace.Client\src\app\game-details\page.tsx
+// File: C:\Users\user\Desktop\Pixel-Palace.Client\src\app\game-details\page.tsx
 import * as entry from '../../../../src/app/game-details/page.js'
 import type { ResolvingMetadata } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
