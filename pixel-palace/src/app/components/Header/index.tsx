@@ -7,6 +7,7 @@ import {
   SearchOutlined,
   MenuOutlined,
   CloseCircleOutlined,
+  ShoppingCartOutlined,
 } from "@ant-design/icons";
 import { useAuth } from "@/app/services/firebase";
 import Image from "next/image";
@@ -185,6 +186,9 @@ const HeaderLayout = () => {
             }
             onPressEnter={handleSearch}
           />
+          <div>
+            <button className="w-12 h-12 border-2 hover:bg-gray-300 border-primary rounded-md dark:border-gray-600"><ShoppingCartOutlined className="text-2xl text-violet-500"/><span className="text-white bg-danger rounded p-1"></span></button>
+          </div>
           <div>
             {currentTheme === "dark" ? (
               <button

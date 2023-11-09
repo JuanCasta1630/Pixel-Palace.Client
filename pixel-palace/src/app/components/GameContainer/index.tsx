@@ -105,7 +105,7 @@ const GameContainer: React.FC = () => {
           </div>
           {/* Sección de Juegos Populares */}
           <h2 className="text-2xl font-semibold mb-4">
-            The best games (Digital)
+            The Best Games (Digital)
           </h2>
           <div className="flex flex-col justify-center items-center">
             <Row

@@ -34,7 +34,7 @@ export default function BestGames() {
               <Filters />
             </div>
             <div className="px-12">
-              <h1 className="text-2xl font-bold mb-4">JuegosRecomendados</h1>
+              <h1 className="text-2xl font-bold mb-4">Recommended games</h1>
               <div className="flex flex-col justify-center items-center">
                 <Row
                   gutter={[16, 16]}
@@ -58,6 +58,11 @@ export default function BestGames() {
                                 <p className="text-red-500 font-semibold mt-2">
                                   ${card.precio} 
                                 </p>
+                                <a>
+                                  <button className=''>
+                                    View Product
+                                  </button>
+                                </a>
                               </div>
                             </div>
                           </Col>
