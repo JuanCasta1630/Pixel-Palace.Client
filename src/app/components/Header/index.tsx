@@ -119,7 +119,7 @@ const HeaderLayout = () => {
             className="w-10 h-10 mr-2 flex items-center dark:bg-gray-700 bg-white"
             onClick={() => (window.location.href = "/")}
           />
-          <h1 className="text-black text-xl font-bold dark:text-white">
+          <h1 onClick={() => (window.location.href = "/")} className="text-black text-xl font-bold dark:text-white">
             Better if possible
           </h1>
         </div>
