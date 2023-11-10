@@ -11,6 +11,7 @@ import {
   query,
   getDocs,
   deleteDoc,
+  getDoc,
 } from "firebase/firestore";
 import { message } from "antd";
 import { useEffect, useState } from "react";
@@ -224,7 +225,7 @@ export const getCards = async () => {
 export const getGameDetails = async (gameId) => {
   try {
     const gameDocRef = doc(firestore, "juegos", gameId)
-    const gameDocSnapshot = await getDocs(gameDocRef);
+    const gameDocSnapshot = await getDoc(gameDocRef);
 
     if (gameDocSnapshot.exists()) {
       // El documento del juego existe

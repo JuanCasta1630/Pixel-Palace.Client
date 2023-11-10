@@ -65,7 +65,7 @@ const GameList: React.FC = () => {
             >
               <div className=" border border-gray-900 shadow-md rounded-xl dark:bg-gray-900 h-[26rem] sm:w-full w-full">
                 <div className="card-home card2">
-                  <Link href={`/game-details`}>
+                  <Link href={`/game-details/${game.id}`}>
                     <img
                       alt={game.nombre}
                       src={game.imagen}

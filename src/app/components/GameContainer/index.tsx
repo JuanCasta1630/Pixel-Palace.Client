@@ -114,13 +114,13 @@ const GameContainer: React.FC = () => {
               gutter={[16, 16]}
               className="md:grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-4"
             >
-              {juegosPopulares.map((game, index) => (
+              {juegosPopulares.map((game: any, index) => (
                 <Col
                   className="w-full sm:mx-2 md:mx-2 lg:mx-4 2xl:mx-4"
                   key={index}
                 >
                   <div className="card-home card2 border border-gray-300 shadow-md rounded-xl dark:bg-gray-900 h-96">
-                    <Link href={`/game-details`}>
+                    <Link href={`/game-details/${game.id}`}>
                       <img
                         alt={game.nombre}
                         src={game.imagen}
@@ -165,10 +165,10 @@ const GameContainer: React.FC = () => {
               gutter={[16, 16]}
               className="md:grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-4"
             >
-              {recomendaciones.map((game, index) => (
+              {recomendaciones.map((game: any, index) => (
                 <Col className=" mx-2 sm:mx-4 md:mx-2 lg:mx-4" key={index}>
                   <div className="card-home card2 border border-gray-300 shadow-md rounded-xl dark:bg-gray-900 h-96">
-                    <Link href={`/game-details`}>
+                    <Link href={`/game-details/${game.id}`}>
                       <img
                         alt={game.nombre}
                         src={game.imagen}
