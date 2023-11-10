@@ -4,52 +4,33 @@ import Link from "next/link";
 import EditGameModal from "../EditGameModal";
 import { ModalConfirm } from "../ModalConfirm";
 import { deleteGame, getGames } from "@/app/services/firebase";
+import { useGames } from "@/app/hooks/useGames";
 
 const GameList: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [gameToEdit, setGameToEdit] = useState(null);
   const [isDeleteModalVisible, setDeleteModalVisible] = useState(false);
-  const [games, setGames] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [selectedGameId, setSelectedGameId] = useState(null);
-  const [filteredGames, setFilteredGames] = useState(games);
-const [filters, setFilters] = useState({
-  category: "all",
-  price: 50,
-  platform: "all",
-});
+  const [filters, setFilters] = useState({
+    category: "all",
+    price: 50,
+    platform: "all",
+  });
 
+  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setFilters({ ...filters, category: e.target.value });
+  };
 
+  const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFilters({ ...filters, price: parseInt(e.target.value, 10) });
+  };
 
-const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-  setFilters({ ...filters, category: e.target.value });
-};
+  const handlePlatformChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setFilters({ ...filters, platform: e.target.value });
+  };
 
-const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  setFilters({ ...filters, price: parseInt(e.target.value, 10) });
-};
-
-const handlePlatformChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-  setFilters({ ...filters, platform: e.target.value });
-};
-
-
-  useEffect(() => {
-    getGames()
-      .then((result: any) => {
-        if (result.success) {
-          setGames(result.games);
-        } else {
-          console.error("Error al obtener los juegos:", result.error);
-        }
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error al obtener los juegos:", error);
-        setLoading(false);
-      });
-  }, [games]);
+  const { games } = useGames();
 
   const handleDeleteItem = async () => {
     if (selectedGameId) {
@@ -62,7 +43,6 @@ const handlePlatformChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
       }
     }
   };
-  
 
   const pageSize = 12;
   const isAdmin = true;

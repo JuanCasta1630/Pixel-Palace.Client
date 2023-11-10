@@ -16,8 +16,6 @@ const Filters: React.FC = () => {
     setPrice(parseInt(e.target.value, 10));
   };
 
-
-  // useEffect(() => {
   //   getGames()
   //     .then((result: any) => {
   //       if (result.success) {

@@ -10,8 +10,10 @@ import Link from "next/link";
 import CategoriasPage from "../Categories/index";
 import FooterLayout from "../Footer";
 import CreateGame from "../CreateGame";
-import { getCards, getGames } from "@/app/services/firebase";
+import { getCards } from "@/app/services/firebase";
 import { Game } from "@/app/types/types";
+import { useGames } from "@/app/hooks/useGames";
+import Loading from "@/app/loading";
 
 const { Content } = Layout;
 
@@ -28,24 +30,7 @@ const GameContainer: React.FC = () => {
     currentPage * pageSize
   );
 
-  const [games, setGames] = useState<Game[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    getGames()
-      .then((result: any) => {
-        if (result.success) {
-          setGames(result.games);
-        } else {
-          console.error("Error al obtener los juegos:", result.error);
-        }
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error al obtener los juegos:", error);
-        setLoading(false);
-      });
-  }, []);
+  const { games } = useGames();
   const [cards, setCards] = useState([]);
 
   useEffect(() => {
@@ -56,11 +41,9 @@ const GameContainer: React.FC = () => {
         } else {
           console.error("Error al obtener los juegos:", result.error);
         }
-        setLoading(false);
       })
       .catch((error) => {
         console.error("Error al obtener los juegos:", error);
-        setLoading(false);
       });
   }, []);
 
