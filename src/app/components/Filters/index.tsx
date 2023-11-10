@@ -1,4 +1,3 @@
-import { getGames } from "@/app/services/firebase";
 import React, { useEffect, useState } from "react";
 
 const Filters: React.FC = () => {

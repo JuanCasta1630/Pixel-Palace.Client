@@ -78,10 +78,10 @@ const HeaderLayout = () => {
 
   return (
     <ThemeProvider enableSystem={true} attribute="class">
-      <div className=" bg-gradient-to-r from-teal-800 via-transparent to-indigo-800 p-4 flex items-center justify-between fixed w-full top-0 z-10 dark:bg-gradient-dark">
+      <div className=" bg-gradient-to-r from-teal-800  to-indigo-800 p-4 flex items-center justify-between fixed w-full top-0 z-10 dark:bg-gradient-dark">
         <nav className="lg:hidden bg-teal-500">
           <button onClick={toggleMobileMenu} className="bg-gray-900">
-            <MenuOutlined className="text-3xl dark: text-white" />
+            <MenuOutlined className="text-3xl dark:text-white" />
           </button>
           {isMobileMenuOpen && (
             <Drawer
@@ -119,7 +119,7 @@ const HeaderLayout = () => {
             className="w-10 h-10 mr-2 flex items-center dark:bg-gray-700 bg-white"
             onClick={() => (window.location.href = "/")}
           />
-          <h1 onClick={() => (window.location.href = "/")} className="text-black text-xl font-bold dark:text-white">
+          <h1 onClick={() => (window.location.href = "/")} className="text-white text-2xl font-bold dark:text-white">
             Better if possible
           </h1>
         </div>
