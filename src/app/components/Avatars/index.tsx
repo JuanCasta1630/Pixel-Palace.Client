@@ -12,7 +12,7 @@ export default function RandomAvatar() {
   const randomAvatarURL = generateRandomAvatarURL();
 
   return (
-    <Avatar className='dark:bg-gray-200 w-[5em] h-[3em]' src={randomAvatarURL} />
+    <Avatar className='bg-gray-200 dark:bg-gray-200 w-[5em] h-[3em]' src={randomAvatarURL} />
 
   );
 }

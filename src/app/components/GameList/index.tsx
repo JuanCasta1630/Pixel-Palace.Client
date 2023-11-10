@@ -62,25 +62,6 @@ const handlePlatformChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
       }
     }
   };
-
-  // const handleUpdateGame = async (game) => {
-  //   console.log(game);
-    
-  //   try {
-  //     // Llamada a la función updateGame con el ID del juego y los nuevos datos
-  //     await updateGame(game.id, game.newData);
-  //     setGameToEdit(game);
-  //     setEditModalVisible(true);
-  
-  //     // Volver a cargar los juegos desde la base de datos después de editar uno
-  //     const result = await getGames();
-  //     if (result.success) {
-  //       setGames(result.games);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error al actualizar el juego:", error);
-  //   }
-  // };
   
 
   const pageSize = 12;
@@ -102,7 +83,7 @@ const handlePlatformChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
               className="w-full sm:mx-2 md:mx-2 lg:mx-4 2xl:mx-4 "
               key={index}
             >
-              <div className=" border border-gray-300 shadow-md rounded-xl dark:bg-gray-900 h-[26rem] sm:w-full w-full">
+              <div className=" border border-gray-900 shadow-md rounded-xl dark:bg-gray-900 h-[26rem] sm:w-full w-full">
                 <div className="card-home card2">
                   <Link href={`/game-details`}>
                     <img

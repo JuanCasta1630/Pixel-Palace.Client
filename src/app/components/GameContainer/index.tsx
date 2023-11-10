@@ -15,7 +15,7 @@ import { Game } from "@/app/types/types";
 
 const { Content } = Layout;
 
-const GameContainer: React.FC= () => {
+const GameContainer: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 12;
 
@@ -67,7 +67,7 @@ const GameContainer: React.FC= () => {
   // Filtrar juegos populares, recomendaciones y tarjetas de regalo
   const juegosPopulares = games.filter((game) => game).slice(0, 4);
   const recomendaciones = games.filter((game) => game).slice(0, 4);
-  const tarjetasDeRegalo = regalos.filter((game) => game).slice(0, 4);
+  const tarjetasDeRegalo = cards.filter((game) => game).slice(0, 4);
 
   return (
     <ThemeProvider enableSystem={true} attribute="class">
@@ -83,17 +83,17 @@ const GameContainer: React.FC= () => {
               gutter={[8, 8]}
               className="sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 2xl:grid-cols-4 "
             >
-              {cards.map((game, index) => (
+              {tarjetasDeRegalo.map((game, index) => (
                 <Col className="mx-2 sm:mx-4 md:mx-2 lg:mx-4 " key={index}>
                   <div className="card-home card2 border border-gray-300 shadow-md rounded-xl dark:bg-gray-900 dark:w-24 dark:h-24 ">
-                    <Link href={`/gift-cards`}>
+                    <Link href={`/cards-details`}>
                       <div className="border border-gray-300 shadow-md rounded-xl dark:bg-gray-900 dark:w-24 dark:h-24 hover:shadow-lg transition duration-300">
                         <img
                           //@ts-expect-error
                           alt={game.nombre}
                           //@ts-expect-error
                           src={game.imagen}
-                          className="dark:w-24 dark:h-24 object-contain rounded-xl"
+                          className="w-24 h-24 dark:w-24 dark:h-24 object-contain rounded-xl"
                         />
                       </div>
                     </Link>
@@ -116,7 +116,7 @@ const GameContainer: React.FC= () => {
               type="primary"
               block
               size="large"
-              className="my-4 button1 dark:w-48 md:hidden lg:hidden 2xl:hidden"
+              className="my-4 button1 dark:w-48 w-40"
               onClick={() => (window.location.href = "/gift-cards")}
             >
               Read More
@@ -137,7 +137,7 @@ const GameContainer: React.FC= () => {
                   key={index}
                 >
                   <div className="card-home card2 border border-gray-300 shadow-md rounded-xl dark:bg-gray-900 h-96">
-                    <Link href={`/best-games`}>
+                    <Link href={`/game-details`}>
                       <img
                         alt={game.nombre}
                         src={game.imagen}
@@ -167,7 +167,7 @@ const GameContainer: React.FC= () => {
               type="primary"
               block
               size="large"
-              className="my-4 button1 dark:w-48 md:hidden lg:hidden 2xl:hidden"
+              className="my-4 button1 dark:w-48 w-48"
               onClick={() => (window.location.href = "/best-games")}
             >
               Read More
@@ -185,7 +185,7 @@ const GameContainer: React.FC= () => {
               {recomendaciones.map((game, index) => (
                 <Col className=" mx-2 sm:mx-4 md:mx-2 lg:mx-4" key={index}>
                   <div className="card-home card2 border border-gray-300 shadow-md rounded-xl dark:bg-gray-900 h-96">
-                    <Link href={`/recommendations`}>
+                    <Link href={`/game-details`}>
                       <img
                         alt={game.nombre}
                         src={game.imagen}
@@ -215,8 +215,8 @@ const GameContainer: React.FC= () => {
               type="primary"
               block
               size="large"
-              className="my-4 button1 dark:w-48 md:hidden lg:hidden 2xl:hidden"
-              onClick={() => (window.location.href = "//recommendations")}
+              className="my-4 button1 dark:w-48 w-48"
+              onClick={() => (window.location.href = "/recommendations")}
             >
               Read More
             </Button>
