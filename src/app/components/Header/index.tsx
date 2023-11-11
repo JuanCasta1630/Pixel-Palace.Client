@@ -7,6 +7,7 @@ import {
   SearchOutlined,
   MenuOutlined,
   CloseCircleOutlined,
+  ShoppingCartOutlined,
 } from "@ant-design/icons";
 import { getGames, searchGamesByName, useAuth } from "@/app/services/firebase";
 import Image from "next/image";
@@ -196,6 +197,11 @@ const HeaderLayout = () => {
             }
             onPressEnter={handleSearch}
           />
+                <div>
+            <button onClick={() => (window.location.href = "/cart")} className="bg-black-700 hover:bg-gray-300 border-2 rounded-md w-12 h-12 text-lg text-violet-600 border-primary dark:border-gray-600">
+              <ShoppingCartOutlined />
+            </button>
+          </div>
           <div>
             {currentTheme === "dark" ? (
               <button

@@ -11,6 +11,7 @@ import {
   query,
   getDocs,
   deleteDoc,
+  getDoc,
 } from "firebase/firestore";
 import { message } from "antd";
 import { useEffect, useState } from "react";
@@ -18,34 +19,23 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { getDownloadURL, getStorage, getURL } from "firebase/storage";
 import { ref, uploadBytes } from "firebase/storage";
 
-/* const firebaseConfig = {
-   apiKey: "AIzaSyB4G-wTDBmEoVObZMEUYKR8x1_KO8hyhMo",
-   authDomain: "pixel-palace-d6bff.firebaseapp.com",
-   projectId: "pixel-palace-d6bff",
-   storageBucket: "pixel-palace-d6bff.appspot.com",
-   messagingSenderId: "273766258888",
-   appId: "1:273766258888:web:81ca0568c914fbceacedfd",
-   measurementId: "G-2P1CY9ZRG0",
- };*/
-
-/*const firebaseConfig = {
-  apiKey: "AIzaSyB-fA9kv0DVDRqragYCgii_C6Qgj-pBG1s",
-  authDomain: "pixel-palacebaclup.firebaseapp.com",
-  projectId: "pixel-palacebaclup",
-  storageBucket: "pixel-palacebaclup.appspot.com",
-  messagingSenderId: "372391412137",
- appId: "1:372391412137:web:ef0490cc6f1a104b6ac4b8"
-};*/
-
 const firebaseConfig = {
-  apiKey: "AIzaSyDX3VpgUlwwAdCoqx2as8_66JO9OOVV_ME",
-  authDomain: "pixel-palace-prueba.firebaseapp.com",
-  projectId: "pixel-palace-prueba",
-  storageBucket: "pixel-palace-prueba.appspot.com",
-  messagingSenderId: "5369600653",
-  appId: "1:5369600653:web:c6e8e0cf72914f5590a0c4"
+  apiKey: "AIzaSyB4G-wTDBmEoVObZMEUYKR8x1_KO8hyhMo",
+  authDomain: "pixel-palace-d6bff.firebaseapp.com",
+  projectId: "pixel-palace-d6bff",
+  storageBucket: "pixel-palace-d6bff.appspot.com",
+  messagingSenderId: "273766258888",
+  appId: "1:273766258888:web:81ca0568c914fbceacedfd",
+  measurementId: "G-2P1CY9ZRG0",
 };
-
+// const firebaseConfig = {
+//   apiKey: "AIzaSyB-fA9kv0DVDRqragYCgii_C6Qgj-pBG1s",
+//   authDomain: "pixel-palacebaclup.firebaseapp.com",
+//   projectId: "pixel-palacebaclup",
+//   storageBucket: "pixel-palacebaclup.appspot.com",
+//   messagingSenderId: "372391412137",
+//   appId: "1:372391412137:web:ef0490cc6f1a104b6ac4b8"
+// };
 // Inicializa Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
@@ -236,13 +226,7 @@ export const getGameDetails = async (gameId) => {
   console.log(gameId, "gameId")
   try {
     const gameDocRef = doc(firestore, "juegos", gameId)
-
-    console.log(gameDocRef)
-
     const gameDocSnapshot = await getDocs(gameDocRef);
-
-    console.log(gameDocSnapshot, "---")
-
 
     if (gameDocSnapshot.exists()) {
       // El documento del juego existe
