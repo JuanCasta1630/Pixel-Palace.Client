@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 const Filters: React.FC = () => {
   const [category, setCategory] = useState("all");
   const [price, setPrice] = useState(50);
-  const [games, setGames] = useState([]);
   const [categories, setCategories] = useState([]);
   const [platforms, setPlatforms] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -16,8 +15,6 @@ const Filters: React.FC = () => {
     setPrice(parseInt(e.target.value, 10));
   };
 
-
-  // useEffect(() => {
   //   getGames()
   //     .then((result: any) => {
   //       if (result.success) {

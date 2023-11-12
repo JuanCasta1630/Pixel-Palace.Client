@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 import React, { useEffect, useState } from "react";
 import HeaderLayout from "../components/Header";
@@ -12,10 +13,11 @@ import { ThemeProvider } from "next-themes";
 import Filters from "../components/Filters";
 import JuegosRecomendados from "../../../juegos.json";
 import FooterLayout from "../components/Footer";
-import { deleteGame, getGames } from "../services/firebase";
+import { deleteGame } from "../services/firebase";
 import { Game } from "../types/types";
 import { ModalConfirm } from "../components/ModalConfirm";
 import Link from "next/link";
+import { useGames } from "../hooks/useGames";
 
 interface FilterProps {
   id: number;
@@ -34,7 +36,6 @@ export default function Recommendations() {
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [gameToEdit, setGameToEdit] = useState(null);
   const [isDeleteModalVisible, setDeleteModalVisible] = useState(false);
-  const [games, setGames] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedGameId, setSelectedGameId] = useState(null);
   const [filters, setFilters] = useState({
@@ -47,23 +48,9 @@ export default function Recommendations() {
   const startIndex: number = (currentPage - 1) * itemsPerPage;
   const endIndex: number = currentPage * itemsPerPage;
 
+  const { games } = useGames();
   const cardsPaginados = games.slice(startIndex, endIndex);
 
-  useEffect(() => {
-    getGames()
-      .then((result: any) => {
-        if (result.success) {
-          setGames(result.games);
-        } else {
-          console.error("Error al obtener los juegos:", result.error);
-        }
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error al obtener los juegos:", error);
-        setLoading(false);
-      });
-  }, [games]);
 
   const handleDeleteItem = async () => {
     if (selectedGameId) {
@@ -110,7 +97,7 @@ export default function Recommendations() {
                       >
                         <div className=" border border-gray-300 shadow-md rounded-xl dark:bg-gray-900 h-[26rem] sm:w-full w-full">
                           <div className="card-home card2">
-                            <Link href={`/game-details`}>
+                            <Link href={`/game-details/${game.id}`}>
                               <img
                                 alt={game.nombre}
                                 src={game.imagen}

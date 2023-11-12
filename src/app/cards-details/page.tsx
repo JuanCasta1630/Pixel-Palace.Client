@@ -7,9 +7,10 @@ import HeaderLayout from "../components/Header";
 import FooterLayout from "../components/Footer";
 import { ThemeProvider } from "next-themes";
 import { Layout } from "antd";
+import { Game } from "@/app/types/types";
 function GameDetails() {
   const { Content, Footer } = Layout;
-  const [gameDetails, setGameDetails] = useState(null);
+
   return (
     <ThemeProvider enableSystem={true} attribute="class">
       <Layout className="w-full min-h-screen dark:bg-gray-700 bg-white">

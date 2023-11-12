@@ -65,16 +65,16 @@ function CreateGame() {
   return (
     <div>
       <Button
-        className="button1"
+        className="button1 w-full"
         type="primary"
         icon={<PlusOutlined />}
         onClick={handleOpenModal}
       >
-        Add Product
+        Create Product
       </Button>
       <Modal
         title={
-          <div className="dark:bg-gray-900 p-4 text-white">Add Product</div>
+          <div className="dark:bg-gray-900 p-4 text-white">Create Product</div>
         }
         open={modalVisible}
         onCancel={handleCancel}

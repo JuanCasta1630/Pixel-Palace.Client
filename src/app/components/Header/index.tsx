@@ -215,12 +215,7 @@ const HeaderLayout = () => {
             )}
           </div>
           {user ? (
-            <>
-              <RandomAvatar />
-              <button onClick={cerrarSesion} className="text-white">
-                Sign out
-              </button>
-            </>
+            <RandomAvatar />
           ) : (
             <>
               <button
