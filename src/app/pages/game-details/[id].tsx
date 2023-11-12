@@ -8,21 +8,15 @@ import { ThemeProvider } from "next-themes";
 import { Layout } from "antd";
 import { Game } from "../../types/types";
 import { GetStaticProps } from "next";
-function GameDetails({ game }) {
+function GameDetails() {
   const { Content, Footer } = Layout;
 
-  console.log(game);
-
-  if (!game) {
-    return <Loading />;
-  }
   return (
     <ThemeProvider enableSystem={true} attribute="class">
       <Layout className="w-full min-h-screen dark:bg-gray-700 bg-white">
         <HeaderLayout />
         <Content className="p-4 mt-8">
-          <h1>{game.name}</h1>
-          <p>{game.description}</p>
+         
         </Content>
         <FooterLayout />
       </Layout>
