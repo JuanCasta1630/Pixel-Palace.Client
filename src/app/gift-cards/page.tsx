@@ -2,17 +2,13 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import HeaderLayout from "../components/Header";
-import {
-  HeartOutlined,
-  FacebookOutlined,
-  TwitterOutlined,
-  InstagramOutlined,
-} from "@ant-design/icons";
 import { Layout, Col, Row, Button, Pagination } from "antd";
 import { ThemeProvider } from "next-themes";
 import Filters from "../components/Filters";
 import Tarjetas from "../../../gift-cards.json";
 import { getCards } from "../services/firebase";
+import FooterLayout from "../components/Footer";
+import Link from "next/link";
 
 interface FilterProps {
   id: number;
@@ -39,8 +35,8 @@ export default function GiftCards() {
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
-  const [cards, setCards] = useState([])
-  const [loading, setLoading] = useState(true); 
+  const [cards, setCards] = useState([]);
+  const [loading, setLoading] = useState(true);
   const handleFilterChange = (filters: FilterProps) => {};
   useEffect(() => {
     getCards()
@@ -56,9 +52,8 @@ export default function GiftCards() {
         console.error("Error al obtener los juegos:", error);
         setLoading(false);
       });
-  }, []); 
+  }, []);
 
-  
   return (
     <ThemeProvider enableSystem={true} attribute="class">
       <Layout className="w-full min-h-screen dark:bg-gray-700 bg-white">
@@ -78,26 +73,24 @@ export default function GiftCards() {
                   {cards.map((card: any, index) => (
                     <Col key={index} className="mb-4">
                       <div className="card-home card2 border border-gray-300 shadow-md rounded-xl dark:bg-gray-900 h-96">
-                        <img
-                        alt={card.fecha_lanzamiento}
-                        src={card.imagen}
-                        className="w-full h-48 object-cover rounded-t-xl border border-gray-300"
-                        />
-                        <div className="p-4">
-                        <h2 className="text-xl font-semibold mb-2">
-                        
-                            {card.nombre}
-                          </h2>
-                          <h2 className="text-xl font-semibold mb-2">
-                            {card.fecha_lanzamiento}
-                          </h2>
-                          {/* <p className="text-gray-100">
-                            {card.fecha_expiracion}
-                          </p> */}
-                          <p className="text-red-500 font-semibold mt-2">
-                            ${card.precio}
-                          </p>
-                        </div>
+                        <Link href={`/cards-details`}>
+                          <img
+                            alt={card.fecha_lanzamiento}
+                            src={card.imagen}
+                            className="w-full h-48 object-cover rounded-t-xl border border-gray-300"
+                          />
+                          <div className="p-4">
+                            <h2 className="text-xl font-semibold mb-2">
+                              {card.nombre}
+                            </h2>
+                            <h2 className="text-xl font-semibold mb-2">
+                              {card.fecha_lanzamiento}
+                            </h2>
+                            <p className="text-red-500 font-semibold mt-2">
+                              ${card.precio}
+                            </p>
+                          </div>
+                        </Link>
                       </div>
                     </Col>
                   ))}
@@ -112,28 +105,7 @@ export default function GiftCards() {
             </div>
           </div>
         </Content>
-        <Footer className="bg-blue-800 text-white p-4 text-center flex justify-between items-center dark:bg-gray-900">
-          <div className="flex-1 text-center">
-            Made with <HeartOutlined /> Team 3
-          </div>
-          <div className="dark:text-white flex items-center space-x-4 text-3xl">
-            <Button
-              className="dark:text-white text-white"
-              type="link"
-              icon={<FacebookOutlined />}
-            />
-            <Button
-              className="dark:text-white text-white"
-              type="link"
-              icon={<TwitterOutlined />}
-            />
-            <Button
-              className="dark:text-white text-white"
-              type="link"
-              icon={<InstagramOutlined />}
-            />
-          </div>
-        </Footer>
+        <FooterLayout />
       </Layout>
     </ThemeProvider>
   );

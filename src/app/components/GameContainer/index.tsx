@@ -14,6 +14,9 @@ import { getCards } from "@/app/services/firebase";
 import { Game } from "@/app/types/types";
 import { useGames } from "@/app/hooks/useGames";
 import Loading from "@/app/loading";
+import GiftCardsSection from "./GiftCardsSection";
+import BestGamesSection from "./BestGameSection";
+import RecommendationsSection from "./RecommendationsSection";
 
 const { Content } = Layout;
 
@@ -58,152 +61,9 @@ const GameContainer: React.FC = () => {
         <HeaderLayout />
         <Carousel />
         <Content className="p-4">
-          <CreateGame />
-          {/* Sección de Tarjetas de Regalo */}
-          <h2 className="text-2xl font-semibold mb-4">Gift Cards</h2>
-          <div className="flex flex-col justify-center items-center">
-            <Row
-              gutter={[8, 8]}
-              className="sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 2xl:grid-cols-4 "
-            >
-              {tarjetasDeRegalo.map((game, index) => (
-                <Col className="mx-2 sm:mx-4 md:mx-2 lg:mx-4 " key={index}>
-                  <div className="card-home card2 border border-gray-300 shadow-md rounded-xl dark:bg-gray-900 dark:w-24 dark:h-24 ">
-                    <Link href={`/cards-details`}>
-                      <div className="border border-gray-300 shadow-md rounded-xl dark:bg-gray-900 dark:w-24 dark:h-24 hover:shadow-lg transition duration-300">
-                        <img
-                          //@ts-expect-error
-                          alt={game.nombre}
-                          //@ts-expect-error
-                          src={game.imagen}
-                          className="w-24 h-24 dark:w-24 dark:h-24 object-contain rounded-xl"
-                        />
-                      </div>
-                    </Link>
-                    {/* <div className="p-4">
-                    <h2 className="text-xl font-semibold mb-2">
-                      {game.nombre}
-                    </h2>
-                    <p className="text-gray-100">{game.categoria.join(", ")}</p>
-                    <p className="text-gray-100">{game.fecha_lanzamiento}</p>
-                    <p className="text-red-500 font-semibold mt-2">
-                      ${game.precio}
-                    </p>
-                  </div> */}
-                  </div>
-                </Col>
-              ))}
-            </Row>
-
-            <Button
-              type="primary"
-              block
-              size="large"
-              className="my-4 button1 dark:w-48 w-40"
-              onClick={() => (window.location.href = "/gift-cards")}
-            >
-              Read More
-            </Button>
-          </div>
-          {/* Sección de Juegos Populares */}
-          <h2 className="text-2xl font-semibold mb-4">
-            The best games (Digital)
-          </h2>
-          <div className="flex flex-col justify-center items-center">
-            <Row
-              gutter={[16, 16]}
-              className="md:grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-4"
-            >
-              {juegosPopulares.map((game: any, index) => (
-                <Col
-                  className="w-full sm:mx-2 md:mx-2 lg:mx-4 2xl:mx-4"
-                  key={index}
-                >
-                  <div className="card-home card2 border border-gray-300 shadow-md rounded-xl dark:bg-gray-900 h-96">
-                    <Link href={`/game-details/${game.id}`}>
-                      <img
-                        alt={game.nombre}
-                        src={game.imagen}
-                        className="w-full h-48 object-cover rounded-t-xl border border-gray-300"
-                      />
-                      <div className="p-4">
-                        <h2 className="text-xl font-semibold mb-2">
-                          {game.nombre}
-                        </h2>
-                        <p className="text-gray-100">
-                          {game.categoria.join(", ")}
-                        </p>
-                        <p className="text-gray-100">
-                          {game.fecha_lanzamiento}
-                        </p>
-                        <p className="text-red-500 font-semibold mt-2">
-                          ${game.precio}
-                        </p>
-                      </div>
-                    </Link>
-                  </div>
-                </Col>
-              ))}
-            </Row>
-
-            <Button
-              type="primary"
-              block
-              size="large"
-              className="my-4 button1 dark:w-48 w-48"
-              onClick={() => (window.location.href = "/best-games")}
-            >
-              Read More
-            </Button>
-          </div>
-          {/* Sección de Recomendaciones */}
-          <h2 className="text-2xl font-semibold mb-4">
-            Recommendations for you
-          </h2>
-          <div className="flex flex-col justify-center items-center ">
-            <Row
-              gutter={[16, 16]}
-              className="md:grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-4"
-            >
-              {recomendaciones.map((game: any, index) => (
-                <Col className=" mx-2 sm:mx-4 md:mx-2 lg:mx-4" key={index}>
-                  <div className="card-home card2 border border-gray-300 shadow-md rounded-xl dark:bg-gray-900 h-96">
-                    <Link href={`/game-details/${game.id}`}>
-                      <img
-                        alt={game.nombre}
-                        src={game.imagen}
-                        className="w-full h-48 object-cover rounded-t-xl border border-gray-300"
-                      />
-                      <div className="p-4">
-                        <h2 className="text-xl font-semibold mb-2">
-                          {game.nombre}
-                        </h2>
-                        <p className="text-gray-100">
-                          {game.categoria.join(", ")}
-                        </p>
-                        <p className="text-gray-100">
-                          {game.fecha_lanzamiento}
-                        </p>
-                        <p className="text-red-500 font-semibold mt-2">
-                          ${game.precio}
-                        </p>
-                      </div>
-                    </Link>
-                  </div>
-                </Col>
-              ))}
-            </Row>
-
-            <Button
-              type="primary"
-              block
-              size="large"
-              className="my-4 button1 dark:w-48 w-48"
-              onClick={() => (window.location.href = "/recommendations")}
-            >
-              Read More
-            </Button>
-          </div>
+          <GiftCardsSection tarjetasDeRegalo={tarjetasDeRegalo} />
+          <BestGamesSection juegosPopulares={juegosPopulares} />
+          <RecommendationsSection recomendaciones={recomendaciones} />
           <CategoriasPage />
         </Content>
         {/* <Pagination

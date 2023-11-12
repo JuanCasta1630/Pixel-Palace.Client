@@ -46,7 +46,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
 export const getStaticPaths = async () => {
   const data = await getGames();
-  const paths = data.games.map((game) => {
+  const paths = data?.games?.map((game) => {
     return { params: { id: game.id.toString() } };
   });
   

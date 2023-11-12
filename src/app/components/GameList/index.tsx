@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState } from "react";
 import { Col, Row, Pagination, message } from "antd";
 import Link from "next/link";
