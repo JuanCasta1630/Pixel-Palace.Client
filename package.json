@@ -22,6 +22,7 @@
     "react-tabs": "^6.0.2"
   },
   "devDependencies": {
+    "@types/antd": "^1.0.0",
     "@types/feather-icons": "^4.29.3",
     "@types/node": "^20",
     "@types/react": "^18",
