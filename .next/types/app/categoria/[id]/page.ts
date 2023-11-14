@@ -1,4 +1,4 @@
-// File: C:\Users\alexi\OneDrive\Escritorio\Curso DH\DH\Especializacio\PI\cristiam_pi_final\front\Pixel-Palace.Client\src\app\categoria\[id]\page.tsx
+// File: C:\Users\lidan\Documents\PI2\Pixel-Palace.Client\src\app\categoria\[id]\page.tsx
 import * as entry from '../../../../../src/app/categoria/[id]/page.js'
 import type { ResolvingMetadata } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
