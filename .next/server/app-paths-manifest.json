@@ -1,10 +1,5 @@
 {
-  "/_not-found": "app/_not-found.js",
-  "/best-games/page": "app/best-games/page.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/forgot-password/page": "app/forgot-password/page.js",
-  "/game-details/page": "app/game-details/page.js",
+  "/game-details/[id]/page": "app/game-details/[id]/page.js",
   "/page": "app/page.js",
-  "/gift-cards/page": "app/gift-cards/page.js",
-  "/recommendations/page": "app/recommendations/page.js"
+  "/categoria/[id]/page": "app/categoria/[id]/page.js"
 }

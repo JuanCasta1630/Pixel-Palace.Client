@@ -760,6 +760,13 @@
   dependencies:
     tslib "^2.4.0"
 
+"@types/antd@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/@types/antd/-/antd-1.0.0.tgz"
+  integrity sha512-wnRh+S6vPMahsuSN6lFJQzNXuhUKr9JKic1L/NMdIChsuu9Fc+mDyF7H17eFPQlgpLVdT0DyYIgB1di8DA9AuQ==
+  dependencies:
+    antd "*"
+
 "@types/feather-icons@^4.29.3":
   version "4.29.3"
   resolved "https://registry.npmjs.org/@types/feather-icons/-/feather-icons-4.29.3.tgz"
@@ -885,7 +892,7 @@ ansi-styles@^4.0.0, ansi-styles@^4.1.0:
   dependencies:
     color-convert "^2.0.1"
 
-antd@^5.10.2:
+antd@*, antd@^5.10.2:
   version "5.10.2"
   resolved "https://registry.npmjs.org/antd/-/antd-5.10.2.tgz"
   integrity sha512-0kV6PmlJi7vhPmYH9GCAlU62ZhiuLF+gE3REJ/9MZTo++/3i5q6SALNoRgHLMsa+rX50U3RO3wJVY+fPib594Q==

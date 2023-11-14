@@ -1,3 +1,5 @@
+"use client"
+
 /* eslint-disable @next/next/no-img-element */
 import { Children, useState, useEffect } from "react";
 import AuthModal from "../AuthModal";
