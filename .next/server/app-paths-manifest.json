@@ -1,5 +1,5 @@
 {
+  "/game-details/[id]/page": "app/game-details/[id]/page.js",
   "/page": "app/page.js",
-  "/categoria/[id]/page": "app/categoria/[id]/page.js",
-  "/game-details/[id]/page": "app/game-details/[id]/page.js"
+  "/categoria/[id]/page": "app/categoria/[id]/page.js"
 }
