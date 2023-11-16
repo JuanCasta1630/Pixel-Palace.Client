@@ -1,49 +1,51 @@
 "use client";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import InputField from "../Inputs/InputField";
 import { Form, Alert, message } from "antd";
-import { signIn } from "@/app/services/firebase";
-import Link from "next/link";
 import { AuthModalProps } from "@/app/types/types";
+import { signIn } from "next-auth/react";
 
 const Login: React.FC<AuthModalProps> = ({ onClose }) => {
   const [form] = Form.useForm();
   const [error, setError] = useState<string | null>(null);
   const [loginSuccess, setLoginSuccess] = useState(false);
-  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const router = useRouter();
 
   const handleLogin = async () => {
+
     if (!email || !password) {
       setError("Por favor complete todos los campos.");
       return;
     }
-    const data = { email };
-    try {
-      const user = await signIn(data, password, false);
+      const responseNextAuth = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
+
       // Si llegamos a este punto, el inicio de sesión fue exitoso
-      if (user) {
+      if (responseNextAuth) {
+        router.push("/");
         setLoginSuccess(true);
         onClose();
       } else {
         message.error("Inicio de sesión fallido. Verifica tus credenciales.");
       }
-    } catch (error) {
-      console.error("Error al iniciar sesión:", error);
-    }
+ 
   };
 
-  const handleSubmit = () => {
-    handleLogin();
-  };
 
   return (
     <div className="card dark:bg-white bg-gray-100 ">
       <div className="card2 dark:bg-white bg-gray-100 ">
-        <Form className="form dark:bg-gray-900 bg-gray-100" form={form} onFinish={handleSubmit}>
-          <p  className="heading text-gray-900 dark:text-white" >Login</p>
+        <Form
+          className="form dark:bg-gray-900 bg-gray-100"
+          form={form}
+          onFinish={handleLogin}
+        >
+          <p className="heading text-gray-900 dark:text-white">Login</p>
           <div className="field dark:bg-gray-900 ">
             <svg
               viewBox="0 0 16 16"
@@ -86,11 +88,19 @@ const Login: React.FC<AuthModalProps> = ({ onClose }) => {
             />
           </div>
           <div className="btn">
-            <button className="button1 text-white sm:w-1/2 xl:w-1/3 md:w-1/3 dark:text-white" type="submit">
+            <button
+              className="button1 text-white sm:w-1/2 xl:w-1/3 md:w-1/3 dark:text-white"
+              type="submit"
+            >
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Login&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </button>
           </div>
-          <button className="button3" onClick={() => window.location.href = 'password'}>Forgot Password</button>
+          <button
+            className="button3"
+            onClick={() => (window.location.href = "password")}
+          >
+            Forgot Password
+          </button>
         </Form>
         {error && <Alert message={error} type="error" className="mt-2" />}
         {loginSuccess && message.info("Inicio de sesión exitoso")}

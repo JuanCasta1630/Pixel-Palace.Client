@@ -29,7 +29,6 @@ function GameDetails() {
   }, [gameDetailId]);
 
   if (loading) return <Loading/>;
-console.log(data);
 
   return (
     <ThemeProvider enableSystem={true} attribute='class'>

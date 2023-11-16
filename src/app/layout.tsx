@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import SessionAuthProvider from "@/context/SessionAuthProvider";
+import HeaderLayout from "./components/Header";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,7 +24,12 @@ export default function RootLayout({
       </head>
 
       <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <body>{children}</body>
+      <body><main>
+          <SessionAuthProvider>
+            <HeaderLayout/>
+            {children}
+          </SessionAuthProvider>
+        </main></body>
     </html>
   );
 }

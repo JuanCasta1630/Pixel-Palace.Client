@@ -1,10 +1,11 @@
+"use client";
 import React, { useState } from "react";
 import InputField from "../Inputs/InputField";
 import { Alert } from "antd";
-import { signIn } from "@/app/services/firebase";
-import { AuthModalProps } from "@/app/types/types";
+import { AuthModalProps, NewUserProps } from "@/app/types/types";
 import { message } from "antd";
 import RandomAvatar from "../Avatars";
+import { signIn } from "next-auth/react";
 
 const RegistrationForm: React.FC<AuthModalProps> = ({ onClose }) => {
   const [step, setStep] = useState(1);
@@ -14,36 +15,61 @@ const RegistrationForm: React.FC<AuthModalProps> = ({ onClose }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [birthdate, setBirthdate] = useState("");
+  const [birthday, setBirthday] = useState("");
   const [isRegistered, setIsRegistered] = useState(false);
   const [error, setError] = useState("");
 
-  const handleNext = async () => {
-    if (step === 1) {
-      console.log(step);
-      // Validar campos del primer paso
-      if (!name || !lastName || !username || !email) {
-        setError("Por favor complete todos los campos.");
-        return;
+  const handleNext = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    try {
+      if (step === 1) {
+        if (!name || !lastName || !username || !email) {
+          setError("Por favor complete todos los campos.");
+          return;
+        }
+        setStep(2);
+      } else if (step === 2) {
+        if (password !== confirmPassword) {
+          setError("Las contraseñas no coinciden.");
+          return;
+        }
+
+        const data: NewUserProps = {
+          name,
+          lastName,
+          username,
+          password,
+          email,
+          birthday,
+        };
+        try {
+          const apiUrl = `${process.env.NEXT_PUBLIC_USER_URL}/user/save`;
+          await fetch(apiUrl, {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: { "Content-Type": "application/json" },
+          });
+        } catch (error) {
+          console.error("Error en la solicitud:", error);
+        }
+      
+        const responseNextAuth = await signIn("credentials", {
+          email,
+          password,
+          redirect: false,
+        });
+        if (responseNextAuth) {
+          setIsRegistered(true);
+          onClose();
+        } else {
+          message.error(`El registro falló: ${error}`);
+        }
+       
       }
-      setStep(2);
-    } else if (step === 2) {
-      // Validar campos del segundo paso
-      if (password !== confirmPassword) {
-        setError("Las contraseñas no coinciden.");
-        return;
-      }
-      const data = { email, password, name, lastName, username, birthdate };
-      // Realizar el registro de usuario en Firebase
-      const result = await signIn(data, password, true);
-      if (result) {
-        setIsRegistered(true);
-        onClose();
-      } else {
-        message.error(
-          "Registration failed. The provided email is already associated with an existing account."
-        );
-      }
+    } catch (error) {
+      //@ts-expect-error
+      console.error("Error en la solicitud:", error.message);
     }
   };
 
@@ -59,7 +85,7 @@ const RegistrationForm: React.FC<AuthModalProps> = ({ onClose }) => {
         <h1 className="heading text-gray-900 dark:text-white">Register</h1>
         {isRegistered ? (
           <>
-            <RandomAvatar/>
+            <RandomAvatar />
             <p className="text-green-600 mt-4 mb-4 dark:text-primary">
               ¡Successful registration!
             </p>
@@ -72,7 +98,7 @@ const RegistrationForm: React.FC<AuthModalProps> = ({ onClose }) => {
                   label="Name"
                   type="text"
                   value={name}
-                  onChange={(e:any) => setName(e.target.value)}
+                  onChange={(e: any) => setName(e.target.value)}
                   placeholder="Your name"
                   required
                 />
@@ -81,7 +107,7 @@ const RegistrationForm: React.FC<AuthModalProps> = ({ onClose }) => {
                   label="Lastname"
                   type="text"
                   value={lastName}
-                  onChange={(e:any) => setLastName(e.target.value)}
+                  onChange={(e: any) => setLastName(e.target.value)}
                   placeholder="Your lastname"
                   required
                 />
@@ -90,7 +116,7 @@ const RegistrationForm: React.FC<AuthModalProps> = ({ onClose }) => {
                   label="User's Name"
                   type="text"
                   value={username}
-                  onChange={(e:any) => setUsername(e.target.value)}
+                  onChange={(e: any) => setUsername(e.target.value)}
                   placeholder="Your User's Name"
                   required
                 />
@@ -98,7 +124,7 @@ const RegistrationForm: React.FC<AuthModalProps> = ({ onClose }) => {
                   label="Email"
                   type="email"
                   value={email}
-                  onChange={(e:any) => setEmail(e.target.value)}
+                  onChange={(e: any) => setEmail(e.target.value)}
                   placeholder="Your email"
                   required
                 />
@@ -111,7 +137,7 @@ const RegistrationForm: React.FC<AuthModalProps> = ({ onClose }) => {
                   label="Password"
                   type="password"
                   value={password}
-                  onChange={(e:any) => setPassword(e.target.value)}
+                  onChange={(e: any) => setPassword(e.target.value)}
                   placeholder="Your password"
                   required
                 />
@@ -120,7 +146,7 @@ const RegistrationForm: React.FC<AuthModalProps> = ({ onClose }) => {
                   label="Password confirm"
                   type="password"
                   value={confirmPassword}
-                  onChange={(e:any) => setConfirmPassword(e.target.value)}
+                  onChange={(e: any) => setConfirmPassword(e.target.value)}
                   placeholder="Confirm your password"
                   required
                 />
@@ -128,8 +154,8 @@ const RegistrationForm: React.FC<AuthModalProps> = ({ onClose }) => {
                 <InputField
                   label="Birthday"
                   type="date"
-                  value={birthdate}
-                  onChange={(e:any) => setBirthdate(e.target.value)}
+                  value={birthday}
+                  onChange={(e: any) => setBirthday(e.target.value)}
                   placeholder="Your birthday"
                   required
                 />
@@ -148,6 +174,7 @@ const RegistrationForm: React.FC<AuthModalProps> = ({ onClose }) => {
               )}
               <button
                 type="button"
+                //@ts-ignore
                 onClick={handleNext}
                 className="button1 text-white w-1/3 dark:text-white"
               >

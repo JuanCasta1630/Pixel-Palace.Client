@@ -10,6 +10,7 @@ import {
   MenuOutlined,
   CloseCircleOutlined,
 } from "@ant-design/icons";
+import {useSession, signOut} from 'next-auth/react'
 import { getGames, searchGamesByName, useAuth } from "@/app/services/firebase";
 import Image from "next/image";
 import { ThemeProvider } from "next-themes";
@@ -24,6 +25,9 @@ const HeaderLayout = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const { user, cerrarSesion } = useAuth();
+  // const {data: session} = useSession()
+
+  // const user = session
 
   const openLoginModal = () => {
     setLoginModalOpen(true);
@@ -32,8 +36,7 @@ const HeaderLayout = () => {
     }
   };
   const handleSignOut = async () => {
-    await cerrarSesion();
-    window.location.href = '/';
+    await signOut({callbackUrl: '/'});
   }
   const openRegisterModal = () => {
     setRegisterModalOpen(true);
