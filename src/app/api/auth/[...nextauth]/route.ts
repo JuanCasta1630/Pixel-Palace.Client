@@ -6,40 +6,21 @@ const handler = NextAuth({
     CredentialsProvider({
       name: "credentials",
       credentials: {
-        email: { label: "email", type: "email", placeholder: "test@test.com" },
+        email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
-        name: { label: "name", type: "text", placeholder: "test@test.com" },
-        lastName: { label: "lastname", type: "text", placeholder: "test" },
-        username: { label: "username", type: "text", placeholder: "test" },
-        birthday: { label: "birthday", type: "date", placeholder: "test" },
       },
-      
       async authorize(credentials, req) {
-            
-        const res = await fetch(
-            
-          `${process.env.NEXT_PUBLIC_USER_URL}/user/login`,
-          {
+        const LOGIN_URL = `${process.env.NEXT_PUBLIC_USER_URL}/user/login`
+        const data = {
             method: "POST",
-            body: JSON.stringify({
-              email: credentials?.email,
-              password: credentials?.password,
-              // name: credentials?.name,
-              // lastname: credentials?.lastName,
-              // birthday: credentials?.birthday,
-              // username: credentials?.username,
-            }),
-            headers: { "Content-Type": "application/json",
-            
-        },
-          }
-          
-        );
+            body: JSON.stringify(credentials),
+            headers: { "Content-Type": "application/json" }
+        }
+        const res = await fetch(LOGIN_URL, data)
+
         const user = await res.json();
-
-        if (user.error) throw user;
-
-        return user;
+        console.log(user)
+        return user
       },
     }),
   ],
@@ -53,8 +34,8 @@ const handler = NextAuth({
     },
   },
   pages: {
-    signIn: "/",
+    signIn:"/recommendations",
+    signOut: "/",
   },
 });
-
 export { handler as GET, handler as POST };

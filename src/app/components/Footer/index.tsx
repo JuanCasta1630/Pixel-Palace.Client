@@ -9,7 +9,7 @@ import { Layout, Button } from "antd";
 const { Footer } = Layout;
 export default function FooterLayout() {
   return (
-    <Footer className="fixed-footer mt-4 bg-blue-800 text-white p-4 text-center flex justify-between items-center dark:bg-gray-900">
+    <Footer className="fixed w-full bottom-0 z-10 mt-4 bg-blue-800 text-white p-4 text-center flex justify-between items-center dark:bg-gray-900">
       <div className="flex-1 text-center">
         Made with <HeartOutlined /> Team 3
       </div>

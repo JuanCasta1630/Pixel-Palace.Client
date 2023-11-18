@@ -24,10 +24,10 @@ const HeaderLayout = () => {
   const [isMobileUserOpen, setMobileUserOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
-  const { user, cerrarSesion } = useAuth();
-  // const {data: session} = useSession()
+  const {data: session} = useSession()
 
-  // const user = session
+  const user = session
+console.log(session);
 
   const openLoginModal = () => {
     setLoginModalOpen(true);

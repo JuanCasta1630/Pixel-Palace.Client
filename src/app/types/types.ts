@@ -23,7 +23,7 @@ export interface Game  {
 
 export interface NewUserProps {
   name: string;
-  lastName: string;
+  lastname: string;
   username: string;
   email: string;
   password: string;

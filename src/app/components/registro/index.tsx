@@ -1,16 +1,16 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import InputField from "../Inputs/InputField";
 import { Alert } from "antd";
 import { AuthModalProps, NewUserProps } from "@/app/types/types";
 import { message } from "antd";
 import RandomAvatar from "../Avatars";
-import { signIn } from "next-auth/react";
+import { getProviders, signIn } from "next-auth/react";
 
 const RegistrationForm: React.FC<AuthModalProps> = ({ onClose }) => {
   const [step, setStep] = useState(1);
   const [name, setName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [lastname, setLastName] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,13 +18,21 @@ const RegistrationForm: React.FC<AuthModalProps> = ({ onClose }) => {
   const [birthday, setBirthday] = useState("");
   const [isRegistered, setIsRegistered] = useState(false);
   const [error, setError] = useState("");
+  const [providers, setProviders] = useState(null);
+
+  // useEffect(() => {
+  //   // Obtener los proveedores disponibles
+  //   getProviders().then((providers) => {
+  //     setProviders(providers);
+  //   });
+  // }, []);
 
   const handleNext = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     try {
       if (step === 1) {
-        if (!name || !lastName || !username || !email) {
+        if (!name || !lastname || !username || !email) {
           setError("Por favor complete todos los campos.");
           return;
         }
@@ -34,38 +42,27 @@ const RegistrationForm: React.FC<AuthModalProps> = ({ onClose }) => {
           setError("Las contraseñas no coinciden.");
           return;
         }
-
-        const data: NewUserProps = {
-          name,
-          lastName,
-          username,
-          password,
-          email,
-          birthday,
-        };
+        const values = { name, username, password, email, birthday, lastname };
         try {
           const apiUrl = `${process.env.NEXT_PUBLIC_USER_URL}/user/save`;
-          await fetch(apiUrl, {
+          const data = {
             method: "POST",
-            body: JSON.stringify(data),
+            body: JSON.stringify(values),
             headers: { "Content-Type": "application/json" },
-          });
+          };
+          const res = await fetch(apiUrl, data).then((resp) => resp.json());
+          console.log(res, "registro ok");
         } catch (error) {
           console.error("Error en la solicitud:", error);
         }
-      
-        const responseNextAuth = await signIn("credentials", {
-          email,
-          password,
-          redirect: false,
-        });
-        if (responseNextAuth) {
+        const response = await signIn('credentials',{ username, password, redirect: false, redirectTo: "/best-games"})
+        console.log(response);
+        
+        if (response?.ok) {
           setIsRegistered(true);
           onClose();
-        } else {
-          message.error(`El registro falló: ${error}`);
+          
         }
-       
       }
     } catch (error) {
       //@ts-expect-error
@@ -106,7 +103,7 @@ const RegistrationForm: React.FC<AuthModalProps> = ({ onClose }) => {
                 <InputField
                   label="Lastname"
                   type="text"
-                  value={lastName}
+                  value={lastname}
                   onChange={(e: any) => setLastName(e.target.value)}
                   placeholder="Your lastname"
                   required
@@ -167,7 +164,7 @@ const RegistrationForm: React.FC<AuthModalProps> = ({ onClose }) => {
                 <button
                   type="button"
                   onClick={handleBack}
-                  className="button1 bg-green-600 hover:bg-green-500 text-white dark:bg-primary dark:hover:bg-green-700 dark:text-black w-1/3 py-3 rounded-md transition-colors duration-300 focus:outline-none focus:ring focus:ring-primary-500"
+                  className="button1 bg-green-600 hover:bg-green-500 dark:text-white dark:bg-primary dark:hover:bg-green-700 dark:text-black w-1/3 py-3 rounded-md transition-colors duration-300 focus:outline-none focus:ring focus:ring-primary-500"
                 >
                   Back
                 </button>
