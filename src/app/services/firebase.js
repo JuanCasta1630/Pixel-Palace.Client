@@ -240,13 +240,29 @@ export const getGameDetails = async (gameId) => {
   }
 };
 
+export const getCardDetails = async (gameId) => {
+  try {
+    const gameDocRef = doc(firestore, "tarjeta", gameId)
+    const gameDocSnapshot = await getDoc(gameDocRef);
 
+    if (gameDocSnapshot.exists()) {
+      // El documento del juego existe
+      return gameDocSnapshot.data()
+    } else {
+      // El documento del juego no existe
+      return null;
+    }
+  } catch (error) {
+    console.error("Error al obtener detalles del juego", error);
+    return null;
+  }
+};
 export const searchGamesByName = async (searchQuery) => {
   try {
     const gamesCollection = collection(firestore, "juegos");
     const gamesQuery = query(gamesCollection, where("nombre", ">=", searchQuery).where("nombre", "<=", searchQuery + '\uf8ff'));
     const snapshot = await getDocs(gamesQuery);
- console.log(gamesQuery);
+  console.log(gamesQuery);
     const results = [];
 
     snapshot.forEach((doc) => {

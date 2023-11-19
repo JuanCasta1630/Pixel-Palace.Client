@@ -1,0 +1,7 @@
+{
+  "/page": "app/page.js",
+  "/gift-cards/page": "app/gift-cards/page.js",
+  "/recommendations/page": "app/recommendations/page.js",
+  "/best-games/page": "app/best-games/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js"
+}

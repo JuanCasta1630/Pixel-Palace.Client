@@ -73,7 +73,7 @@ export default function GiftCards() {
                   {cards.map((card: any, index) => (
                     <Col key={index} className="mb-4">
                       <div className="card-home card2 border border-gray-300 shadow-md rounded-xl dark:bg-gray-900 h-96">
-                        <Link href={`/cards-details`}>
+                        <Link href={`/cards-details/${card.id}`}>
                           <img
                             alt={card.fecha_lanzamiento}
                             src={card.imagen}

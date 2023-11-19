@@ -4,7 +4,7 @@ const Filters: React.FC = () => {
   const [category, setCategory] = useState("all");
   const [price, setPrice] = useState(50);
   const [categories, setCategories] = useState([]);
-  const [platforms, setPlatforms] = useState([]);
+  const [platforms, setPlatforms] = useState(["Xbox", "PlayStation", "PC", "Nintendo"]);
   const [loading, setLoading] = useState(true);
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -14,29 +14,6 @@ const Filters: React.FC = () => {
   const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPrice(parseInt(e.target.value, 10));
   };
-
-  //   getGames()
-  //     .then((result: any) => {
-  //       if (result.success) {
-  //         setGames(result.games);
-  //         // Obtener una lista de todas las categorías de los juegos
-  //         const allCategories: any = result.games.map((game: { categoria: any; }) => game.categoria).flat();
-  //         const uniqueCategories: any = [...new Set(allCategories)];
-  //         setCategories(uniqueCategories);
-
-  //         const allPlatforms: any = result.games.map((game: { desarrollador: any; }) => game.desarrollador).flat();
-  //         const uniquePlatforms: any = [...new Set(allPlatforms)];
-  //         setPlatforms(uniquePlatforms);
-  //       } else {
-  //         console.error("Error al obtener los juegos:", result.error);
-  //       }
-  //       setLoading(false);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error al obtener los juegos:", error);
-  //       setLoading(false);
-  //     });
-  // }, []);
 
   return (
     <div className="p-4 w-48">

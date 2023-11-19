@@ -1,4 +1,4 @@
-// File: C:\Users\lidan\Documents\PI2\Pixel-Palace.Client\src\app\api\auth\[...nextauth]\route.ts
+// File: C:\Users\Gamer\Desktop\SPE\Proyecto Integrador\Pixel-Palace.Client\src\app\api\auth\[...nextauth]\route.ts
 import * as entry from '../../../../../../src/app/api/auth/[...nextauth]/route.js'
 import type { NextRequest } from 'next/server.js'
 
