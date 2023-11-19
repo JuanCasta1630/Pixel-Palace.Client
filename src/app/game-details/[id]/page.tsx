@@ -1,23 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import * as Yup from "yup";
 import { getGameDetails } from "@/app/services/firebase";
 import { useEffect, useState } from "react";
 import FooterLayout from "../../components/Footer";
 import { Game } from "../../types/types";
-import HeaderLayout from "../../components/Header";
 import { Card, Layout } from "antd";
 import Loading from "../../loading";
 import { ThemeProvider } from "next-themes";
 import { usePathname } from "next/navigation";
 import { ShoppingCartOutlined } from "@ant-design/icons";
-import { Header } from "antd/es/layout/layout";
-
-const validationSchema = Yup.object({
-  quantity: Yup.number()
-    .required("Quantity is required")
-    .min(1, "Quantity must be at least 1"),
-});
 
 function GameDetails() {
   const { Content } = Layout;

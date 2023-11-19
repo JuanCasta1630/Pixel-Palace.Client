@@ -31,3 +31,17 @@ export interface NewUserProps {
   birthday: string;
   isRegistered?: boolean;
 }
+
+export interface ReportData {
+  game: string;
+  quantity: number;
+  category: string;
+}
+
+export interface FormValues {
+  month: string;
+  category: string;
+  bestSellers: boolean;
+  topRated: boolean;
+  fileFormat: "pdf" | "csv";
+}

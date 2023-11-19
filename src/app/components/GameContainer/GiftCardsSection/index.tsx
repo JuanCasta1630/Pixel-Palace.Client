@@ -3,7 +3,7 @@ import { Row, Col, Button, Card } from "antd";
 import Link from "next/link";
 
 interface GiftCardsSectionProps {
-  tarjetasDeRegalo: any[]; // Reemplaza 'any[]' con el tipo correcto de tus datos
+  tarjetasDeRegalo: any[]; 
 }
 
 const GiftCardsSection: React.FC<GiftCardsSectionProps> = ({
@@ -19,7 +19,7 @@ const GiftCardsSection: React.FC<GiftCardsSectionProps> = ({
         {tarjetasDeRegalo.map((game, index) => (
           <Col className="mx-2 sm:mx-4 md:mx-2 lg:mx-4 " key={index}>
             <div className="card-home card2 border border-gray-300 shadow-md rounded-xl dark:bg-gray-900 dark:w-24 dark:h-24 ">
-              <Link href={`/cards-details`}>
+              <Link href={`/cards-details/${game.id}`}>
                 <div className="border border-gray-300 shadow-md rounded-xl dark:bg-gray-900 dark:w-24 dark:h-24 hover:shadow-lg transition duration-300">
                   <img
                     alt={game.nombre}
