@@ -37,7 +37,7 @@ const GiftCardsSection: React.FC<GiftCardsSectionProps> = ({
         type="primary"
         block
         size="large"
-        className="mt-6 button1 dark:w-96"
+        className="mt-6 button1 dark:w-full"
         onClick={() => (window.location.href = "/gift-cards")}
       >
         Read More

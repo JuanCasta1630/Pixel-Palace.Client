@@ -19,6 +19,7 @@ export interface Game  {
   imagen: string;
   nombre: string;
   precio: number;
+  valoracion?:any
 };
 
 export interface NewUserProps {

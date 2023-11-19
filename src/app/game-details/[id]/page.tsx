@@ -1,23 +1,30 @@
 /* eslint-disable @next/next/no-img-element */
-'use client';
+"use client";
+import * as Yup from "yup";
+import { getGameDetails } from "@/app/services/firebase";
+import { useEffect, useState } from "react";
+import FooterLayout from "../../components/Footer";
+import { Game } from "../../types/types";
+import HeaderLayout from "../../components/Header";
+import { Card, Layout } from "antd";
+import Loading from "../../loading";
+import { ThemeProvider } from "next-themes";
+import { usePathname } from "next/navigation";
+import { ShoppingCartOutlined } from "@ant-design/icons";
+import { Header } from "antd/es/layout/layout";
 
-import { getGameDetails, getGames } from '@/app/services/firebase';
-import { useEffect, useState } from 'react';
-import FooterLayout from '../../components/Footer';
-import { Game } from '../../types/types';
-import { GetStaticProps } from 'next';
-import HeaderLayout from '../../components/Header';
-import { Layout } from 'antd';
-import Loading from '../../loading';
-import { ThemeProvider } from 'next-themes';
-import { usePathname } from 'next/navigation';
+const validationSchema = Yup.object({
+  quantity: Yup.number()
+    .required("Quantity is required")
+    .min(1, "Quantity must be at least 1"),
+});
 
 function GameDetails() {
   const { Content } = Layout;
   const [data, setData] = useState<Game | null>(null);
   const [loading, setLoading] = useState(true);
   const pathname = usePathname();
-  const gameDetailId = pathname.split('/').at(2);
+  const gameDetailId = pathname.split("/").at(2);
 
   useEffect(() => {
     if (gameDetailId) {
@@ -28,126 +35,112 @@ function GameDetails() {
     }
   }, [gameDetailId]);
 
-  if (loading) return <Loading/>;
+  if (loading) return <Loading />;
 
   return (
-    <ThemeProvider enableSystem={true} attribute='class'>
-      <Layout className='w-full min-h-screen dark:bg-gray-700 bg-white'>
-        <HeaderLayout />
-        <section className='w-full py-12 md:py-24 lg:py-32'>
-          <div className='container flex items-start gap-8 px-4 md:px-6'>
-            <img
-              src={data?.imagen}
-              width='500'
-              height='500'
-              alt={data?.nombre}
-              className='aspect-[1/1] object-cover object-center'
-            />
-            <div className='space-y-6'>
-              <h1 className='text-4xl font-bold tracking-tighter'>
-                {data?.nombre}
-              </h1>
-              <div className='flex space-x-1'>
-                <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  width='24'
-                  height='24'
-                  viewBox='0 0 24 24'
-                  fill='none'
-                  stroke='currentColor'
-                  stroke-width='2'
-                  stroke-linecap='round'
-                  stroke-linejoin='round'
-                >
-                  <polygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'></polygon>
-                </svg>
-                <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  width='24'
-                  height='24'
-                  viewBox='0 0 24 24'
-                  fill='none'
-                  stroke='currentColor'
-                  stroke-width='2'
-                  stroke-linecap='round'
-                  stroke-linejoin='round'
-                >
-                  <polygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'></polygon>
-                </svg>
-                <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  width='24'
-                  height='24'
-                  viewBox='0 0 24 24'
-                  fill='none'
-                  stroke='currentColor'
-                  stroke-width='2'
-                  stroke-linecap='round'
-                  stroke-linejoin='round'
-                >
-                  <polygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'></polygon>
-                </svg>
-                <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  width='24'
-                  height='24'
-                  viewBox='0 0 24 24'
-                  fill='none'
-                  stroke='currentColor'
-                  stroke-width='2'
-                  stroke-linecap='round'
-                  stroke-linejoin='round'
-                >
-                  <polygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'></polygon>
-                </svg>
-                <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  width='24'
-                  height='24'
-                  viewBox='0 0 24 24'
-                  fill='none'
-                  stroke='currentColor'
-                  stroke-width='2'
-                  stroke-linecap='round'
-                  stroke-linejoin='round'
-                >
-                  <polygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'></polygon>
-                </svg>
+    <ThemeProvider enableSystem={true} attribute="class">
+      <Layout className="w-full min-h-screen dark:bg-gray-700 bg-white">
+        <Content className="p-4 w-full">
+          <Card className="w-full mt-20 dark:bg-gray-200">
+            <div className="container w-full flex flex-col md:flex-row items-start gap-8 px-4 md:px-6">
+              <div className="flex-1">
+                <img
+                  src={data?.imagen}
+                  width="500"
+                  height="500"
+                  alt={data?.nombre}
+                  className="w-full aspect-[1/1] object-cover object-center dark:shadow-custom-purple"
+                />
               </div>
-              <p className='text-2xl font-semibold text-zinc-900 dark:text-zinc-50'>
-                $ {data?.precio}
-              </p>
-              <p className='text-base text-zinc-500 dark:text-zinc-400'>
-                fecha de lanzamiento: {data?.fecha_lanzamiento}
-                - Categoria : {data?.categoria.join(' - ')}
-              </p>
-              <div className='flex space-x-2'>
-                <button className='inline-flex items-center justify-center text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-primary/90 px-4 py-2 w-12 h-12 rounded-md border border-zinc-200 text-zinc-900 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-50'>
-                  7
-                </button>
-                <button className='inline-flex items-center justify-center text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-primary/90 px-4 py-2 w-12 h-12 rounded-md border border-zinc-200 text-zinc-900 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-50'>
-                  8
-                </button>
-                <button className='inline-flex items-center justify-center text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-primary/90 px-4 py-2 w-12 h-12 rounded-md border border-zinc-200 text-zinc-900 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-50'>
-                  9
-                </button>
-                <button className='inline-flex items-center justify-center text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-primary/90 px-4 py-2 w-12 h-12 rounded-md border border-zinc-200 text-zinc-900 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-50'>
-                  10
-                </button>
+              <div className="flex-1 space-y-6">
+                <h1 className="text-4xl font-bold tracking-tighter">
+                  {data?.nombre}
+                </h1>
+                <p className="text-base text-zinc-500 dark:text-zinc-500">
+                  Release Date: {data?.fecha_lanzamiento}
+                </p>
+                <p className="text-base text-zinc-500 dark:text-zinc-500">
+                  Category: {data?.categoria.join(" - ")}
+                </p>
+                <div className="flex space-x-2">
+                  <button className="inline-flex items-center justify-center text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-primary/90 px-4 py-2 w-12 h-12 rounded-md border border-zinc-200 text-zinc-900 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-50">
+                    7
+                  </button>
+                </div>
+                <div className="flex items-center space-x-2">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <svg
+                      key={star}
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      className="text-yellow-500"
+                    >
+                      {star <= data?.valoracion ? (
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                      ) : (
+                        <polygon
+                          points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                          fill="none"
+                        ></polygon>
+                      )}
+                    </svg>
+                  ))}
+                </div>
               </div>
-              <button className='inline-flex items-center justify-center text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-primary/90 px-4 py-2 w-full h-12 rounded-md bg-zinc-900 text-zinc-50 shadow-sm dark:bg-zinc-50 dark:text-zinc-900'>
-                Add to Cart
-              </button>
-              <p className='text-xs text-zinc-500 dark:text-zinc-400'>
-                Desarrollado por: {data?.desarrollador}
-              </p>
+              <div className="flex-1 flex-col w-full">
+                <div className="bg-gray-200 p-4 rounded dark:bg-gray-900 dark:min-h-48 dark:shadow-custom-purple space-y-4">
+                  <div className="flex items-center space-x-2 ">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="text-yellow-500"
+                    >
+                      <polygon
+                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                        fill="yellow"
+                      />
+                    </svg>
+                    <p className="text-base text-zinc-500 dark:text-zinc-400">
+                      Excellent rating: 9.81
+                    </p>
+                  </div>
+                  <p className="text-2xl font-semibold text-zinc-900 dark:text-red-500">
+                    $ {data?.precio}
+                  </p>
+                  <div className="flex flex-col items-center space-y-2">
+                    <button className="button1 w-full text-white px-4 py-2 rounded">
+                      Buy Now
+                    </button>
+                    <button className="button1 w-full text-white px-4 py-2 rounded">
+                      <span className="self-center">
+                        <ShoppingCartOutlined className="font-semibold mr-2 text-md" />
+                        Add to Cart
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-        </section>
-        <Content className='p-4 mt-8'></Content>
+          </Card>
+        </Content>
         <FooterLayout />
       </Layout>
     </ThemeProvider>
   );
 }
+
 export default GameDetails;

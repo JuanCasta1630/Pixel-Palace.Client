@@ -1,6 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+*{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 /* Estilo predeterminado */
 .ant-upload-list-item-done {
   border: 1px solid green; /* Verde para completado */
@@ -248,8 +253,6 @@ font-weight: 600;}
 
 .body {
   box-sizing: border-box;
-  height: 90%;
-  
   background-color: #000000;
   background-image: radial-gradient(#11581E, #041607), url("https://media.giphy.com/media/oEI9uBYSzLpBK/giphy.gif");
   background-repeat: no-repeat;
@@ -259,7 +262,7 @@ font-weight: 600;}
   color: rgba(128, 255, 128, 0.8);
   text-shadow: 0 0 1ex #33ff33, 0 0 2px rgba(255, 255, 255, 0.8);
   margin-top:80px;
-  margin-bottom: 0
+  /* margin-bottom: 0 */
 }
 
 .noise {

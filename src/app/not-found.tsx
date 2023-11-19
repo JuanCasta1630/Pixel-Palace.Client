@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
 import FooterLayout from "./components/Footer";
-import HeaderLayout from "./components/Header";
 import { Layout } from "antd";
 import { ThemeProvider } from "next-themes";
 export default function Error404() {
@@ -9,7 +8,6 @@ export default function Error404() {
   return (
     <ThemeProvider enableSystem={true} attribute="class">
       <Layout className="w-full min-h-screen dark:bg-gray-700 bg-white overflow-hidden">
-        
         <Content className="body ">
           <div className="noise"></div>
           <div className="overlay"></div>
@@ -28,7 +26,7 @@ export default function Error404() {
             <p className="output">Good luck.</p>
           </div>
         </Content>
-      <FooterLayout />
+        <FooterLayout />
       </Layout>
     </ThemeProvider>
   );
