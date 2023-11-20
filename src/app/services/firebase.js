@@ -19,15 +19,16 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { getDownloadURL, getStorage, getURL } from "firebase/storage";
 import { ref, uploadBytes } from "firebase/storage";
 
-// const firebaseConfig = {
-//   apiKey: "AIzaSyB4G-wTDBmEoVObZMEUYKR8x1_KO8hyhMo",
-//   authDomain: "pixel-palace-d6bff.firebaseapp.com",
-//   projectId: "pixel-palace-d6bff",
-//   storageBucket: "pixel-palace-d6bff.appspot.com",
-//   messagingSenderId: "273766258888",
-//   appId: "1:273766258888:web:81ca0568c914fbceacedfd",
-//   measurementId: "G-2P1CY9ZRG0",
-// };
+const firebaseConfig = {
+  apiKey: "AIzaSyB4G-wTDBmEoVObZMEUYKR8x1_KO8hyhMo",
+  authDomain: "pixel-palace-d6bff.firebaseapp.com",
+  projectId: "pixel-palace-d6bff",
+  storageBucket: "pixel-palace-d6bff.appspot.com",
+  messagingSenderId: "273766258888",
+  appId: "1:273766258888:web:81ca0568c914fbceacedfd",
+  measurementId: "G-2P1CY9ZRG0",
+};
+/*
 const firebaseConfig = {
   apiKey: "AIzaSyB-fA9kv0DVDRqragYCgii_C6Qgj-pBG1s",
   authDomain: "pixel-palacebaclup.firebaseapp.com",
@@ -36,6 +37,7 @@ const firebaseConfig = {
   messagingSenderId: "372391412137",
   appId: "1:372391412137:web:ef0490cc6f1a104b6ac4b8"
 };
+*/
 // Inicializa Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
