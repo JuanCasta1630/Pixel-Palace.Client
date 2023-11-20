@@ -47,7 +47,7 @@ const Carousel = () => {
     return () => {
       clearInterval(interval);
     };
-  }, [currentIndex]);
+  }, [nextSlide]);
 
   return (
     <div className="h-96 w-full p-2 mx-auto relative group mt-20">
