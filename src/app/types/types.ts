@@ -22,6 +22,7 @@ export interface AuthModalProps {
   onClose: () => void;
   initialTab: number;
 }
+
 export interface Game  {
   categoria: string[];
   desarrollador: string;
@@ -30,6 +31,16 @@ export interface Game  {
   nombre: string;
   precio: number;
   valoracion?:any
+};
+
+export interface CardDetail {
+  codigo: string;
+  valor: number;
+  moneda: string;
+  fecha_expiracion: string;
+  estado: string;
+  image: string;
+  juego_relacionado: string;
 };
 
 export interface NewUserProps {

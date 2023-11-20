@@ -12,7 +12,7 @@ import { Game } from "@/app/types/types";
 import { useRouter } from "next/navigation";
 import HeaderLayout from "@/app/components/Header";
 
-function GameDetails() {
+function CardDetails() {
   const { Content } = Layout;
   const router = useRouter();
   
@@ -136,4 +136,4 @@ function GameDetails() {
   );
 }
 
-export default GameDetails;
+export default CardDetails;
