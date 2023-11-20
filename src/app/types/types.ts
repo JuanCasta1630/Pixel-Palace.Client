@@ -7,6 +7,16 @@ export interface InputFieldProps {
   required?: boolean;
 }
 
+export interface FilterProps {
+  id: number;
+  nombre: string;
+  categoria: string[];
+  desarrollador: string;
+  fecha_lanzamiento: string;
+  precio: number;
+  imagen: string;
+}
+
 export interface AuthModalProps {
   isOpen: boolean;
   onClose: () => void;

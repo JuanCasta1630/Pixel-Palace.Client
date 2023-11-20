@@ -1,36 +1,19 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import HeaderLayout from '../components/Header';
-import {
-  HeartOutlined,
-  FacebookOutlined,
-  TwitterOutlined,
-  InstagramOutlined,
-} from '@ant-design/icons';
 import { Layout, Col, Row, Pagination, Button, message } from 'antd';
 import { ThemeProvider } from 'next-themes';
 import Filters from '../components/Filters';
-import JuegosRecomendados from '../../../juegos.json';
 import FooterLayout from '../components/Footer';
 import { deleteGame } from '../services/firebase';
-import { Game } from '../types/types';
 import { ModalConfirm } from '../components/ModalConfirm';
 import Link from 'next/link';
 import { useGames } from '../hooks/useGames';
 
-interface FilterProps {
-  id: number;
-  nombre: string;
-  categoria: string[];
-  desarrollador: string;
-  fecha_lanzamiento: string;
-  precio: number;
-  imagen: string;
-}
 
 export default function Recommendations() {
-  const { Content, Footer } = Layout;
+  const { Content } = Layout;
 
   const [currentPage, setCurrentPage] = useState(1);
   const [editModalVisible, setEditModalVisible] = useState(false);

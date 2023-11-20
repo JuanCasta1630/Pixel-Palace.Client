@@ -3,7 +3,7 @@ import { Row, Col, Button, Card } from 'antd';
 import Link from 'next/link';
 
 interface BestGamesSectionProps {
-  juegosPopulares: any[]; // Reemplaza 'any[]' con el tipo correcto de tus datos
+  juegosPopulares: any[];
 }
 
 const BestGamesSection: React.FC<BestGamesSectionProps> = ({
