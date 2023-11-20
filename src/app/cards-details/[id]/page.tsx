@@ -10,6 +10,7 @@ import { getCardDetails } from "@/app/services/firebase";
 import { usePathname } from "next/navigation";
 import { Game } from "@/app/types/types";
 import { useRouter } from "next/navigation";
+import HeaderLayout from "@/app/components/Header";
 
 function GameDetails() {
   const { Content } = Layout;
@@ -34,6 +35,7 @@ function GameDetails() {
   return (
     <ThemeProvider enableSystem={true} attribute="class">
       <Layout className="w-full min-h-screen dark:bg-gray-700 bg-white">
+        <HeaderLayout/>
         <Content className="p-4 w-full">
           <Card className="w-full mt-20 dark:bg-gray-200">
             <div className="container w-full flex flex-col md:flex-row items-start gap-8 px-4 md:px-6">

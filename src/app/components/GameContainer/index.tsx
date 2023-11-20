@@ -59,6 +59,7 @@ const GameContainer: React.FC = () => {
   return (
     <ThemeProvider enableSystem={true} attribute="class">
       <Layout className="w-full min-h-screen dark:bg-gray-700 bg-white">
+        <HeaderLayout/>
         <Content className="p-4">
         <Carousel />
           <GiftCardsSection tarjetasDeRegalo={tarjetasDeRegalo} />
