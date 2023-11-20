@@ -9,6 +9,7 @@ import Loading from "../../loading";
 import { ThemeProvider } from "next-themes";
 import { usePathname } from "next/navigation";
 import { ShoppingCartOutlined } from "@ant-design/icons";
+import { useRouter } from "next/navigation";
 
 function GameDetails() {
   const { Content } = Layout;
@@ -16,7 +17,8 @@ function GameDetails() {
   const [loading, setLoading] = useState(true);
   const pathname = usePathname();
   const gameDetailId = pathname.split("/").at(2);
-
+  const router = useRouter();
+  
   useEffect(() => {
     if (gameDetailId) {
       getGameDetails(gameDetailId).then((resp) => {
@@ -113,7 +115,7 @@ function GameDetails() {
                     $ {data?.precio}
                   </p>
                   <div className="flex flex-col items-center space-y-2">
-                    <button className="button1 w-full text-white px-4 py-2 rounded">
+                    <button className="button1 w-full text-white px-4 py-2 rounded" onClick={()=>router.push('/checkout')}>
                       Buy Now
                     </button>
                     <button className="button1 w-full text-white px-4 py-2 rounded">

@@ -37,7 +37,16 @@ export interface ReportData {
   quantity: number;
   category: string;
 }
+export interface PaymentFormProps {
+  onSubmit: (values: any) => void;
+}
 
+export interface PaymentFormValues {
+  cardNumber: string;
+  cardHolder: string;
+  expirationDate: string;
+  cvc: string;
+}
 export interface FormValues {
   month: string;
   category: string;

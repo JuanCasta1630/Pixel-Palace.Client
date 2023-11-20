@@ -8,8 +8,11 @@ import { ShoppingCartOutlined } from "@ant-design/icons";
 import { getCardDetails } from "@/app/services/firebase";
 import { usePathname } from "next/navigation";
 import { Game } from "@/app/types/types";
+import { useRouter } from "next/navigation";
+
 function GameDetails() {
-  const { Content, Footer } = Layout;
+  const { Content } = Layout;
+  const router = useRouter();
   
   const [data, setData] = useState<Game | null>(null);
   const [loading, setLoading] = useState(true);
@@ -109,7 +112,7 @@ function GameDetails() {
                     $ {data?.precio}
                   </p>
                   <div className="flex flex-col items-center space-y-2">
-                    <button className="button1 w-full text-white px-4 py-2 rounded">
+                    <button className="button1 w-full text-white px-4 py-2 rounded" onClick={()=>router.push('/checkout')}>
                       Buy Now
                     </button>
                     <button className="button1 w-full text-white px-4 py-2 rounded">
