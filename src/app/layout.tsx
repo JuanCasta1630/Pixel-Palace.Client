@@ -19,6 +19,7 @@ export default function RootLayout({
     <html lang="es">
       <head>
         <link rel="icon" href="/logo.png" />
+        {/* @ts-ignore */}
         <title>{metadata?.title}</title>
       </head>
 

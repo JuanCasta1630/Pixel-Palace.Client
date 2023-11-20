@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 const Carousel = () => {
