@@ -19,14 +19,38 @@ export interface Game  {
   imagen: string;
   nombre: string;
   precio: number;
+  valoracion?:any
 };
 
 export interface NewUserProps {
   name: string;
-  lastName: string;
+  lastname: string;
   username: string;
   email: string;
   password: string;
-  birthdate: string;
-  isRegistered: boolean;
+  birthday: string;
+  isRegistered?: boolean;
+}
+
+export interface ReportData {
+  game: string;
+  quantity: number;
+  category: string;
+}
+export interface PaymentFormProps {
+  onSubmit: (values: any) => void;
+}
+
+export interface PaymentFormValues {
+  cardNumber: string;
+  cardHolder: string;
+  expirationDate: string;
+  cvc: string;
+}
+export interface FormValues {
+  month: string;
+  category: string;
+  bestSellers: boolean;
+  topRated: boolean;
+  fileFormat: "pdf" | "csv";
 }

@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+'use client'
 import React, { useEffect, useState } from "react";
 import { Layout, Col, Row, Button } from "antd";
 import juegos from "@/app/services/juegos.json";
@@ -58,9 +59,8 @@ const GameContainer: React.FC = () => {
   return (
     <ThemeProvider enableSystem={true} attribute="class">
       <Layout className="w-full min-h-screen dark:bg-gray-700 bg-white">
-        <HeaderLayout />
-        <Carousel />
         <Content className="p-4">
+        <Carousel />
           <GiftCardsSection tarjetasDeRegalo={tarjetasDeRegalo} />
           <BestGamesSection juegosPopulares={juegosPopulares} />
           <RecommendationsSection recomendaciones={recomendaciones} />

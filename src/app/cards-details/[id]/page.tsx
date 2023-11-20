@@ -1,32 +1,32 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
-import { getGameDetails } from "@/app/services/firebase";
-import { useEffect, useState } from "react";
-import FooterLayout from "../../components/Footer";
-import { Game } from "../../types/types";
-import { Card, Layout } from "antd";
+import React, { useEffect, useState } from "react";
 import Loading from "../../loading";
+import FooterLayout from "../../components/Footer";
 import { ThemeProvider } from "next-themes";
-import { usePathname } from "next/navigation";
+import { Card, Layout } from "antd";
 import { ShoppingCartOutlined } from "@ant-design/icons";
+import { getCardDetails } from "@/app/services/firebase";
+import { usePathname } from "next/navigation";
+import { Game } from "@/app/types/types";
 import { useRouter } from "next/navigation";
 
 function GameDetails() {
   const { Content } = Layout;
+  const router = useRouter();
+  
   const [data, setData] = useState<Game | null>(null);
   const [loading, setLoading] = useState(true);
   const pathname = usePathname();
-  const gameDetailId = pathname.split("/").at(2);
-  const router = useRouter();
-  
+  const cardDetailId = pathname.split("/").at(2);
+
   useEffect(() => {
-    if (gameDetailId) {
-      getGameDetails(gameDetailId).then((resp) => {
+    if (cardDetailId) {
+      getCardDetails(cardDetailId).then((resp) => {
         setData(resp as Game);
         setLoading(false);
       });
     }
-  }, [gameDetailId]);
+  }, [cardDetailId]);
 
   if (loading) return <Loading />;
 
@@ -52,12 +52,9 @@ function GameDetails() {
                 <p className="text-base text-zinc-500 dark:text-zinc-500">
                   Release Date: {data?.fecha_lanzamiento}
                 </p>
-                <p className="text-base text-zinc-500 dark:text-zinc-500">
-                  Category: {data?.categoria.join(" - ")}
-                </p>
                 <div className="flex space-x-2">
                   <button className="inline-flex items-center justify-center text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-primary/90 px-4 py-2 w-12 h-12 rounded-md border border-zinc-200 text-zinc-900 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-50">
-                    7
+                    9
                   </button>
                 </div>
                 <div className="flex items-center space-x-2">
