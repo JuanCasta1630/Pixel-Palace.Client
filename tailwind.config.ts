@@ -9,6 +9,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      boxShadow: {
+        'custom-purple': '0 4px 6px -1px rgba(139, 90, 213, 0.5), 0 2px 4px -1px rgba(139, 90, 213, 0.05)',
+      },
       backgroundImage: {
         'gradient-dark': 'linear-gradient(163deg, #111827 10%, #111827 90%)',
         'gradient-conic':

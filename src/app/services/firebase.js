@@ -226,7 +226,7 @@ export const getGameDetails = async (gameId) => {
   console.log(gameId, "gameId")
   try {
     const gameDocRef = doc(firestore, "juegos", gameId)
-    const gameDocSnapshot = await getDocs(gameDocRef);
+    const gameDocSnapshot = await getDoc(gameDocRef);
 
     if (gameDocSnapshot.exists()) {
       // El documento del juego existe
@@ -241,7 +241,21 @@ export const getGameDetails = async (gameId) => {
   }
 };
 
+export const getCardDetails = async (cardId) => {
+  try {
+    const gameDocRef = doc(firestore, "tarjeta", cardId)
+    const gameDocSnapshot = await getDoc(gameDocRef);
 
+    if (gameDocSnapshot.exists()) {
+      return gameDocSnapshot.data()
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error("Error al obtener detalles de la tarjeta", error);
+    return null;
+  }
+};
 export const searchGamesByName = async (searchQuery) => {
   try {
     const gamesCollection = collection(firestore, "juegos");

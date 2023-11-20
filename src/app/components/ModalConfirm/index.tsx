@@ -38,7 +38,7 @@ export const ModalConfirm = ({
       closeIcon={false}
     >
       <div className="text-right">
-        <Button type="text" onClick={onAction}>
+        <Button type="text" onClick={onCancel}>
           <CloseCircleFilled className="text-gray-100 text-2xl" />
         </Button>
       </div>

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 const Carousel = () => {
@@ -46,10 +47,10 @@ const Carousel = () => {
     return () => {
       clearInterval(interval);
     };
-  }, [currentIndex]);
+  }, [nextSlide]);
 
   return (
-    <div className="h-96 w-full p-2 mx-auto relative group mt-24">
+    <div className="h-96 w-full p-2 mx-auto relative group mt-20">
       <div
         style={{ backgroundImage: `url(${slides[currentIndex].url})` }}
         className="w-full h-full rounded-2xl bg-center bg-cover transition duration-500"

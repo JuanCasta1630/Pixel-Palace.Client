@@ -65,16 +65,16 @@ function CreateGame() {
   return (
     <div>
       <Button
-        className="button1"
+        className="button1 w-full"
         type="primary"
         icon={<PlusOutlined />}
         onClick={handleOpenModal}
       >
-        Add Game
+        Create Product
       </Button>
       <Modal
         title={
-          <div className="dark:bg-gray-900 p-4 text-white">Add Game</div>
+          <div className="dark:bg-gray-900 p-4 text-white">Create Product</div>
         }
         open={modalVisible}
         onCancel={handleCancel}
@@ -113,7 +113,7 @@ function CreateGame() {
               ))}
             </Select>
           </Form.Item>
-          <Form.Item label="Developer" name="desarrollador">
+          <Form.Item label="Platform" name="desarrollador">
             <Input className="bg-gray-400 border-none outline-none w-full text-white dark:text-black" />
           </Form.Item>
           <Form.Item label="Release date" name="fecha_lanzamiento">

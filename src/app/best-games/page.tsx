@@ -30,10 +30,6 @@ export default function BestGames() {
   const itemsPerPage: number = 12;
   const startIndex: number = (currentPage - 1) * itemsPerPage;
   const endIndex: number = currentPage * itemsPerPage;
-  const cardsPaginados: FilterProps[] = JuegosRecomendados.slice(
-    startIndex,
-    endIndex
-  );
   return (
     <ThemeProvider enableSystem={true} attribute="class">
       <Layout className="w-full min-h-screen dark:bg-gray-700 bg-white">
