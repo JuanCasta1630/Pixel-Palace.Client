@@ -44,7 +44,8 @@ const Stepper: React.FC = () => {
             y: 0,
           },
         });
-        throw new Error('There was an error processing the request.');
+
+        throw new Error('There was an error processing the purchase.');
       }
       nextStep();
     }
