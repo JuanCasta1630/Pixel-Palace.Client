@@ -1,8 +1,0 @@
-{
-  "/page": "app/page.js",
-  "/checkout/page": "app/checkout/page.js",
-  "/cards-details/[id]/page": "app/cards-details/[id]/page.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
-  "/game-details/[id]/page": "app/game-details/[id]/page.js"
-}
