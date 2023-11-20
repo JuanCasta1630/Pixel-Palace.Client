@@ -18,6 +18,7 @@ import Loading from "@/app/loading";
 import GiftCardsSection from "./GiftCardsSection";
 import BestGamesSection from "./BestGameSection";
 import RecommendationsSection from "./RecommendationsSection";
+import ShoppingCartProvider from "@/context/ShoppingCartContext";
 
 const { Content } = Layout;
 
@@ -51,7 +52,6 @@ const GameContainer: React.FC = () => {
       });
   }, []);
 
-
   // Filtrar juegos populares, recomendaciones y tarjetas de regalo
   const juegosPopulares = games.filter((game) => game).slice(0, 4);
   const recomendaciones = games.filter((game) => game).slice(0, 4);
@@ -59,24 +59,24 @@ const GameContainer: React.FC = () => {
 
   return (
     <ThemeProvider enableSystem={true} attribute="class">
-      <Layout className="w-full min-h-screen dark:bg-gray-700 bg-white">
-        <Content className="p-4">
-        <Carousel />
-          <GiftCardsSection tarjetasDeRegalo={tarjetasDeRegalo} />
-          <BestGamesSection juegosPopulares={juegosPopulares} />
-          <RecommendationsSection recomendaciones={recomendaciones} />
-          <CategoriasPage />
-        </Content>
-        {/* <Pagination
-          current={currentPage}
-          total={juegos.length}
-          pageSize={pageSize}
-          onChange={onChangePage}
-          showSizeChanger={false}
-          className="text-center"
-        /> */}
-        <FooterLayout />
-      </Layout>
+        <Layout className="w-full min-h-screen dark:bg-gray-700 bg-white">
+          <Content className="p-4">
+          <Carousel />
+            <GiftCardsSection tarjetasDeRegalo={tarjetasDeRegalo} />
+            <BestGamesSection juegosPopulares={juegosPopulares} />
+            <RecommendationsSection recomendaciones={recomendaciones} />
+            <CategoriasPage />
+          </Content>
+          {/* <Pagination
+            current={currentPage}
+            total={juegos.length}
+            pageSize={pageSize}
+            onChange={onChangePage}
+            showSizeChanger={false}
+            className="text-center"
+          /> */}
+          <FooterLayout />
+        </Layout>
     </ThemeProvider>
   );
 };

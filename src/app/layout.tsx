@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import SessionAuthProvider from "@/context/SessionAuthProvider";
 import HeaderLayout from "./components/Header";
+import ShoppingCartProvider from "@/context/ShoppingCartContext";
 
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
@@ -26,8 +27,10 @@ export default function RootLayout({
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <body>
         <SessionAuthProvider>
+        <ShoppingCartProvider>
         <HeaderLayout />
          {children}
+         </ShoppingCartProvider>
         </SessionAuthProvider>
       </body>
     </html>

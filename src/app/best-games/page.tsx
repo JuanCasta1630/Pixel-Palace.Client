@@ -41,7 +41,7 @@ export default function BestGames() {
             </div>
             <div className="">
               <h1 className="text-center font-semibold text-4xl">
-                The Best Games
+                The best games
               </h1>
               <GameList />
             </div>

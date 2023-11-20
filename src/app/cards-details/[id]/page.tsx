@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Loading from "../../loading";
 import FooterLayout from "../../components/Footer";
 import { ThemeProvider } from "next-themes";
@@ -10,8 +10,29 @@ import { getCardDetails } from "@/app/services/firebase";
 import { usePathname } from "next/navigation";
 import { Game } from "@/app/types/types";
 import { useRouter } from "next/navigation";
+import { CartContext } from "@/context/ShoppingCartContext";
 
 function GameDetails() {
+
+  const {cart, setCart} = useContext(CartContext);
+
+  const addToCart = () => {
+    setCart((currGames) => {
+      const isGamesFound = currGames.find((game) => game.id === id);
+      if(isGamesFound){
+        return currGames.map((game) => {
+          if(game.id === id){
+            return {...game, quantity: game.quantity + 1}:
+          } else {
+            return game;
+          }
+        });
+      } else {
+        return [...currGames, {id, quantity: 1, precio}];
+      }
+    });
+  };
+
   const { Content } = Layout;
   const router = useRouter();
   
@@ -19,6 +40,7 @@ function GameDetails() {
   const [loading, setLoading] = useState(true);
   const pathname = usePathname();
   const cardDetailId = pathname.split("/").at(2);
+  
 
   useEffect(() => {
     if (cardDetailId) {
@@ -30,6 +52,7 @@ function GameDetails() {
   }, [cardDetailId]);
 
   if (loading) return <Loading />;
+
 
   return (
     <ThemeProvider enableSystem={true} attribute="class">
@@ -116,7 +139,7 @@ function GameDetails() {
                     <button className="button1 w-full text-white px-4 py-2 rounded" onClick={()=>router.push('/checkout')}>
                       Buy Now
                     </button>
-                    <button className="button1 w-full text-white px-4 py-2 rounded">
+                    <button className="button1 w-full text-white px-4 py-2 rounded" onClick={() => addToCart()}>
                       <span className="self-center">
                         <ShoppingCartOutlined className="font-semibold mr-2 text-md" />
                         Add to Cart
