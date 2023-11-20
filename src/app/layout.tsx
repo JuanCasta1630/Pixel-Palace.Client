@@ -18,7 +18,7 @@ export default function RootLayout({
     <html lang="es">
       <head>
         <link rel="icon" href="/logo.png" />
-        //@ts-ignore
+        {/* @ts-ignore */}
         <title>Pixel Palace</title>
       </head>
 
