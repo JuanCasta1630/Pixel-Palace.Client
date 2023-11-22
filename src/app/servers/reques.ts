@@ -1,6 +1,6 @@
 
 // URL base de la API
-const BASE_URL = 'http://localhost:8082/api/v1/product';
+const BASE_URL = 'http://localhost:8082/api/v1';
 
 // Función para manejar las respuestas de la API
 const handleResponse = async (response: Response): Promise<any> => {
@@ -32,7 +32,7 @@ export const fetchData = async (url: string, method: string = 'GET', data?: any)
 // Función para obtener todos los productos
 export const getAllProducts = async () => {
     try {
-        const url = `${BASE_URL}/games`;
+        const url = `${BASE_URL}/product/games`;
         return fetchData(url, 'GET');
     } catch (error) {
         console.error('Error fetching all products:', error);
@@ -43,7 +43,7 @@ export const getAllProducts = async () => {
   // Función para crear un nuevo producto
 export const createProduct = async (newProductDTO: any) => {
     try {
-        const url = `${BASE_URL}/game/new`;
+        const url = `${BASE_URL}/product/game/new`;
         return fetchData(url, 'POST', newProductDTO);
     } catch (error) {
         console.error('Error creating product:', error);
@@ -54,7 +54,7 @@ export const createProduct = async (newProductDTO: any) => {
   // Función para obtener la lista de productos
 export const getProductsList = async (category: any) => {
     try {
-      const url = `${BASE_URL}/games${category ? `?category=${category}` : ''}`;
+      const url = `${BASE_URL}/product/games${category ? `?category=${category}` : ''}`;
       return fetchData(url);
     } catch (error) {
       console.error('Error fetching products list:', error);
@@ -65,7 +65,7 @@ export const getProductsList = async (category: any) => {
   // Función para obtener un producto por ID
 export const getProductById = async (id: any) => {
     try {
-      const url = `${BASE_URL}/game/${id}`;
+      const url = `${BASE_URL}/product/game/${id}`;
       return fetchData(url);
     } catch (error) {
       console.error('Error fetching product by ID:', error);
@@ -76,7 +76,7 @@ export const getProductById = async (id: any) => {
   // Función para obtener productos por nombre
 export const getProductByName = async (name: any) => {
     try {
-      const url = `${BASE_URL}/games/${name}`;
+      const url = `${BASE_URL}/product/games/${name}`;
       return fetchData(url);
     } catch (error) {
       console.error('Error fetching product by name:', error);
@@ -87,7 +87,7 @@ export const getProductByName = async (name: any) => {
   // Función para actualizar un producto
 export const updateProduct = async (productDTO: any) => {
     try {
-      const url = `${BASE_URL}/game/update`;
+      const url = `${BASE_URL}/product/game/update`;
       return fetchData(url, 'PUT', productDTO);
     } catch (error) {
       console.error('Error updating product:', error);
@@ -98,7 +98,7 @@ export const updateProduct = async (productDTO: any) => {
   // Función para eliminar un producto
 export const deleteProduct = async (id: any) => {
     try {
-      const url = `${BASE_URL}/game/delete/${id}`;
+      const url = `${BASE_URL}/product/game/delete/${id}`;
       return fetchData(url, 'DELETE');
     } catch (error) {
       console.error('Error deleting product:', error);
@@ -109,11 +109,33 @@ export const deleteProduct = async (id: any) => {
   // Función para obtener productos por puntaje
 export const getProductByScore = async (score: any) => {
     try {
-      const url = `${BASE_URL}/games/score/${score}`;
+      const url = `${BASE_URL}/product/games/score/${score}`;
       return fetchData(url);
     } catch (error) {
       console.error('Error fetching products by score:', error);
       throw error;
     }
   };
-  
+  // localhost:8082/api/v1/genre/list
+// Función para obtener todas las categorías
+export const getCategorias = async () => {
+  try {
+      const url = `${BASE_URL}/genre/list`; 
+      return fetchData(url);
+  } catch (error) {
+      console.error('Error fetching categories:', error);
+      throw error;
+  }
+};
+
+// localhost:8082/api/v1/platform/list
+// Función para obtener todas las plataformas
+export const getPlatforms = async () => {
+  try {
+      const url = `${BASE_URL}/platform/list`; 
+      return fetchData(url);
+  } catch (error) {
+      console.error('Error fetching platforms:', error);
+      throw error;
+  }
+};
