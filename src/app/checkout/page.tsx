@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import PaymentForm from "../components/Steper/index";
@@ -11,12 +11,39 @@ import FooterLayout from "../components/Footer";
 import { useSession } from "next-auth/react";
 import cookies from "js-cookie";
 import { useGames } from "../hooks/useGames";
+import AuthModal from "../components/AuthModal";
 
 const Stepper: React.FC = () => {
   const [step, setStep] = useState<number>(1);
   const { Content } = Layout;
   const { data: session } = useSession();
   const { gameAll } = useGames();
+  const [isLoginModalOpen, setLoginModalOpen] = useState(false);
+  const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
+  const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isMobileUserOpen, setMobileUserOpen] = useState(false);
+
+  const openRegisterModal = () => {
+    setRegisterModalOpen(true);
+    if (isMobileUserOpen) {
+      toggleMobileUser();
+    }
+  };
+
+  const closeLoginModal = () => {
+    setLoginModalOpen(false);
+  };
+
+  const closeRegisterModal = () => {
+    setRegisterModalOpen(false);
+  };
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const toggleMobileUser = () => {
+    setMobileUserOpen(!isMobileUserOpen);
+  };
   //   const [user, setUser] = useState([])
   //   useEffect(() => {
   //     const fetchUserData = async () => {
@@ -48,8 +75,6 @@ const Stepper: React.FC = () => {
   //     fetchUserData();
   //   }, [session]);
 
-  // console.log(user);
-
   const productId = cookies.get("productId");
 
   const filterGame: any = gameAll.filter((game: any) => {
@@ -63,29 +88,29 @@ const Stepper: React.FC = () => {
   const prevStep = () => {
     setStep((prevStep) => prevStep - 1);
   };
-
+  const openLoginModal = () => {
+    setLoginModalOpen(true);
+    if (isMobileUserOpen) {
+      toggleMobileUser();
+    }
+  };
   const handleSubmit = (values: any) => {
     if (step === 1) {
     } else if (step === 2) {
     } else if (step === 3) {
+      if (!session) {
+        openLoginModal();
+        return;
+      }
       console.log("Form submitted with values:", values);
     }
     nextStep();
   };
-
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("Name is required"),
     email: Yup.string().email("Invalid email").required("Email is required"),
   });
 
-  const [gameInfo, setGameInfo] = useState({
-    //@ts-ignore
-    id: 1,
-    name: "Nombre del Juego",
-    price: 29.99,
-    platformId: 2,
-    description: "",
-  });
   return (
     <ThemeProvider enableSystem={true} attribute="class">
       <Layout className=" w-full min-h-screen dark:bg-gray-700 bg-white">
@@ -150,44 +175,67 @@ const Stepper: React.FC = () => {
             {step === 3 && (
               <>
                 <h2 className="text-2xl font-bold mb-4">Resume Payment</h2>
-                  <>
-                    <div className="mb-4">
-                      <img
-                        width={300}
-                        src={filterGame[0]?.imagen ? filterGame[0]?.imagen : filterGame[0]?.imageUrl || "https://pixel-palace.netlify.app/logo.png"}
-                        alt="imagen"
-                      />
-                      <p className="text-lg font-semibold">
-                        Product: {filterGame[0]?.nombre ? filterGame[0]?.nombre : filterGame[0]?.name}
-                      </p>
-                      <p className="text-lg font-semibold">
-                        Price: ${filterGame[0]?.precio ? filterGame[0]?.precio : filterGame[0]?.price}
-                      </p>
-                      <p className="text-lg w-96 text-justify">
-                       {filterGame[0]?.description ? filterGame[0]?.description : null }
-                      </p>
-                    </div>
-                    <div className="flex justify-between">
-                      <button
-                        className="2xl:text-2xl bg-gray-900 text-gray-100 px-4 py-2 m-1 rounded-md w-48"
-                        onClick={prevStep}
-                      >
-                        Back
-                      </button>
-                      <button
-                        className="button2 2xl:text-2xl bg-green-500 text-white px-4 py-2 m-1 rounded-md hover:bg-green-600 w-48"
-                        onClick={handleSubmit}
-                      >
-                        Send
-                      </button>
-                    </div>
-                  </>
+                <>
+                  <div className="mb-4">
+                    <img
+                      width={300}
+                      src={
+                        filterGame[0]?.imagen
+                          ? filterGame[0]?.imagen
+                          : filterGame[0]?.imageUrl ||
+                            "https://pixel-palace.netlify.app/logo.png"
+                      }
+                      alt="imagen"
+                    />
+                    <p className="text-lg font-semibold">
+                      Product:{" "}
+                      {filterGame[0]?.nombre
+                        ? filterGame[0]?.nombre
+                        : filterGame[0]?.name}
+                    </p>
+                    <p className="text-lg font-semibold">
+                      Price: $
+                      {filterGame[0]?.precio
+                        ? filterGame[0]?.precio
+                        : filterGame[0]?.price}
+                    </p>
+                    <p className="text-lg w-96 text-justify">
+                      {filterGame[0]?.description
+                        ? filterGame[0]?.description
+                        : null}
+                    </p>
+                  </div>
+                  <div className="flex justify-between">
+                    <button
+                      className="2xl:text-2xl bg-gray-900 text-gray-100 px-4 py-2 m-1 rounded-md w-48"
+                      onClick={prevStep}
+                    >
+                      Back
+                    </button>
+                    <button
+                      className="button2 2xl:text-2xl bg-green-500 text-white px-4 py-2 m-1 rounded-md hover:bg-green-600 w-48"
+                      onClick={handleSubmit}
+                    >
+                      Send
+                    </button>
+                  </div>
+                </>
               </>
             )}
           </div>
         </Content>
         <FooterLayout />
       </Layout>
+      <AuthModal
+        isOpen={isLoginModalOpen}
+        onClose={closeLoginModal}
+        initialTab={0}
+      />
+      <AuthModal
+        isOpen={isRegisterModalOpen}
+        onClose={closeRegisterModal}
+        initialTab={1}
+      />
     </ThemeProvider>
   );
 };

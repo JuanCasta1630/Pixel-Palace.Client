@@ -120,8 +120,7 @@ function CreateGame() {
             <Select
               mode="tags"
               style={{ width: "100%" }}
-              placeholder="Select or enter categories"
-              defaultValue={gameAll[0]?.desarrollador}
+              placeholder="Select or enter platform"
               // onSelect={(value) => {
               //   // Handle game selection here
               // }}

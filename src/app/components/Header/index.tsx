@@ -27,7 +27,6 @@ const HeaderLayout = () => {
   const {data: session} = useSession()
 
   const user = session
-console.log(session);
 
   const openLoginModal = () => {
     setLoginModalOpen(true);
@@ -35,24 +34,24 @@ console.log(session);
       toggleMobileUser();
     }
   };
-  const handleSignOut = async () => {
-    await signOut({callbackUrl: '/'});
-  }
   const openRegisterModal = () => {
     setRegisterModalOpen(true);
     if (isMobileUserOpen) {
       toggleMobileUser();
     }
   };
-
+  
   const closeLoginModal = () => {
     setLoginModalOpen(false);
   };
-
+  
   const closeRegisterModal = () => {
     setRegisterModalOpen(false);
   };
-
+  
+  const handleSignOut = async () => {
+    await signOut({callbackUrl: '/'});
+  }
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!isMobileMenuOpen);
   };

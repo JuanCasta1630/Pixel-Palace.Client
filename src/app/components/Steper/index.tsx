@@ -9,8 +9,8 @@ import * as Yup from "yup";
 const PaymentForm: React.FC<PaymentFormProps> = ({ onSubmit }) => {
   const initialValues: PaymentFormValues = {
     cardNumber: "1234 5678 9101 1121",
-    cardHolder: "Pepe",
-    expirationDate: "23/23",
+    cardHolder: "Usuario",
+    expirationDate: "12/23",
     cvc: "123",
   };
   const validationSchema = Yup.object({
