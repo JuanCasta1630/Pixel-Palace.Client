@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-'use client'
+"use client";
 import React, { useEffect, useState } from "react";
 import { Layout, Col, Row, Button } from "antd";
 import juegos from "@/app/services/juegos.json";
@@ -10,14 +10,12 @@ import Carousel from "../Carrusel";
 import Link from "next/link";
 import CategoriasPage from "../Categories/index";
 import FooterLayout from "../Footer";
-import CreateGame from "../CreateGame";
-import { getCards } from "@/app/services/firebase";
-import { Game } from "@/app/types/types";
 import { useGames } from "@/app/hooks/useGames";
 import Loading from "@/app/loading";
 import GiftCardsSection from "./GiftCardsSection";
 import BestGamesSection from "./BestGameSection";
 import RecommendationsSection from "./RecommendationsSection";
+import { getAllProducts } from "@/app/servers/reques";
 
 const { Content } = Layout;
 
@@ -34,33 +32,53 @@ const GameContainer: React.FC = () => {
     currentPage * pageSize
   );
 
-  const { games } = useGames();
-  const [cards, setCards] = useState([]);
+  const { gameAll, cards, loading } = useGames();
 
-  useEffect(() => {
-    getCards()
-      .then((result: any) => {
-        if (result.success) {
-          setCards(result.card);
-        } else {
-          console.error("Error al obtener los juegos:", result.error);
-        }
-      })
-      .catch((error) => {
-        console.error("Error al obtener los juegos:", error);
-      });
-  }, []);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       setLoading(true);
 
-  // Filtrar juegos populares, recomendaciones y tarjetas de regalo
-  const juegosPopulares = games.filter((game) => game).slice(0, 4);
-  const recomendaciones = games.filter((game) => game).slice(0, 4);
+  //       // Llamada a la API para obtener productos y tarjetas
+  //       const [productsData, cardsData] = await Promise.all([
+  //         getAllProducts(),
+  //         getCards(),
+  //       ]);
+
+  //       // Manipulación de los datos obtenidos
+  //       const result = productsData?.data || [];
+  //       const gamesBack = result.products;
+  //       const cardsFir: any = cardsData?.card || [];
+  //       setCards(cardsFir);
+  //       const gamesFir = [...games];
+  //       const AllGames: any = [...gamesBack, ...gamesFir];
+  //       // console.log(AllGames, 'AllGames');
+  //       setProducts(AllGames);
+  //     } catch (error: any) {
+  //       setError(error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, [games]);
+
+  if (loading) {
+    return <Loading />;
+  }
+  // console.log(gameAll, 'games all home');
+  
+  const juegosPopulares = gameAll.filter((game) => game).slice(0, 4);
+  const recomendaciones = gameAll.filter((game) => game).slice(0, 4);
   const tarjetasDeRegalo = cards.filter((game) => game).slice(0, 4);
 
   return (
     <ThemeProvider enableSystem={true} attribute="class">
       <Layout className="w-full min-h-screen dark:bg-gray-700 bg-white">
+        <HeaderLayout />
         <Content className="p-4">
-        <Carousel />
+          <Carousel />
           <GiftCardsSection tarjetasDeRegalo={tarjetasDeRegalo} />
           <BestGamesSection juegosPopulares={juegosPopulares} />
           <RecommendationsSection recomendaciones={recomendaciones} />

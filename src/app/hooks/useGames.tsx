@@ -1,26 +1,50 @@
 import { useState, useEffect } from "react";
-import { Game } from "../types/types";
-import { getGames } from "../services/firebase";
+import { getCards, getGames } from "../services/firebase";
+import { getAllProducts } from "../servers/reques";
 
 export const useGames = () => {
-  const [games, setGames] = useState<Game[]>([]);
+  const [games, setGames] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getGames()
-      .then((result: any) => {
-        if (result.success) {
-          setGames(result.games);
-        } else {
-          console.error("Error al obtener los juegos:", result.error);
-        }
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error al obtener los juegos:", error);
-        setLoading(false);
-      });
-  }, []);
+    const fetchData = async () => {
+      try {
+        setLoading(true);
 
-  return { games, loading };
+        // Llamada a la API para obtener juegos
+        const gamesData = await getGames();
+        if (gamesData.success) {
+          //@ts-ignore
+          setGames(gamesData.games);
+        } else {
+          console.error("Error al obtener los juegos:", gamesData.error);
+        }
+        // Llamada a la API para obtener productos y tarjetas
+        const [productsData, cardsData] = await Promise.all([
+          getAllProducts(),
+          getCards(),
+        ]);
+
+        // Manipulación de los datos obtenidos
+        const result = productsData?.data || [];
+        const gamesBack = result.products;
+        const cardsFir: any = cardsData?.card || [];
+        setCards(cardsFir);
+        setProducts(gamesBack);
+        
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+ const gameAll = [...games, ...products]
+//  console.log(gameAll);
+ 
+  return { gameAll, cards, loading };
 };

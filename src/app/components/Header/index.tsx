@@ -27,7 +27,6 @@ const HeaderLayout = () => {
   const {data: session} = useSession()
 
   const user = session
-console.log(session);
 
   const openLoginModal = () => {
     setLoginModalOpen(true);
@@ -35,24 +34,24 @@ console.log(session);
       toggleMobileUser();
     }
   };
-  const handleSignOut = async () => {
-    await signOut({callbackUrl: '/'});
-  }
   const openRegisterModal = () => {
     setRegisterModalOpen(true);
     if (isMobileUserOpen) {
       toggleMobileUser();
     }
   };
-
+  
   const closeLoginModal = () => {
     setLoginModalOpen(false);
   };
-
+  
   const closeRegisterModal = () => {
     setRegisterModalOpen(false);
   };
-
+  
+  const handleSignOut = async () => {
+    await signOut({callbackUrl: '/'});
+  }
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!isMobileMenuOpen);
   };
@@ -125,7 +124,7 @@ console.log(session);
             onClick={() => (window.location.href = "/")}
           />
           <h1 onClick={() => (window.location.href = "/")} className="text-white text-2xl font-bold dark:text-white">
-            Better if possible
+            Better is possible
           </h1>
         </div>
 

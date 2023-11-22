@@ -162,7 +162,6 @@ export const useAuth = () => {
 };
 
 export const createGame = async (gameData) => {
-  console.log(gameData, "firebase");
   try {
     let collectionName = "juegos"; 
 
@@ -170,8 +169,7 @@ export const createGame = async (gameData) => {
       collectionName = "tarjeta";
     }
     const gameDocRef = await addDoc(collection(firestore, collectionName), gameData);
-    console.log(gameDocRef.id);
-
+    // console.log(gameDocRef.id);
     return { success: true, gameId: gameDocRef.id };
   } catch (error) {
     return { success: false, error: error.message };

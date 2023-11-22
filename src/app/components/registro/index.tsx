@@ -61,7 +61,6 @@ const RegistrationForm: React.FC<AuthModalProps> = ({ onClose }) => {
         if (response?.ok) {
           setIsRegistered(true);
           onClose();
-          
         }
       }
     } catch (error) {
