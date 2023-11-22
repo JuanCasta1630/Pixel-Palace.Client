@@ -11,22 +11,50 @@ import { usePathname } from "next/navigation";
 import { ShoppingCartOutlined } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
 import HeaderLayout from "@/app/components/Header";
+import { getProductById } from "@/app/servers/reques";
+import cookies from "js-cookie";
+
 
 function GameDetails() {
+
   const { Content } = Layout;
   const [data, setData] = useState<Game | null>(null);
   const [loading, setLoading] = useState(true);
   const pathname = usePathname();
-  const gameDetailId = pathname.split("/").at(2);
+  const gameDetailId: any  = pathname.split("/").at(2);
   const router = useRouter();
-  
+  const setProductId = (id: any) => {
+    cookies.set("productId", id);
+  };
+  setProductId(gameDetailId)
   useEffect(() => {
-    if (gameDetailId) {
-      getGameDetails(gameDetailId).then((resp) => {
-        setData(resp as Game);
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        // Validar si el ID es un número o alfanumérico
+        const isNumericId = /^\d+$/.test(gameDetailId);
+        // Obtener detalles del juego desde Firebase si es un ID alfanumérico
+        // Obtener detalles del juego desde el backend si es un ID numérico
+        const gameDetailsResponse = isNumericId
+          ? await getProductById(gameDetailId)
+          : await getGameDetails(gameDetailId);
+        let gameDetailsData: any;
+  
+        // Si es un ID alfanumérico, se espera que la respuesta tenga una propiedad 'data'
+        if (isNumericId) {
+          gameDetailsData = gameDetailsResponse?.data || {};
+        } else {
+          // Si es un ID numérico, se espera que la respuesta sea directamente el objeto de datos
+          gameDetailsData = gameDetailsResponse || {};
+        }
+        setData(gameDetailsData)
+      } catch (error: any) {
+        console.error(error);
+      } finally {
         setLoading(false);
-      });
-    }
+      }
+    };
+    fetchData();
   }, [gameDetailId]);
 
   if (loading) return <Loading />;
@@ -40,11 +68,11 @@ function GameDetails() {
             <div className="container w-full flex flex-col md:flex-row items-start gap-8 px-4 md:px-6">
               <div className="flex-1">
                 <img
-                  src={data?.imagen}
+                  src={data?.imagen ? data.imagen : data?.imageUrl || 'https://pixel-palace.netlify.app/logo.png'}
                   width="500"
                   height="500"
                   alt={data?.nombre}
-                  className="w-full aspect-[1/1] object-cover object-center dark:shadow-custom-purple"
+                  className="bg-gray-900 w-full aspect-[1/1] object-contain object-center dark:shadow-custom-purple rounded-md"
                 />
               </div>
               <div className="flex-1 space-y-6">
@@ -52,10 +80,10 @@ function GameDetails() {
                   {data?.nombre}
                 </h1>
                 <p className="text-base text-zinc-500 dark:text-zinc-500">
-                  Release Date: {data?.fecha_lanzamiento}
+                  {data?.fecha_lanzamiento ? `Release Date: ${data.fecha_lanzamiento}` : null}
                 </p>
                 <p className="text-base text-zinc-500 dark:text-zinc-500">
-                  Category: {data?.categoria.join(" - ")}
+                  Category: {data?.categoria ? data?.categoria : data?.categories}
                 </p>
                 <div className="flex space-x-2">
                   <button className="inline-flex items-center justify-center text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-primary/90 px-4 py-2 w-12 h-12 rounded-md border border-zinc-200 text-zinc-900 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-50">
@@ -114,7 +142,7 @@ function GameDetails() {
                     </p>
                   </div>
                   <p className="text-2xl font-semibold text-zinc-900 dark:text-red-500">
-                    $ {data?.precio}
+                    $ {data?.precio ? data.precio : data?.price}
                   </p>
                   <div className="flex flex-col items-center space-y-2">
                     <button className="button1 w-full text-white px-4 py-2 rounded" onClick={()=>router.push('/checkout')}>

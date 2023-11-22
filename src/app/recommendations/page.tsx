@@ -31,8 +31,8 @@ export default function Recommendations() {
   const startIndex: number = (currentPage - 1) * itemsPerPage;
   const endIndex: number = currentPage * itemsPerPage;
 
-  const { games } = useGames();
-  const cardsPaginados = games.slice(startIndex, endIndex);
+  const { gameAll } = useGames();
+  const cardsPaginados = gameAll.slice(startIndex, endIndex);
 
   const handleDeleteItem = async () => {
     if (selectedGameId) {
@@ -64,7 +64,7 @@ export default function Recommendations() {
             </div>
             <div className=''>
               <h1 className='text-center font-semibold text-4xl'>
-                The best games
+                Recommendations games
               </h1>
               <div className='l mt-16'>
                 <div className='flex justify-center space-x-8 2xl:mr-60 2xl:ml-60'>
@@ -72,7 +72,7 @@ export default function Recommendations() {
                     gutter={[16, 16]}
                     className='md:grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 '
                   >
-                    {games.map((game: any, index) => (
+                    {gameAll.map((game: any, index) => (
                       <Col
                         className='w-full sm:mx-2 md:mx-2 lg:mx-4 2xl:mx-4 '
                         key={index}
@@ -81,22 +81,22 @@ export default function Recommendations() {
                           <div className='card-home card2'>
                             <Link href={`/game-details/${game.id}`}>
                               <img
-                                alt={game.nombre}
-                                src={game.imagen}
-                                className=' w-full h-48 object-cover rounded-t-xl border border-gray-300'
+                                alt={game.nombre ? game.nombre : game.name}
+                                src={game?.imagen ? game?.imagen : game?.imageUrl || 'https://pixel-palace.netlify.app/logo.png'}
+                                className='bg-gray-900 w-full h-48 object-cover rounded-t-xl border border-gray-300'
                               />
                               <div className='p-4'>
                                 <h2 className='text-xl font-semibold mb-2'>
-                                  {game.nombre}
+                                {game.nombre ? game.nombre : game.name}
                                 </h2>
                                 <p className='text-gray-100'>
-                                  {game.categoria.join(', ')}
+                                  {game.categoria ? game.categoria : game.categories}
                                 </p>
                                 <p className='text-gray-100'>
                                   {game.fecha_lanzamiento}
                                 </p>
                                 <p className='text-red-500 font-semibold mt-2'>
-                                  ${game.precio}
+                                  ${game.precio ? game.precio : game.price}
                                 </p>
                               </div>
                             </Link>
@@ -151,7 +151,7 @@ export default function Recommendations() {
               </div>
               <Pagination
                 current={currentPage}
-                total={games.length}
+                total={gameAll.length}
                 pageSize={pageSize}
                 onChange={onChangePage}
                 showSizeChanger={false}

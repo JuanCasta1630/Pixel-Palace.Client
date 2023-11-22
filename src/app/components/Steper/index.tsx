@@ -35,9 +35,9 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onSubmit }) => {
 
   return (
     <div className="flex flex-col sm:flex-row md:flex-row w-full ">
-      <div className="rounded-md w-full sm:w-1/2 p-4 dark:bg-gray-900 mb-4 sm:mb-0">
+      <div className="rounded-md w-full sm:w-full p-4 dark:bg-gray-900 mb-4 sm:mb-0">
         <form onSubmit={formik.handleSubmit}>
-          <div className="mb-4">
+          <div className="mb-4 sm:w-full">
             <input
               type="text"
               id="cardNumber"
@@ -150,7 +150,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onSubmit }) => {
         </form>
       </div>
 
-      <div className="w-full sm:w-1/2 ">
+      <div className="w-[30%] sm:w-full md:ml-8 lg:ml-8 xl:ml-8 2xl:ml-8">
         <Cards
           cvc={formik.values.cvc}
           expiry={formik.values.expirationDate}

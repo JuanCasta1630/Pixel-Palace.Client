@@ -125,7 +125,7 @@ console.log(session);
             onClick={() => (window.location.href = "/")}
           />
           <h1 onClick={() => (window.location.href = "/")} className="text-white text-2xl font-bold dark:text-white">
-            Better if possible
+            Better is possible
           </h1>
         </div>
 

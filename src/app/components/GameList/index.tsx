@@ -1,11 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Col, Row, Pagination, message } from 'antd';
 import Link from 'next/link';
-import EditGameModal from '../EditGameModal';
 import { ModalConfirm } from '../ModalConfirm';
 import { deleteGame, getGames } from '@/app/services/firebase';
 import { useGames } from '@/app/hooks/useGames';
+import Loading from '@/app/loading';
 
 const GameList: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -31,7 +31,7 @@ const GameList: React.FC = () => {
     setFilters({ ...filters, platform: e.target.value });
   };
 
-  const { games } = useGames();
+  const { gameAll, loading } = useGames();
 
   const handleDeleteItem = async () => {
     if (selectedGameId) {
@@ -51,6 +51,9 @@ const GameList: React.FC = () => {
   const onChangePage = (page: number) => {
     setCurrentPage(page);
   };
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className='l mt-16'>
@@ -59,7 +62,7 @@ const GameList: React.FC = () => {
           gutter={[16, 16]}
           className='md:grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 '
         >
-          {games.map((game: any, index) => (
+          {gameAll.map((game: any, index) => (
             <Col
               className='w-full sm:mx-2 md:mx-2 lg:mx-4 2xl:mx-4 '
               key={index}
@@ -68,20 +71,20 @@ const GameList: React.FC = () => {
                 <div className='card-home card2'>
                   <Link href={`/game-details/${game.id}`}>
                     <img
-                      alt={game.nombre}
-                      src={game.imagen}
-                      className=' w-full h-48 object-cover rounded-t-xl border border-gray-300'
+                      alt={game.nombre ? game.nombre : game.name}
+                      src={game?.imagen ? game?.imagen : game?.imageUrl || 'https://pixel-palace.netlify.app/logo.png'}
+                      className='bg-gray-900 w-full h-48 object-cover rounded-t-xl border border-gray-300'
                     />
                     <div className='p-4'>
                       <h2 className='text-xl font-semibold mb-2'>
                         {game.nombre}
                       </h2>
                       <p className='text-gray-100'>
-                        {game.categoria.join(', ')}
+                        {game.categoria ? game.categoria : game.categories}
                       </p>
                       <p className='text-gray-100'>{game.fecha_lanzamiento}</p>
                       <p className='text-red-500 font-semibold mt-2'>
-                        ${game.precio}
+                        ${game.precio ? game.precio : game.price}
                       </p>
                     </div>
                   </Link>
@@ -135,7 +138,7 @@ const GameList: React.FC = () => {
       </div>
       <Pagination
         current={currentPage}
-        total={games.length}
+        total={gameAll.length}
         pageSize={pageSize}
         onChange={onChangePage}
         showSizeChanger={false}

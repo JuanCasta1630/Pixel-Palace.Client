@@ -30,6 +30,10 @@ export interface Game  {
   nombre: string;
   precio: number;
   valoracion?:any
+  categories: string[];
+  imageUrl: any;
+  score: number;
+  price: number;
 };
 
 export interface NewUserProps {

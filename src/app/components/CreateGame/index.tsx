@@ -16,6 +16,7 @@ import {
 } from "@/app/services/firebase";
 import InputField from "../Inputs/InputField";
 import { categorias } from "../../services/categories.json";
+import { useGames } from "@/app/hooks/useGames";
 
 const { Option } = Select;
 
@@ -23,7 +24,9 @@ function CreateGame() {
   const [modalVisible, setModalVisible] = useState(false);
   const [birthdate, setBirthdate] = useState("");
   const [imagen, setImagen] = useState(null);
-  const [gameType, setGameType] = useState(null); 
+  const [gameType, setGameType] = useState(null);
+  const { gameAll } = useGames();
+
   const modalCloseStyles =
     "absolute right-2 top-0.5 text-gray-400 hover:text-red-500 text-2xl";
   const handleOpenModal = () => {
@@ -34,7 +37,7 @@ function CreateGame() {
     setModalVisible(false);
   };
 
-  const handleSave = async (values:any) => {
+  const handleSave = async (values: any) => {
     try {
       if (imagen) {
         const downloadURL = await uploadImageToFirebaseStorage(imagen);
@@ -114,7 +117,27 @@ function CreateGame() {
             </Select>
           </Form.Item>
           <Form.Item label="Platform" name="desarrollador">
-            <Input className="bg-gray-400 border-none outline-none w-full text-white dark:text-black" />
+            <Select
+              mode="tags"
+              style={{ width: "100%" }}
+              placeholder="Select or enter categories"
+              defaultValue={gameAll[0]?.desarrollador}
+              // onSelect={(value) => {
+              //   // Handle game selection here
+              // }}
+            >
+            {gameAll.map((game: any) => (
+              <>
+                  <Option
+                    key={game?.id}
+                    value={game?.desarrollador}
+                    className="bg-gray-400 border-none outline-none w-full text-white dark:text-black"
+                  >
+                    {game?.desarrollador}
+                  </Option>
+              </>
+            ))}
+            </Select>
           </Form.Item>
           <Form.Item label="Release date" name="fecha_lanzamiento">
             <InputField
@@ -136,7 +159,6 @@ function CreateGame() {
           <Form.Item label="Type" name="gameType">
             <Select
               style={{ width: "100%" }}
-              
               onChange={(value) => setGameType(value)}
             >
               <Option value="Game">Game</Option>
@@ -147,7 +169,7 @@ function CreateGame() {
             <Upload
               beforeUpload={(file: any) => {
                 setImagen(file);
-                return false; 
+                return false;
               }}
               showUploadList={false}
             >
@@ -169,7 +191,7 @@ function CreateGame() {
               >
                 Delete image
               </Button>
-           ) }
+            )}
           </Form.Item>
           <Form.Item>
             <Button type="primary" htmlType="submit" className="button1 w-full">

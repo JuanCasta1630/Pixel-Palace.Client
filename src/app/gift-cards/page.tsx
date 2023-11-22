@@ -9,6 +9,7 @@ import Tarjetas from "../../../gift-cards.json";
 import { getCards } from "../services/firebase";
 import FooterLayout from "../components/Footer";
 import Link from "next/link";
+import Loading from "../loading";
 
 interface FilterProps {
   id: number;
@@ -53,7 +54,9 @@ export default function GiftCards() {
         setLoading(false);
       });
   }, []);
-
+  if (loading) {
+    return <Loading />;
+  }
   return (
     <ThemeProvider enableSystem={true} attribute="class">
       <Layout className="w-full min-h-screen dark:bg-gray-700 bg-white">

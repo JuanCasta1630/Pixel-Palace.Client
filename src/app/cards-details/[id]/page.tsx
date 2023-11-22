@@ -45,7 +45,7 @@ function GameDetails() {
                   width="500"
                   height="500"
                   alt={data?.nombre}
-                  className="w-full aspect-[1/1] object-cover object-center dark:shadow-custom-purple"
+                  className="bg-gray-900 w-full aspect-[1/1] object-contain object-center dark:shadow-custom-purple rounded-md"
                 />
               </div>
               <div className="flex-1 space-y-6">

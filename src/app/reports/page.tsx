@@ -8,6 +8,7 @@ import { Content } from "antd/es/layout/layout";
 import FooterLayout from "../components/Footer";
 import { FormValues, ReportData } from "../types/types";
 import { descargarCSV, generarPDF } from "../utils/reportsFunctions";
+import HeaderLayout from "../components/Header";
 
 const Reportes: React.FC = () => {
   const [reportResult, setReportResult] = useState<ReportData[] | null>(null);
@@ -52,6 +53,7 @@ const Reportes: React.FC = () => {
   return (
     <ThemeProvider enableSystem={true} attribute="class">
       <Layout className="w-full min-h-screen dark:bg-gray-700 bg-white">
+        <HeaderLayout/>
         <Content className="p-4 mt-8">
           <div className=" max-w-md mx-auto ">
             <form
@@ -117,7 +119,7 @@ const Reportes: React.FC = () => {
               </div>
 
               <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2">
+                <label className="block dark:text-white text-sm font-bold mb-2">
                   Options
                 </label>
                 <div className="flex items-center space-x-4">

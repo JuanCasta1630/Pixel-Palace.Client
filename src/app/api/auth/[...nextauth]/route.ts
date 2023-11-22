@@ -19,7 +19,6 @@ const handler = NextAuth({
         const res = await fetch(LOGIN_URL, data)
 
         const user = await res.json();
-        console.log(user)
         return user
       },
     }),
