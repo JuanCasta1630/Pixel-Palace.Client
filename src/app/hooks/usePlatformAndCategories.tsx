@@ -12,6 +12,8 @@ export default function usePlatformAndCategories() {
         const fetchData = async () => {
           try {
             const plataformasResponse = await getPlatforms();
+            console.log(plataformasResponse, 'plataformasResponse');
+            
             const categoriasResponse = await getCategorias();
     
             setPlataformas(plataformasResponse.data);

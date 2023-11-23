@@ -11,6 +11,8 @@ const handleResponse = async (response: Response): Promise<any> => {
     return response.json();
 };
 export const fetchData = async (url: string, method: string = 'GET', data?: any) => {
+  console.log(url);
+  
     const options: RequestInit = {
         method,
         headers: {
@@ -121,7 +123,7 @@ export const getProductByScore = async (score: any) => {
 export const getCategorias = async () => {
   try {
       const url = `${BASE_URL}/genre/list`; 
-      return fetchData(url);
+      return fetchData(url, 'GET');
   } catch (error) {
       console.error('Error fetching categories:', error);
       throw error;
@@ -133,7 +135,7 @@ export const getCategorias = async () => {
 export const getPlatforms = async () => {
   try {
       const url = `${BASE_URL}/platform/list`; 
-      return fetchData(url);
+      return fetchData(url, 'GET');
   } catch (error) {
       console.error('Error fetching platforms:', error);
       throw error;
