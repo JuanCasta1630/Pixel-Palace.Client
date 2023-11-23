@@ -1,6 +1,6 @@
 
 // URL base de la API
-const BASE_URL = 'http://localhost:8082/api/v1';
+const BASE_URL = 'http://localhost:8083/api/v1';
 
 // Función para manejar las respuestas de la API
 const handleResponse = async (response: Response): Promise<any> => {

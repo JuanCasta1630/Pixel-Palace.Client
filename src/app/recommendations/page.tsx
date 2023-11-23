@@ -10,6 +10,8 @@ import { deleteGame } from "../services/firebase";
 import { ModalConfirm } from "../components/ModalConfirm";
 import Link from "next/link";
 import { useGames } from "../hooks/useGames";
+import Loading from "../loading";
+import useUser from "../hooks/useUser";
 
 export default function Recommendations() {
   const { Content } = Layout;
@@ -18,7 +20,6 @@ export default function Recommendations() {
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [gameToEdit, setGameToEdit] = useState(null);
   const [isDeleteModalVisible, setDeleteModalVisible] = useState(false);
-  const [loading, setLoading] = useState(true);
   const [selectedGameId, setSelectedGameId] = useState(null);
   const [filters, setFilters] = useState({
     category: "all",
@@ -27,12 +28,19 @@ export default function Recommendations() {
   });
   const itemsPerPage: number = 12;
 
-  const startIndex: number = (currentPage - 1) * itemsPerPage;
-  const endIndex: number = currentPage * itemsPerPage;
+  const pageSize = 12;
+  const { gameAll, loading } = useGames();
+  const startIndex: number = (currentPage - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+  const displayedGames = gameAll.slice(startIndex, endIndex);
+  const { user } = useUser();
+  const onChangePage = (page: number) => {
+    setCurrentPage(page);
+  };
 
-  const { gameAll } = useGames();
-  const cardsPaginados = gameAll.slice(startIndex, endIndex);
-
+  if (loading) {
+    return <Loading />;
+  }
   const handleDeleteItem = async () => {
     if (selectedGameId) {
       try {
@@ -45,12 +53,6 @@ export default function Recommendations() {
     }
   };
 
-  const pageSize = 12;
-  const isAdmin = true;
-  const isLogin = true;
-  const onChangePage = (page: number) => {
-    setCurrentPage(page);
-  };
 
   return (
     <ThemeProvider enableSystem={true} attribute="class">
@@ -71,7 +73,7 @@ export default function Recommendations() {
                     gutter={[16, 16]}
                     className="md:grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 "
                   >
-                    {gameAll.map((game: any, index) => (
+                    {displayedGames.map((game: any, index) => (
                       <Col
                         className="w-full sm:mx-2 md:mx-2 lg:mx-4 2xl:mx-4 "
                         key={index}
@@ -93,7 +95,7 @@ export default function Recommendations() {
                                 />
                                 <div className="p-4">
                                   <h2 className="text-xl font-semibold mb-2">
-                                    {game.nombre}
+                                  {game.nombre ? game.nombre : game.name}
                                   </h2>
                                   <p className="text-gray-100">
                                     {game.categoria
