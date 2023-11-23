@@ -1,6 +1,31 @@
 
 // URL base de la API
 const BASE_URL = 'http://localhost:8083/api/v1';
+// Función para guardar una transacción
+export const saveTransaction = async (transactionData: any) => {
+  try {
+      const url = `${BASE_URL}/transaction/save`;
+      const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(transactionData),
+      });
+
+      if (!response.ok) {
+          const error = await response.json();
+          throw new Error(error.message || 'Error al guardar la transacción');
+      }
+
+      const responseData = await response.json();
+      return { data: responseData, response };
+  } catch (error) {
+      console.error('Error saving transaction:', error);
+      throw error;
+  }
+};
+
 
 // Función para manejar las respuestas de la API
 const handleResponse = async (response: Response): Promise<any> => {
