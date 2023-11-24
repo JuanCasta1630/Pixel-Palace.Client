@@ -164,7 +164,7 @@ function GameDetails() {
                     >
                       Buy Now
                     </button>
-                    <button  onClick={handleAddToCart} className="button1 w-full text-white px-4 py-2 rounded">
+                    <button disabled={!data} onClick={handleAddToCart} className="button1 w-full text-white px-4 py-2 rounded">
                       <span className="self-center">
                         <ShoppingCartOutlined className="font-semibold mr-2 text-md" />
                         Add to Cart

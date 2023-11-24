@@ -39,9 +39,9 @@ function CreateGame() {
     setModalVisible(false);
   };
   const { plataformas, categorias, loading } = usePlatformAndCategories()
-  if (loading) {
-    return <Loading/>;
-  }
+  // if (loading) {
+  //   return <Loading/>;
+  // }
   const handleSave = async (values: any) => {
     try {
       if (imagen) {

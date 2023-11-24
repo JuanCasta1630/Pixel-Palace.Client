@@ -2,9 +2,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import SessionAuthProvider from "@/context/SessionAuthProvider";
 import React from "react";
 import { CartProvider } from "@/context/CarContext";
+import { SessionProvider } from "@/context/SessionAuthProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
@@ -28,7 +28,7 @@ export default function RootLayout({
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <body>
         <CartProvider>
-          <SessionAuthProvider>{children}</SessionAuthProvider>
+          <SessionProvider>{children}</SessionProvider>
         </CartProvider>
       </body>
     </html>

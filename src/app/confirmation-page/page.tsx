@@ -1,8 +1,12 @@
-import { Alert, Button } from "antd";
+"use client";
+import { Alert, Button, Layout } from "antd";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import FooterLayout from "../components/Footer";
+import { ThemeProvider } from "next-themes";
+import HeaderLayout from "../components/Header";
 
-export default function PaginationOfConfirm() {
+export default function ConfirmationPage() {
   const [successMessage, setSuccessMessage] = useState("");
   const router = useRouter();
 
@@ -19,29 +23,54 @@ export default function PaginationOfConfirm() {
   const handleReturnHome = () => {
     router.push("/");
   };
+
+  function generateRandomCode(length: number): string {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let randomCode = '';
+  
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      randomCode += characters.charAt(randomIndex);
+    }
+  
+    return randomCode;
+  }
+  
+  const randomCode = generateRandomCode(8);
+
   return (
-    <div>
-      <h1> Confirmation Payment</h1>
-      <p>
-        Your purchase was successful. The game {"gameName"} is now yours. Redeem
-        it on the {"platformName"} platform using the following code:{" "}
-        {"redemptionCode"}. Enjoy your product!
-      </p>
-      {successMessage && (
-        <div className="fixed bottom-0 right-0 p-4">
-          <Alert
-            message="Success"
-            description={successMessage}
-            type="success"
-            showIcon
-          />
+    <ThemeProvider enableSystem={true} attribute="class">
+      <Layout className="w-full min-h-screen dark:bg-gray-700 bg-white">
+        <HeaderLayout />
+        <div className="flex justify-center items-center h-screen">
+          <div className="w-full max-w-md p-8 rounded-md shadow-md bg-white dark:bg-gray-900">
+            <h1 className="text-3xl font-bold text-center mb-4">Confirmation Payment</h1>
+            <p className="text-md text-center mb-6">
+              Your purchase was successful. The game is now yours.
+              Redeem it on the platform using the following
+              code: <span className="font-bold text-2xl">{randomCode}</span>. Enjoy your product!
+            </p>
+            {successMessage && (
+              <div className="mb-4">
+                <Alert
+                  message="Success"
+                  description={successMessage}
+                  type="success"
+                  showIcon
+                />
+              </div>
+            )}
+            <Button
+              type="primary"
+              className="w-full button2 hover:bg-green-600"
+              onClick={handleReturnHome}
+            >
+              Back to Home
+            </Button>
+          </div>
         </div>
-      )}
-      <div className="mt-20">
-        <Button type="primary" onClick={handleReturnHome}>
-        Back to Home
-        </Button>
-      </div>
-    </div>
+        <FooterLayout />
+      </Layout>
+    </ThemeProvider>
   );
 }

@@ -24,9 +24,9 @@ const Cart = () => {
   };
 
   const handleRemoveFromCart = (game: any) => {
-    const newCart = state.cart.filter((item) => item.id !== game.id);
-    removeFromCart(newCart);
+    removeFromCart(game);
   };
+  
 
   return (
     <ThemeProvider enableSystem={true} attribute="class">
@@ -61,14 +61,14 @@ const Cart = () => {
                               (item.name || item.nombre || "No Name")) || ""
                           }
                         />
-                        {/* <p className="text-red">Quantity: {item.quantity}</p>
+                        <p className="text-red">Quantity: {item.quantity}</p>
                         <button
                           className="button2"
                           onClick={() => handleRemoveFromCart(item)}
                         >
                           Remove from Cart
                         </button>
-                        <div className="flex items-center space-x-2 mt-2 ">
+                        {/* <div className="flex items-center space-x-2 mt-2 ">
                           <button
                             onClick={() =>
                               handleUpdateQuantity(item, item.quantity - 1)

@@ -1,12 +1,33 @@
 "use client";
 
-import { SessionProvider } from "next-auth/react";
+import { SessionProvider as NextAuthSessionProvider } from 'next-auth/react';
+import { createContext, useContext, useState } from 'react';
+import Cookies from 'js-cookie';
 
-interface Props {
-  children: React.ReactNode;
-}
+const SessionContext = createContext(undefined);
 
-const SessionAuthProvider = ({ children }: Props) => {
-  return <SessionProvider>{children}</SessionProvider>;
+export const SessionProvider = ({ children }: any) => {
+  const [token, setToken] = useState(Cookies.get('token') || null);
+
+  const login = (newToken: any) => {
+    setToken(newToken);
+    Cookies.set('token', newToken);
+  };
+
+  const logout = () => {
+    setToken(null);
+    Cookies.remove('token');
+  };
+
+  return (
+    // @ts-ignore
+    <SessionContext.Provider value={{ token, login, logout }}>
+      <NextAuthSessionProvider>{children}</NextAuthSessionProvider>
+    </SessionContext.Provider>
+  );
 };
-export default SessionAuthProvider;
+
+export const useSession = () => {
+  return useContext(SessionContext);
+};
+

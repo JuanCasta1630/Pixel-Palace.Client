@@ -14,12 +14,13 @@ import { useGames } from "../hooks/useGames";
 import AuthModal from "../components/AuthModal";
 import { saveTransaction } from "../servers/reques";
 import { useRouter } from "next/navigation";
+import Loading from "../loading";
 
 const Stepper: React.FC = () => {
   const [step, setStep] = useState<number>(1);
   const { Content } = Layout;
   const { data: session } = useSession();
-  const { gameAll } = useGames();
+  const { gameAll, loading } = useGames();
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
   const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -118,7 +119,7 @@ const Stepper: React.FC = () => {
 
       const data: any = [];
       try {
-        await saveTransaction(data);
+        // await saveTransaction(data);
         router.push("/confirmation-page");
         console.log("Transaction saved successfully!");
         nextStep();
@@ -133,7 +134,9 @@ const Stepper: React.FC = () => {
     name: Yup.string().required("Name is required"),
     email: Yup.string().email("Invalid email").required("Email is required"),
   });
-
+  if (loading) {
+    <Loading/>
+  }
   return (
     <ThemeProvider enableSystem={true} attribute="class">
       <Layout className=" w-full min-h-screen dark:bg-gray-700 bg-white">
