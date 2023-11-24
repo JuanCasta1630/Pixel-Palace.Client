@@ -9,6 +9,7 @@ import {
   SearchOutlined,
   MenuOutlined,
   CloseCircleOutlined,
+  ShoppingCartOutlined,
 } from "@ant-design/icons";
 import {useSession, signOut} from 'next-auth/react'
 import { getGames, searchGamesByName, useAuth } from "@/app/services/firebase";
@@ -200,6 +201,11 @@ const HeaderLayout = () => {
             }
             onPressEnter={handleSearch}
           />
+          <div>
+            <button onClick={() => (window.location.href = "/cart")} className="bg-black-700 hover:bg-gray-300 border-2 rounded-md w-12 h-12 text-lg text-violet-600 border-primary dark:border-gray-600">
+                <span className="cart-count"><ShoppingCartOutlined /></span>
+              </button>
+          </div>
           <div>
             {currentTheme === "dark" ? (
               <button

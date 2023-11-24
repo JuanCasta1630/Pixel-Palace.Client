@@ -170,11 +170,6 @@ function GameDetails() {
                         Add to Cart
                       </span>
                     </button>
-                    <Link href="/cart">
-                      <button className="button1 w-full text-red px-4 py-2 rounded">
-                        View Cart
-                      </button>
-                    </Link>
                   </div>
                 </div>
               </div>
