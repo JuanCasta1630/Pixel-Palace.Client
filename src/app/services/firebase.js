@@ -281,5 +281,12 @@ export const deleteGame = async (gameId) => {
     return { success: false, error: error.message };
   }
 };
-
+export const deleteCard = async (gameId) => {
+  try {
+    await deleteDoc(doc(firestore, "tarjeta", gameId));
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+};
 

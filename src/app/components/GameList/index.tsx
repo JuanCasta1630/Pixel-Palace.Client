@@ -33,10 +33,10 @@ const GameList: React.FC = () => {
     if (selectedGameId) {
       try {
         await deleteGame(selectedGameId);
-        message.success("Se eliminó correctamente", 3);
+        message.success("Deleted successfully", 3);
         setDeleteModalVisible(false);
       } catch (error) {
-        message.error("No se pudo eliminar, inténtelo más tarde", 3);
+        message.error("Could not delete, please try later", 3);
       }
     }
   };
@@ -145,7 +145,7 @@ const GameList: React.FC = () => {
                     />
                     <div className="p-4">
                       <h2 className="text-xl font-semibold mb-2">
-                      {game.nombre ? game.nombre : game.name}
+                        {game.nombre ? game.nombre : game.name}
                       </h2>
                       <p className="text-gray-100">
                         {game.categoria ? game.categoria : game.categories}
@@ -189,8 +189,8 @@ const GameList: React.FC = () => {
         }}
         onAction={handleDeleteItem}
         nameItem={"confirm"}
-        titleConfirm="Confirmar eliminación"
-        descriptionConfirm="¿Estás seguro de que deseas eliminar este elemento?"
+        titleConfirm="Confirm deletion"
+        descriptionConfirm="Are you sure you want to delete this item?"
       />
     </div>
   );
