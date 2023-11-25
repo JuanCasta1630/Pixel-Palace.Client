@@ -36,8 +36,6 @@ const handleResponse = async (response: Response): Promise<any> => {
     return response.json();
 };
 export const fetchData = async (url: string, method: string = 'GET', data?: any) => {
-  console.log(url);
-  
     const options: RequestInit = {
         method,
         headers: {

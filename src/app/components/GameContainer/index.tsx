@@ -81,7 +81,6 @@ const GameContainer: React.FC = () => {
   if (loading) {
     return <Loading />;
   }
-  console.log(cards, 'games all home');
   
   const juegosPopulares = gameAll.filter((game) => game).slice(0, 4);
   const recomendaciones = gameAll.filter((game) => game).slice(0, 4);
