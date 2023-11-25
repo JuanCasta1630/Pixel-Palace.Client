@@ -55,7 +55,7 @@ export default function RandomAvatar() {
             <Menu.Item key="signOutAdmin">
               <button
                 onClick={handleSignOut}
-                className="button1 w-full text-white"
+                className="button3 w-full text-white"
               >
                 Sign out
               </button>
