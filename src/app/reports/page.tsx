@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useFormik, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { ThemeProvider } from "next-themes";
-import { Layout } from "antd";
+import { DatePicker, Layout } from "antd";
 import { Content } from "antd/es/layout/layout";
 import FooterLayout from "../components/Footer";
 import { FormValues, ReportData } from "../types/types";
@@ -15,6 +15,7 @@ const Reportes: React.FC = () => {
 
   const formik = useFormik({
     initialValues: {
+      dateRange: [null, null],
       month: "",
       category: "",
       bestSellers: false,
@@ -22,9 +23,16 @@ const Reportes: React.FC = () => {
       fileFormat: "pdf",
     } as FormValues,
     validationSchema: Yup.object({
-      month: Yup.string().required("Select month"),
+      dateRange: Yup.array()
+        .test(
+          "dateRange",
+          "Both start and end dates are required",
+          (value: any) => value[0] && value[1]
+        )
+        .required("Select date range"),
       category: Yup.string().required("Select category"),
     }),
+    
     onSubmit: async (
       values: FormValues,
       { setSubmitting }: FormikHelpers<FormValues>
@@ -53,7 +61,7 @@ const Reportes: React.FC = () => {
   return (
     <ThemeProvider enableSystem={true} attribute="class">
       <Layout className="w-full min-h-screen dark:bg-gray-700 bg-white">
-        <HeaderLayout/>
+        <HeaderLayout />
         <Content className="p-4 mt-8">
           <div className=" max-w-md mx-auto ">
             <form
@@ -63,37 +71,32 @@ const Reportes: React.FC = () => {
               <h1 className="text-2xl font-semibold text-center ">Reports</h1>
               <div className="mb-4 mt-2">
                 <label
-                  htmlFor="month"
+                  htmlFor="dateRange"
                   className="block dark:text-white text-sm font-bold mb-2"
                 >
-                  Month
+                  Select Date Range
                 </label>
-                <select
-                  id="month"
-                  name="month"
-                  onChange={formik.handleChange}
+                <DatePicker.RangePicker
+                  id="dateRange"
+                  name="dateRange"
+                  onChange={(dates, dateStrings) => {
+                    formik.setFieldValue("dateRange", dates);
+                  }}
                   onBlur={formik.handleBlur}
-                  value={formik.values.month}
-                  className="w-full p-2 border rounded-md"
-                >
-                  <option value="">Select</option>
-                  <option value="january">January</option>
-                  <option value="february">February</option>
-                  <option value="march">March</option>
-                  <option value="april">April</option>
-                  <option value="may">May</option>
-                  <option value="june">June</option>
-                  <option value="august">August</option>
-                  <option value="september">September</option>
-                  <option value="october">October</option>
-                  <option value="november">November</option>
-                  <option value="december">December</option>
-                </select>
-                {formik.touched.month && formik.errors.month ? (
-                  <div className="text-red-500">{formik.errors.month}</div>
-                ) : null}
+                  //@ts-ignore
+                  value={formik.values.dateRange}
+                  className="w-full text-withe p-2 border rounded-md"
+                />
+                {
+                  //@ts-ignore
+                  formik.touched.dateRange && formik.errors.dateRange ? (
+                    <div className="text-red-500">
+                      {/* @ts-ignore */}
+                      {formik.errors.dateRange}
+                    </div>
+                  ) : null
+                }
               </div>
-
               <div className="mb-4">
                 <label
                   htmlFor="category"
@@ -107,7 +110,7 @@ const Reportes: React.FC = () => {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.category}
-                  className="w-full p-2 border rounded-md"
+                  className="w-full p-2 border rounded-md dark:bg-white text-black"
                 >
                   <option value="">Select...</option>
                   <option value="adventure">Adventure</option>
