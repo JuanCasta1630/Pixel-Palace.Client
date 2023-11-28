@@ -19,6 +19,7 @@ import InputField from "../Inputs/InputField";
 import { useGames } from "@/app/hooks/useGames";
 import usePlatformAndCategories from "@/app/hooks/usePlatformAndCategories";
 import Loading from "@/app/loading";
+import { createProduct } from "@/app/servers/reques";
 
 const { Option } = Select;
 
@@ -39,50 +40,28 @@ function CreateGame() {
   const handleCancel = () => {
     setModalVisible(false);
   };
-  const { plataformas, categorias, loading } = usePlatformAndCategories();
-  // if (loading) {
-  //   return <Loading/>;
-  // }
-  // const handleSave = async (values: any) => {
-  //   try {
-  //     if (imagen) {
-  //       const downloadURL = await uploadImageToFirebaseStorage(imagen);
-  //       const gameDataWithImage = {
-  //         ...values,
-  //         imagen: downloadURL,
-  //         fecha_lanzamiento: birthdate,
-  //         type: gameType,
-  //       };
-
-  //       const result = await createGame(gameDataWithImage);
-
-  //       if (result.success) {
-  //         console.log(`Juego creado con éxito. ID del juego: ${result.gameId}`);
-  //       } else {
-  //         console.error(`Error al crear el juego: ${result.error}`);
-  //       }
-  //     } else {
-  //       console.error("Debes seleccionar una imagen para subir.");
-  //     }
-  //   } catch (error) {
-  //     console.error(`Error al subir la imagen a Firebase: ${error}`);
-  //   }
-
-  //   setModalVisible(false);
-  // };
+  const { plataformas, categorias } = usePlatformAndCategories();
+  const [selectedCategoryIds, setSelectedCategoryIds] = useState([]);
+  const [selectedPlatformIds, setSelectedPlatformIds] = useState([]);
+ console.log(categorias);
+ 
   const handleSave = async (values: any) => {
     try {
       if (imagen) {
         const downloadURL = await uploadImageToFirebaseStorage(imagen);
+        console.log(imagen);
+        
         const gameDataWithImage = {
           ...values,
-          imagen: downloadURL,
-          fecha_lanzamiento: birthdate,
-          type: gameType,
+          imagen_url: downloadURL,
+          release_date: birthdate,
+          categorie_id: selectedCategoryIds,
+          platform_id: selectedPlatformIds,
         };
 
-        const result = await createGame(gameDataWithImage);
-
+        const result = await createProduct(gameDataWithImage);
+        console.log(result);
+        
         if (result.success) {
           console.log(`Juego creado con éxito. ID del juego: ${result.gameId}`);
           setModalVisible(false);
@@ -96,6 +75,7 @@ function CreateGame() {
       console.error(`Error al subir la imagen a Firebase: ${error}`);
     }
   };
+
   return (
     <div>
       <Button
@@ -135,37 +115,27 @@ function CreateGame() {
               mode="tags"
               style={{ width: "100%" }}
               placeholder="Select or enter categories"
+              onChange={(values) => setSelectedCategoryIds(values)}
             >
               {categorias.map((category: any) => (
-                <Option
-                  key={category.id}
-                  value={category.name}
-                  className="bg-gray-400 border-none outline-none w-full text-white dark:text-black"
-                >
-                  {category.name}
+                <Option key={category} value={category}>
+                  {category}
                 </Option>
               ))}
             </Select>
           </Form.Item>
+
           <Form.Item label="Platform" name="desarrollador">
             <Select
               mode="tags"
               style={{ width: "100%" }}
               placeholder="Select or enter platform"
-              // onSelect={(value) => {
-              //   // Handle game selection here
-              // }}
+              onChange={(values) => setSelectedPlatformIds(values)}
             >
               {plataformas.map((platform: any) => (
-                <>
-                  <Option
-                    key={platform?.id}
-                    value={platform?.name}
-                    className="bg-gray-400 border-none outline-none w-full text-white dark:text-black"
-                  >
-                    {platform?.name}
-                  </Option>
-                </>
+                <Option key={platform} value={platform}>
+                  {platform}
+                </Option>
               ))}
             </Select>
           </Form.Item>
@@ -185,15 +155,6 @@ function CreateGame() {
               style={{ width: "100%" }}
               className="bg-gray-400 border-none outline-none w-full text-white dark:text-black"
             />
-          </Form.Item>
-          <Form.Item label="Type" name="gameType">
-            <Select
-              style={{ width: "100%" }}
-              onChange={(value) => setGameType(value)}
-            >
-              <Option value="Game">Game</Option>
-              <Option value="Card">Card</Option>
-            </Select>
           </Form.Item>
           <Form.Item name="imagen">
             <Upload

@@ -15,9 +15,10 @@ export default function usePlatformAndCategories() {
             console.log(plataformasResponse, 'plataformasResponse');
             
             const categoriasResponse = await getCategorias();
+            console.log(categoriasResponse, 'categoriasResponse');
     
-            setPlataformas(plataformasResponse.data);
-            setCategorias(categoriasResponse.data);
+            setPlataformas(plataformasResponse.data.platforms);
+            setCategorias(categoriasResponse.data.categories);
           } catch (error: any) {
             setError(error);
           } finally {
