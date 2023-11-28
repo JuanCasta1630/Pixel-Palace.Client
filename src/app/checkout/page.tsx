@@ -1,27 +1,31 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import PaymentForm from "../components/Steper/index";
 import HeaderLayout from "../components/Header";
 import { ThemeProvider } from "next-themes";
-import { Layout } from "antd";
+import { Alert, Layout } from "antd";
 import FooterLayout from "../components/Footer";
 import { useSession } from "next-auth/react";
 import cookies from "js-cookie";
 import { useGames } from "../hooks/useGames";
 import AuthModal from "../components/AuthModal";
+import { saveTransaction } from "../servers/reques";
+import { useRouter } from "next/navigation";
+import Loading from "../loading";
 
 const Stepper: React.FC = () => {
   const [step, setStep] = useState<number>(1);
   const { Content } = Layout;
   const { data: session } = useSession();
-  const { gameAll } = useGames();
+  const { gameAll, loading } = useGames();
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
   const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isMobileUserOpen, setMobileUserOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const openRegisterModal = () => {
     setRegisterModalOpen(true);
@@ -74,9 +78,17 @@ const Stepper: React.FC = () => {
   //     // Llama a fetchUserData solo si session cambia
   //     fetchUserData();
   //   }, [session]);
+  useEffect(() => {
+    if (errorMessage) {
+      const timeoutId = setTimeout(() => {
+        setErrorMessage("");
+      }, 5000);
 
+      return () => clearTimeout(timeoutId);
+    }
+  }, [errorMessage]);
   const productId = cookies.get("productId");
-
+  const router = useRouter();
   const filterGame: any = gameAll.filter((game: any) => {
     return game?.id === productId;
   });
@@ -94,23 +106,37 @@ const Stepper: React.FC = () => {
       toggleMobileUser();
     }
   };
-  const handleSubmit = (values: any) => {
+  const handleSubmit = async (values: any) => {
     if (step === 1) {
+      nextStep();
     } else if (step === 2) {
+      nextStep();
     } else if (step === 3) {
       if (!session) {
         openLoginModal();
         return;
       }
-      console.log("Form submitted with values:", values);
+
+      const data: any = [];
+      try {
+        // await saveTransaction(data);
+        router.push("/confirmation-page");
+        console.log("Transaction saved successfully!");
+        nextStep();
+      } catch (error) {
+        console.error("Error saving the transaction:", error);
+        setErrorMessage("Error saving the transaction. Please try again.");
+      }
     }
-    nextStep();
   };
+
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("Name is required"),
     email: Yup.string().email("Invalid email").required("Email is required"),
   });
-
+  if (loading) {
+    <Loading/>
+  }
   return (
     <ThemeProvider enableSystem={true} attribute="class">
       <Layout className=" w-full min-h-screen dark:bg-gray-700 bg-white">
@@ -223,6 +249,15 @@ const Stepper: React.FC = () => {
               </>
             )}
           </div>
+          {errorMessage && (
+            <Alert
+              message="Error"
+              description={errorMessage}
+              type="error"
+              showIcon
+              className="fixed bottom-20 right-2 p-4"
+            />
+          )}
         </Content>
         <FooterLayout />
       </Layout>

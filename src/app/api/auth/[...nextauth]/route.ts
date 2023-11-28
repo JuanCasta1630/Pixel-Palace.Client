@@ -1,6 +1,6 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-
+import Cookies from 'js-cookie';
 const handler = NextAuth({
   providers: [
     CredentialsProvider({
@@ -19,6 +19,7 @@ const handler = NextAuth({
         const res = await fetch(LOGIN_URL, data)
 
         const user = await res.json();
+        Cookies.set('token', user.token);
         return user
       },
     }),

@@ -16,6 +16,7 @@ import GiftCardsSection from "./GiftCardsSection";
 import BestGamesSection from "./BestGameSection";
 import RecommendationsSection from "./RecommendationsSection";
 import { getAllProducts } from "@/app/servers/reques";
+import { getCards } from "@/app/services/firebase";
 
 const { Content } = Layout;
 
@@ -32,8 +33,21 @@ const GameContainer: React.FC = () => {
     currentPage * pageSize
   );
 
-  const { gameAll, cards, loading } = useGames();
-
+  const { gameAll, loading } = useGames();
+  const [cards, setCards] = useState([])
+  useEffect(() => {
+    getCards()
+      .then((result: any) => {
+        if (result.success) {
+          setCards(result.card);
+        } else {
+          console.error("Error al obtener los juegos:", result.error);
+        }
+      })
+      .catch((error) => {
+        console.error("Error al obtener los juegos:", error);
+      });
+  }, []);
   // useEffect(() => {
   //   const fetchData = async () => {
   //     try {
@@ -67,7 +81,6 @@ const GameContainer: React.FC = () => {
   if (loading) {
     return <Loading />;
   }
-  // console.log(gameAll, 'games all home');
   
   const juegosPopulares = gameAll.filter((game) => game).slice(0, 4);
   const recomendaciones = gameAll.filter((game) => game).slice(0, 4);

@@ -1,8 +1,9 @@
 import { Avatar, Menu, Dropdown } from "antd";
-import { DownOutlined, CrownOutlined } from "@ant-design/icons"; // Importa el ícono de la corona o el que desees
+import { DownOutlined, CrownOutlined } from "@ant-design/icons";
 import CreateGame from "../CreateGame";
 import { signOut } from "next-auth/react";
 import useUser from "@/app/hooks/useUser";
+import { useRouter } from "next/navigation";
 
 function generateRandomAvatarURL() {
   const randomString = Math.random().toString(36).substring(7);
@@ -16,15 +17,40 @@ export default function RandomAvatar() {
     await signOut({ callbackUrl: "/" });
   };
   const { user } = useUser();
+  const router = useRouter();
 
   const overlayRender = () => {
     return (
       <Menu className="w-48 dark:bg-gray-900">
-         {/* @ts-ignore */}
+        {/* @ts-ignore */}
         {user && user?.rol === "ADMIN" ? (
           <>
             <Menu.Item key="createGame">
               <CreateGame />
+            </Menu.Item>
+            <Menu.Item key="reportsAdmin">
+              <button
+                onClick={() => router.push("/reports")}
+                className="button1 w-full text-white"
+              >
+                Download Reports
+              </button>
+            </Menu.Item>
+            <Menu.Item key="adminManagement">
+              <button
+                onClick={() => router.push("/admin-product")}
+                className="button1 w-full text-white"
+              >
+                Admin Manager
+              </button>
+            </Menu.Item>
+            <Menu.Item key="adminManagement">
+              <button
+                onClick={() => router.push("/purchases")}
+                className="button1 w-full text-white"
+              >
+                My Purchases
+              </button>
             </Menu.Item>
             <Menu.Item key="signOutAdmin">
               <button
@@ -36,11 +62,24 @@ export default function RandomAvatar() {
             </Menu.Item>
           </>
         ) : (
-          <Menu.Item key="signOutUser">
-            <button onClick={handleSignOut} className="button1 w-full text-white">
-              Sign out
-            </button>
-          </Menu.Item>
+          <>
+            <Menu.Item key="adminManagement">
+              <button
+                onClick={() => router.push("/purchases")}
+                className="button1 w-full text-white"
+              >
+                My Purchases
+              </button>
+            </Menu.Item>
+            <Menu.Item key="signOutUser">
+              <button
+                onClick={handleSignOut}
+                className="button1 w-full text-white"
+              >
+                Sign out
+              </button>
+            </Menu.Item>
+          </>
         )}
       </Menu>
     );
@@ -66,7 +105,8 @@ export default function RandomAvatar() {
               borderRadius: "50%",
             }}
           >
-            <CrownOutlined style={{ color: "gold" }} /> {/* Usa el ícono que prefieras */}
+            <CrownOutlined style={{ color: "gold" }} />{" "}
+            {/* Usa el ícono que prefieras */}
           </div>
         )}
       </div>

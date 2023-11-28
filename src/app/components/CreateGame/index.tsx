@@ -28,6 +28,7 @@ function CreateGame() {
   const [imagen, setImagen] = useState(null);
   const [gameType, setGameType] = useState(null);
   const { gameAll } = useGames();
+  const [imageError, setImageError] = useState(false);
 
   const modalCloseStyles =
     "absolute right-2 top-0.5 text-gray-400 hover:text-red-500 text-2xl";
@@ -38,10 +39,37 @@ function CreateGame() {
   const handleCancel = () => {
     setModalVisible(false);
   };
-  const { plataformas, categorias, loading } = usePlatformAndCategories()
-  if (loading) {
-    return <Loading/>;
-  }
+  const { plataformas, categorias, loading } = usePlatformAndCategories();
+  // if (loading) {
+  //   return <Loading/>;
+  // }
+  // const handleSave = async (values: any) => {
+  //   try {
+  //     if (imagen) {
+  //       const downloadURL = await uploadImageToFirebaseStorage(imagen);
+  //       const gameDataWithImage = {
+  //         ...values,
+  //         imagen: downloadURL,
+  //         fecha_lanzamiento: birthdate,
+  //         type: gameType,
+  //       };
+
+  //       const result = await createGame(gameDataWithImage);
+
+  //       if (result.success) {
+  //         console.log(`Juego creado con éxito. ID del juego: ${result.gameId}`);
+  //       } else {
+  //         console.error(`Error al crear el juego: ${result.error}`);
+  //       }
+  //     } else {
+  //       console.error("Debes seleccionar una imagen para subir.");
+  //     }
+  //   } catch (error) {
+  //     console.error(`Error al subir la imagen a Firebase: ${error}`);
+  //   }
+
+  //   setModalVisible(false);
+  // };
   const handleSave = async (values: any) => {
     try {
       if (imagen) {
@@ -57,19 +85,17 @@ function CreateGame() {
 
         if (result.success) {
           console.log(`Juego creado con éxito. ID del juego: ${result.gameId}`);
+          setModalVisible(false);
         } else {
           console.error(`Error al crear el juego: ${result.error}`);
         }
       } else {
-        console.error("Debes seleccionar una imagen para subir.");
+        setImageError(true);
       }
     } catch (error) {
       console.error(`Error al subir la imagen a Firebase: ${error}`);
     }
-
-    setModalVisible(false);
   };
-
   return (
     <div>
       <Button
@@ -130,8 +156,8 @@ function CreateGame() {
               //   // Handle game selection here
               // }}
             >
-            {plataformas.map((platform: any) => (
-              <>
+              {plataformas.map((platform: any) => (
+                <>
                   <Option
                     key={platform?.id}
                     value={platform?.name}
@@ -139,8 +165,8 @@ function CreateGame() {
                   >
                     {platform?.name}
                   </Option>
-              </>
-            ))}
+                </>
+              ))}
             </Select>
           </Form.Item>
           <Form.Item label="Release date" name="fecha_lanzamiento">
@@ -173,6 +199,7 @@ function CreateGame() {
             <Upload
               beforeUpload={(file: any) => {
                 setImagen(file);
+                setImageError(false);
                 return false;
               }}
               showUploadList={false}
@@ -187,6 +214,11 @@ function CreateGame() {
                 </Button>
               )}
             </Upload>
+            {imageError && (
+              <div className="text-red-500">
+                Please upload an image (required).
+              </div>
+            )}
             {imagen && (
               <Button
                 type="link"
