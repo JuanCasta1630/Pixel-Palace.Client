@@ -6,12 +6,12 @@ import { Layout, Col, Row, Pagination, Button, message } from "antd";
 import { ThemeProvider } from "next-themes";
 import Filters from "../components/Filters";
 import FooterLayout from "../components/Footer";
-import { deleteGame } from "../services/firebase";
 import { ModalConfirm } from "../components/ModalConfirm";
 import Link from "next/link";
 import { useGames } from "../hooks/useGames";
 import Loading from "../loading";
 import useUser from "../hooks/useUser";
+import { deleteProduct } from "../servers/reques";
 
 export default function Recommendations() {
   const { Content } = Layout;
@@ -44,7 +44,7 @@ export default function Recommendations() {
   const handleDeleteItem = async () => {
     if (selectedGameId) {
       try {
-        await deleteGame(selectedGameId);
+        await deleteProduct(selectedGameId);
         message.success("Se eliminó correctamente", 3);
         setDeleteModalVisible(false);
       } catch (error) {
@@ -85,7 +85,7 @@ export default function Recommendations() {
                               src={
                                 game?.imagen
                                   ? game?.imagen
-                                  : game?.imageUrl ||
+                                  : game?.image_url ||
                                     "https://pixel-palace.netlify.app/logo.png"
                               }
                               className="bg-gray-900 w-full h-48 object-cover rounded-t-xl border border-gray-300"

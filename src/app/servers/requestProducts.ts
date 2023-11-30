@@ -19,10 +19,8 @@ export const fetchData = async (url: string, method: string = 'GET', data?: any)
 
     try {
         const response = await fetch(url, options);
-        console.log(response);
         
         const responseData = await handleResponse(response);
-        console.log(responseData);
         
         return { data: responseData, response };
     } catch (error) {
@@ -35,8 +33,6 @@ export const fetchData = async (url: string, method: string = 'GET', data?: any)
 export const getAllProducts = async () => {
     try {
         const url = `${BASE_URL}/product/games`;
-        console.log(url);
-        
         return fetchData(url, 'GET');
     } catch (error) {
         console.error('Error fetching all products:', error);

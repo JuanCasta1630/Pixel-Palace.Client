@@ -46,11 +46,7 @@ export const fetchData = async (url: string, method: string = 'GET', data?: any)
 
     try {
         const response = await fetch(url, options);
-        console.log(response);
-        
         const responseData = await handleResponse(response);
-        console.log(responseData);
-        
         return { data: responseData, response };
     } catch (error) {
         console.error(`Error ${method} request to ${url}:`, error);

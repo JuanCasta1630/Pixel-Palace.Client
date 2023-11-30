@@ -18,15 +18,16 @@ import InputField from "../Inputs/InputField";
 // import { categorias } from "../../services/categories.json";
 import { useGames } from "@/app/hooks/useGames";
 import usePlatformAndCategories from "@/app/hooks/usePlatformAndCategories";
-import Loading from "@/app/loading";
 import { createProduct } from "@/app/servers/reques";
+import TextArea from "antd/es/input/TextArea";
 
 const { Option } = Select;
 
 function CreateGame() {
+  const itemsPerPage = 10;
   const [modalVisible, setModalVisible] = useState(false);
   const [birthdate, setBirthdate] = useState("");
-  const [imagen, setImagen] = useState(null);
+  const [imagen, setImagen] = useState([]);
   const [gameType, setGameType] = useState(null);
   const { gameAll } = useGames();
   const [imageError, setImageError] = useState(false);
@@ -43,29 +44,36 @@ function CreateGame() {
   const { plataformas, categorias } = usePlatformAndCategories();
   const [selectedCategoryIds, setSelectedCategoryIds] = useState([]);
   const [selectedPlatformIds, setSelectedPlatformIds] = useState([]);
- console.log(categorias);
- 
+
   const handleSave = async (values: any) => {
+    console.log(values.release_date);
+
     try {
-      if (imagen) {
-        const downloadURL = await uploadImageToFirebaseStorage(imagen);
-        console.log(imagen);
-        
+      if (imagen.length > 0) {
+        const downloadURL = await Promise.all(
+          imagen.map(async (file) => {
+            const url = await uploadImageToFirebaseStorage(file);
+            console.log(url);
+            return url;
+          })
+        );
+
         const gameDataWithImage = {
           ...values,
-          imagen_url: downloadURL,
-          release_date: birthdate,
-          categorie_id: selectedCategoryIds,
-          platform_id: selectedPlatformIds,
+          image_url: downloadURL,
+          score: 9.9,
+          stock: 100,
         };
+        console.log(gameDataWithImage);
 
         const result = await createProduct(gameDataWithImage);
-        console.log(result);
-        
-        if (result.success) {
+        // @ts-ignore
+        if (result) {
+          // @ts-ignore
           console.log(`Juego creado con éxito. ID del juego: ${result.gameId}`);
           setModalVisible(false);
         } else {
+          // @ts-ignore
           console.error(`Error al crear el juego: ${result.error}`);
         }
       } else {
@@ -99,7 +107,7 @@ function CreateGame() {
         <Form onFinish={handleSave}>
           <Form.Item
             label="Name"
-            name="nombre"
+            name="name"
             className="dark:text-black"
             rules={[
               {
@@ -110,7 +118,7 @@ function CreateGame() {
           >
             <Input className="bg-gray-400 border-none outline-none w-full text-white dark:text-black" />
           </Form.Item>
-          <Form.Item label="Category" name="categoria">
+          <Form.Item label="Category" name="categories_id">
             <Select
               mode="tags"
               style={{ width: "100%" }}
@@ -118,14 +126,14 @@ function CreateGame() {
               onChange={(values) => setSelectedCategoryIds(values)}
             >
               {categorias.map((category: any) => (
-                <Option key={category} value={category}>
-                  {category}
+                <Option key={category.id} value={category.id}>
+                  {category.name}
                 </Option>
               ))}
             </Select>
           </Form.Item>
 
-          <Form.Item label="Platform" name="desarrollador">
+          <Form.Item label="Platform" name="platforms_id">
             <Select
               mode="tags"
               style={{ width: "100%" }}
@@ -133,13 +141,13 @@ function CreateGame() {
               onChange={(values) => setSelectedPlatformIds(values)}
             >
               {plataformas.map((platform: any) => (
-                <Option key={platform} value={platform}>
-                  {platform}
+                <Option key={platform.id} value={platform.id}>
+                  {platform.name}
                 </Option>
               ))}
             </Select>
           </Form.Item>
-          <Form.Item label="Release date" name="fecha_lanzamiento">
+          <Form.Item label="Release date" name="release_date">
             <InputField
               label="Birthday"
               type="date"
@@ -150,22 +158,40 @@ function CreateGame() {
               required
             />
           </Form.Item>
-          <Form.Item label="Price" name="precio">
+          <Form.Item label="Price" name="price">
             <InputNumber
               style={{ width: "100%" }}
               className="bg-gray-400 border-none outline-none w-full text-white dark:text-black"
             />
           </Form.Item>
-          <Form.Item name="imagen">
+          <Form.Item
+            label="Description"
+            name="description"
+            className="dark:text-black"
+            rules={[
+              {
+                required: true,
+                message: "Please enter the product description",
+              },
+            ]}
+          >
+            <TextArea
+              className="bg-gray-400 border-none outline-none w-full text-white dark:text-black"
+              autoSize={{ minRows: 3, maxRows: 5 }} 
+            />
+          </Form.Item>
+
+          <Form.Item name="image_url">
             <Upload
               beforeUpload={(file: any) => {
-                setImagen(file);
+                //@ts-ignore
+                setImagen([...imagen, file]);
                 setImageError(false);
                 return false;
               }}
               showUploadList={false}
             >
-              {imagen ? (
+              {imagen.length > 0 ? (
                 <Button className="button1" icon={<PlusOutlined />}>
                   Change image
                 </Button>
@@ -180,10 +206,10 @@ function CreateGame() {
                 Please upload an image (required).
               </div>
             )}
-            {imagen && (
+            {imagen.length > 0 && (
               <Button
                 type="link"
-                onClick={() => setImagen(null)}
+                onClick={() => setImagen([])}
                 className="text-red-500"
               >
                 Delete image

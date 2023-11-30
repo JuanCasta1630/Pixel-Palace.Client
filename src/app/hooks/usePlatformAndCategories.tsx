@@ -12,10 +12,8 @@ export default function usePlatformAndCategories() {
         const fetchData = async () => {
           try {
             const plataformasResponse = await getPlatforms();
-            console.log(plataformasResponse, 'plataformasResponse');
             
             const categoriasResponse = await getCategorias();
-            console.log(categoriasResponse, 'categoriasResponse');
     
             setPlataformas(plataformasResponse.data.platforms);
             setCategorias(categoriasResponse.data.categories);
@@ -28,7 +26,6 @@ export default function usePlatformAndCategories() {
     
         fetchData();
       }, []);
-    
       return { plataformas, categorias, loading, error };
     };
     

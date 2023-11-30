@@ -26,7 +26,7 @@ export const useGames = () => {
           getCards(),
         ]);
         const productsData = await getAllProducts()
-        console.log(productsData, 'productsData');
+        // console.log(productsData, 'productsData');
         
         // Manipulación de los datos obtenidos
         const result = productsData?.data || [];
@@ -46,7 +46,7 @@ export const useGames = () => {
   }, []);
 //  const gameAll = [...games, ...products]
  const gameAll = products
- console.log(gameAll);
+//  console.log(gameAll);
  
   return { gameAll, cards, loading };
 };

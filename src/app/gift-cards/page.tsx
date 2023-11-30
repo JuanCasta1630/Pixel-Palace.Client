@@ -116,7 +116,7 @@ export default function GiftCards() {
                                 src={
                                   card?.imagen
                                     ? card?.imagen
-                                    : card?.imageUrl ||
+                                    : card?.image_url ||
                                       "https://pixel-palace.netlify.app/logo.png"
                                 }
                                 className="bg-gray-900 w-full h-48 object-cover rounded-t-xl border border-gray-300"
@@ -189,7 +189,7 @@ export default function GiftCards() {
                               src={
                                 card?.imagen
                                   ? card?.imagen
-                                  : card?.imageUrl ||
+                                  : card?.image_url ||
                                     "https://pixel-palace.netlify.app/logo.png"
                               }
                               className="bg-gray-900 w-full h-48 object-cover rounded-t-xl border border-gray-300"

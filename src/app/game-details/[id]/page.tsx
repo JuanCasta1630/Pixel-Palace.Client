@@ -76,7 +76,7 @@ function GameDetails() {
                   src={
                     data?.imagen
                       ? data.imagen
-                      : data?.imageUrl ||
+                      : data?.image_url ||
                         "https://pixel-palace.netlify.app/logo.png"
                   }
                   width="500"

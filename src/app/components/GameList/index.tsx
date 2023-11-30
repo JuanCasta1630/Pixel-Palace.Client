@@ -1,9 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useState } from "react";
-import { Col, Row, Pagination, message } from "antd";
+import { Col, Row, Pagination } from "antd";
 import Link from "next/link";
-import { ModalConfirm } from "../ModalConfirm";
-import { deleteGame, getGames } from "@/app/services/firebase";
 import { useGames } from "@/app/hooks/useGames";
 import Loading from "@/app/loading";
 import useUser from "@/app/hooks/useUser";
@@ -55,7 +53,7 @@ const GameList: React.FC = () => {
                       src={
                         game?.imagen
                           ? game?.imagen
-                          : game?.imageUrl ||
+                          : game?.image_url ||
                             "https://pixel-palace.netlify.app/logo.png"
                       }
                       className="bg-gray-900 w-full h-48 object-cover rounded-t-xl border border-gray-300"
