@@ -22,11 +22,10 @@ export const useGames = () => {
           console.error("Error al obtener los juegos:", gamesData.error);
         }
         // Llamada a la API para obtener productos y tarjetas
-        const [cardsData] = await Promise.all([
+        const [cardsData, productsData] = await Promise.all([
           getCards(),
+          getAllProducts()
         ]);
-        const productsData = await getAllProducts()
-        // console.log(productsData, 'productsData');
         
         // Manipulación de los datos obtenidos
         const result = productsData?.data || [];
