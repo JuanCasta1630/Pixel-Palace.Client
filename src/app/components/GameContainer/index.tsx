@@ -1,13 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import React, { useEffect, useState } from "react";
-import { Layout, Col, Row, Button } from "antd";
+import { Layout } from "antd";
 import juegos from "@/app/services/juegos.json";
-import regalos from "@/app/services/regalos.json";
 import HeaderLayout from "../Header";
 import { ThemeProvider } from "next-themes";
 import Carousel from "../Carrusel";
-import Link from "next/link";
 import CategoriasPage from "../Categories/index";
 import FooterLayout from "../Footer";
 import { useGames } from "@/app/hooks/useGames";
@@ -15,7 +13,6 @@ import Loading from "@/app/loading";
 import GiftCardsSection from "./GiftCardsSection";
 import BestGamesSection from "./BestGameSection";
 import RecommendationsSection from "./RecommendationsSection";
-import { getAllProducts } from "@/app/servers/reques";
 import { getCards } from "@/app/services/firebase";
 
 const { Content } = Layout;

@@ -208,8 +208,7 @@ const Stepper: React.FC = () => {
                       src={
                         filterGame[0]?.imagen
                           ? filterGame[0]?.imagen
-                          : filterGame[0]?.imageUrl ||
-                            "https://pixel-palace.netlify.app/logo.png"
+                          : filterGame[0]?.image_url || "https://pixel-palace.netlify.app/logo.png"
                       }
                       alt="imagen"
                     />

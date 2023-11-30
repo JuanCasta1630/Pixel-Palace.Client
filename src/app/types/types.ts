@@ -31,7 +31,7 @@ export interface Game  {
   precio: number;
   valoracion?:any
   categories: string[];
-  imageUrl: any;
+  image_url: any;
   score: number;
   price: number;
 };

@@ -32,7 +32,7 @@ const RecommendationsSection: React.FC<RecommendationsSectionProps> = ({
               <Link href={`/game-details/${game.id}`}>
                 <img
                   alt={game.nombre ? game.nombre : game.name}
-                  src={game?.imagen ? game?.imagen : game?.imageUrl || 'https://pixel-palace.netlify.app/logo.png'}
+                  src={game?.imagen ? game?.imagen : game?.image_url || 'https://pixel-palace.netlify.app/logo.png'}
                   className='bg-gray-900 w-full h-48 object-cover rounded-t-xl border border-gray-300'
                 />
                 <div className='p-4'>

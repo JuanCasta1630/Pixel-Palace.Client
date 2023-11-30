@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { getCards, getGames } from "../services/firebase";
-import { getAllProducts } from "../servers/reques";
+import { getAllProducts } from "../servers/requestProducts";
 
 export const useGames = () => {
   const [games, setGames] = useState([]);
@@ -22,11 +22,11 @@ export const useGames = () => {
           console.error("Error al obtener los juegos:", gamesData.error);
         }
         // Llamada a la API para obtener productos y tarjetas
-        const [productsData, cardsData] = await Promise.all([
-          getAllProducts(),
+        const [cardsData, productsData] = await Promise.all([
           getCards(),
+          getAllProducts()
         ]);
-
+        
         // Manipulación de los datos obtenidos
         const result = productsData?.data || [];
         const gamesBack = result.products;
@@ -43,7 +43,8 @@ export const useGames = () => {
 
     fetchData();
   }, []);
- const gameAll = [...games, ...products]
+//  const gameAll = [...games, ...products]
+ const gameAll = products
 //  console.log(gameAll);
  
   return { gameAll, cards, loading };

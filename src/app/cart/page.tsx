@@ -54,7 +54,7 @@ const Cart = () => {
                           width={200}
                           height={200}
                           src={
-                            (item && (item.imagen || item.imageUrl)) || ""
+                            (item && (item.imagen || item.image_url)) || ""
                           }
                           alt={
                             (item &&
