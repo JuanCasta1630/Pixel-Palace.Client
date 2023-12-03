@@ -67,7 +67,7 @@ const RecommendationsSection: React.FC<RecommendationsSectionProps> = ({
         block
         size='large'
         className='mt-6 button1 dark:w-full'
-        onClick={() => (router.push('/best-games'))}
+        onClick={() => (router.push('/recommendations'))}
       >
         Read More
       </Button>
