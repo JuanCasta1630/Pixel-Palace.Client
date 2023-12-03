@@ -31,6 +31,12 @@ function GameDetails() {
   }, [cardDetailId]);
 
   if (loading) return <Loading />;
+  
+  function formatDate(dateString: any) {
+    const options: any = { day: "numeric", month: "short", year: "numeric" };
+    const formattedDate = new Date(dateString).toLocaleDateString(undefined, options);
+    return formattedDate;
+  }
 
   return (
     <ThemeProvider enableSystem={true} attribute="class">
@@ -53,8 +59,7 @@ function GameDetails() {
                   {data?.nombre}
                 </h1>
                 <p className="text-base text-zinc-500 dark:text-zinc-500">
-                  Release Date: {data?.fecha_lanzamiento}
-                </p>
+                  Release Date:{data?.release_date && formatDate(data.release_date)}</p>
                 <div className="flex space-x-2">
                   <button className="inline-flex items-center justify-center text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-primary/90 px-4 py-2 w-12 h-12 rounded-md border border-zinc-200 text-zinc-900 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-50">
                     9

@@ -95,9 +95,12 @@ export default function Recommendations() {
                                 {game.nombre ? game.nombre : game.name}
                               </h2>
                               <p className="text-gray-100">
-                                {game.categoria
-                                  ? game.categoria
-                                  : game.categories}
+                                {game?.categoria
+                                  ? game?.categoria
+                                      .split(",")
+                                      .map((category: any) => category.trim())
+                                      .join(", ")
+                                  : game?.categories.join(", ")}
                               </p>
                               <p className="text-gray-100">
                                 {game.fecha_lanzamiento}

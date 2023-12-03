@@ -29,7 +29,7 @@ const CategoriasPage = () => {
             >
               <a
               //@ts-ignore
-                href={`/categoria/${category.id}`}
+                href={`/categoria/${category.name}`}
                 className="text-white font-semibold flex flex-col justify-center items-center"
               >
                 <svg

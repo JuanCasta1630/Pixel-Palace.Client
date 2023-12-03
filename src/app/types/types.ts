@@ -34,6 +34,7 @@ export interface Game  {
   image_url: any;
   score: number;
   price: number;
+  release_date: string;
 };
 
 export interface NewUserProps {

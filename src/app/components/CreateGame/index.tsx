@@ -4,14 +4,12 @@ import {
   Form,
   Input,
   Select,
-  DatePicker,
   InputNumber,
   Upload,
 } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import {
-  createGame,
   uploadImageToFirebaseStorage,
 } from "@/app/services/firebase";
 import InputField from "../Inputs/InputField";
@@ -44,16 +42,17 @@ function CreateGame() {
   const { plataformas, categorias } = usePlatformAndCategories();
   const [selectedCategoryIds, setSelectedCategoryIds] = useState([]);
   const [selectedPlatformIds, setSelectedPlatformIds] = useState([]);
+  const [gameToEdit, setGameToEdit] = useState(null);
+  const [gameAllFilter, setGameAllFilter] = useState()
 
   const handleSave = async (values: any) => {
-    console.log(values.release_date);
+    // console.log(values.release_date);
 
     try {
       if (imagen.length > 0) {
         const downloadURL = await Promise.all(
           imagen.map(async (file) => {
             const url = await uploadImageToFirebaseStorage(file);
-            console.log(url);
             return url;
           })
         );

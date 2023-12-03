@@ -40,7 +40,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const firestore = getFirestore(app); // Agrega Firestore a tu instancia de Firebase
-const storage = getStorage(app);
+export const storage = getStorage(app);
 export const registerUser = async (
   email,
   password,

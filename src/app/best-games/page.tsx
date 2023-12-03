@@ -1,16 +1,9 @@
 "use client";
 import React, { useState } from "react";
 import HeaderLayout from "../components/Header";
-import {
-  HeartOutlined,
-  FacebookOutlined,
-  TwitterOutlined,
-  InstagramOutlined,
-} from "@ant-design/icons";
-import { Layout, Col, Row, Button, Pagination } from "antd";
+import { Layout } from "antd";
 import { ThemeProvider } from "next-themes";
 import Filters from "../components/Filters";
-import JuegosRecomendados from "../../../juegos.json";
 import FooterLayout from "../components/Footer";
 import GameList from "../components/GameList";
 
