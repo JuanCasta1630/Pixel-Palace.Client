@@ -50,7 +50,9 @@ export interface NewUserProps {
 export interface ReportData {
   game: string;
   quantity: number;
-  category: string;
+  category: string | null;
+  platform: string | null;
+  selectedDate: Date;
 }
 export interface PaymentFormProps {
   onSubmit: (values: any) => void;
@@ -63,6 +65,8 @@ export interface PaymentFormValues {
   cvc: string;
 }
 export interface FormValues {
+  dateRange: any;
+  platform: any;
   month: string;
   category: string;
   bestSellers: boolean;

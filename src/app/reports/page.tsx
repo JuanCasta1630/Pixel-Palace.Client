@@ -9,10 +9,13 @@ import FooterLayout from "../components/Footer";
 import { FormValues, ReportData } from "../types/types";
 import { descargarCSV, generarPDF } from "../utils/reportsFunctions";
 import HeaderLayout from "../components/Header";
-
+import usePlatformAndCategories from "../hooks/usePlatformAndCategories";
+import useUser from "../hooks/useUser";
 const Reportes: React.FC = () => {
   const [reportResult, setReportResult] = useState<ReportData[] | null>(null);
-
+  const { plataformas, categorias } = usePlatformAndCategories();
+  const { user } = useUser();
+  
   const formik = useFormik({
     initialValues: {
       dateRange: [null, null],
@@ -21,6 +24,7 @@ const Reportes: React.FC = () => {
       bestSellers: false,
       topRated: false,
       fileFormat: "pdf",
+      platform: "",
     } as FormValues,
     validationSchema: Yup.object({
       dateRange: Yup.array()
@@ -32,19 +36,32 @@ const Reportes: React.FC = () => {
         .required("Select date range"),
       category: Yup.string().required("Select category"),
     }),
-    
+
     onSubmit: async (
       values: FormValues,
       { setSubmitting }: FormikHelpers<FormValues>
     ) => {
       try {
-        const reportData: ReportData[] = [
-          { game: "Juego1", quantity: 100, category: "Aventure" },
-          { game: "Juego2", quantity: 80, category: "Action" },
-          { game: "Juego3", quantity: 90, category: "Action" },
-        ];
+        const juegos = ["Juego1", "Juego2", "Juego3"];
+        const quantity = 100;
+        console.log(values);
+
+        // Crear dinámicamente el reportData usando map para cada juego
+        const reportData: ReportData[] = juegos.map((juego, index) => ({
+          game: juego,
+          quantity: quantity,
+          category: values.category,
+          platform: values.platform,
+          selectedDate: values.dateRange[0],
+        }));
+        reportData.forEach((item) => {
+          item.platform = values.platform;
+          item.selectedDate = values.dateRange;
+        });
 
         setReportResult(reportData);
+        console.log(reportData);
+        console.log(reportResult);
 
         if (values.fileFormat === "pdf") {
           await generarPDF(reportData);
@@ -57,6 +74,24 @@ const Reportes: React.FC = () => {
       }
     },
   });
+  function formatDateRange(dateRange: Date[]) {
+    const options: any = { day: "numeric", month: "short", year: "numeric" };
+
+    if (dateRange && dateRange.length === 2) {
+      const startDate = new Date(dateRange[0]).toLocaleDateString(
+        undefined,
+        options
+      );
+      const endDate = new Date(dateRange[1]).toLocaleDateString(
+        undefined,
+        options
+      );
+
+      return `${startDate} - ${endDate}`;
+    }
+
+    return "";
+  }
 
   return (
     <ThemeProvider enableSystem={true} attribute="class">
@@ -68,7 +103,9 @@ const Reportes: React.FC = () => {
               onSubmit={formik.handleSubmit}
               className="flex flex-col py-20"
             >
-              <h1 className="text-2xl font-semibold text-center ">Reports</h1>
+              <h1 className="text-2xl font-semibold text-center ">
+                Reports Game Best Sellers
+              </h1>
               <div className="mb-4 mt-2">
                 <label
                   htmlFor="dateRange"
@@ -77,13 +114,14 @@ const Reportes: React.FC = () => {
                   Select Date Range
                 </label>
                 <DatePicker.RangePicker
+                  picker="month"
                   id="dateRange"
                   name="dateRange"
                   onChange={(dates, dateStrings) => {
                     formik.setFieldValue("dateRange", dates);
+                    formik.setFieldValue("month", dateStrings[0]);
                   }}
                   onBlur={formik.handleBlur}
-                  //@ts-ignore
                   value={formik.values.dateRange}
                   className="w-full text-withe p-2 border rounded-md"
                 />
@@ -109,18 +147,41 @@ const Reportes: React.FC = () => {
                   name="category"
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  value={formik.values.category}
+                  value={formik.values.category || ""}
                   className="w-full p-2 border rounded-md dark:bg-white text-black"
                 >
-                  <option value="">Select...</option>
-                  <option value="adventure">Adventure</option>
-                  <option value="action">Action</option>
+                  {categorias.map((categorie: any) => (
+                    <option key={categorie.id} value={categorie.name}>
+                      {categorie.name}
+                    </option>
+                  ))}
                 </select>
                 {formik.touched.category && formik.errors.category ? (
                   <div className="text-red-500">{formik.errors.category}</div>
                 ) : null}
               </div>
-
+              <div className="mb-4">
+                <label
+                  htmlFor="platform"
+                  className="block dark:text-white text-sm font-bold mb-2"
+                >
+                  Platform
+                </label>
+                <select
+                  id="platform"
+                  name="platform"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.platform || ""}
+                  className="w-full p-2 border rounded-md dark:bg-white text-black"
+                >
+                  {plataformas.map((plataforma: any) => (
+                    <option key={plataforma.id} value={plataforma.name}>
+                      {plataforma.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
               <div className="mb-4">
                 <label className="block dark:text-white text-sm font-bold mb-2">
                   Options
@@ -138,7 +199,7 @@ const Reportes: React.FC = () => {
                     <span className="text-sm">Best Sellers</span>
                   </label>
 
-                  <label className="flex items-center">
+                  {/* <label className="flex items-center">
                     <input
                       type="checkbox"
                       id="topRated"
@@ -148,7 +209,7 @@ const Reportes: React.FC = () => {
                       className="mr-2"
                     />
                     <span className="text-sm">Top Rated</span>
-                  </label>
+                  </label> */}
 
                   <label className="flex items-center">
                     <input
@@ -188,7 +249,7 @@ const Reportes: React.FC = () => {
 
             {reportResult && (
               <div>
-                <h2 className="text-xl font-bold">Report Result</h2>
+                <h2 className="text-xl font-bold">Report Result Game Best Sellers</h2>
                 <table
                   id="my-table"
                   className="w-full border-collapse border border-gray-900"
@@ -198,6 +259,10 @@ const Reportes: React.FC = () => {
                       <th className="p-2 border border-gray-700">Game</th>
                       <th className="p-2 border border-gray-700">Quantity</th>
                       <th className="p-2 border border-gray-700">Category</th>
+                      <th className="p-2 border border-gray-700">Platform</th>
+                      <th className="p-2 border border-gray-700">
+                        Selected Date
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
@@ -214,6 +279,15 @@ const Reportes: React.FC = () => {
                         </td>
                         <td className="p-2 border border-gray-300">
                           {item.category}
+                        </td>
+                        <td className="p-2 border border-gray-300">
+                          {item.platform}
+                        </td>
+                        <td className="p-2 border border-gray-300">
+                          {item.selectedDate
+                          // @ts-ignore
+                            ? formatDateRange(item.selectedDate)
+                            : null}
                         </td>
                       </tr>
                     ))}

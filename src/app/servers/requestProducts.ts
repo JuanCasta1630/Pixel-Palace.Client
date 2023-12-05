@@ -39,3 +39,25 @@ export const getAllProducts = async () => {
         throw error;
     }
 };
+
+export const createTransaction = async (newTransactionDTO: any) => {
+    try {
+        const url = `${BASE_URL}/transaction/create`;
+        return fetchData(url, 'POST', newTransactionDTO);
+    } catch (error) {
+        console.error('Error fetching all transaction:', error);
+        throw error;
+    }
+};
+export const getTransactionById = async (id: any) => {
+    try {
+        const url = `${BASE_URL}/transaction/${id}`;
+        console.log(url);
+        
+        return fetchData(url, 'GET');
+    } catch (error) {
+        console.error(`Error fetching transaction with ID ${id}:`, error);
+        throw error;
+    }
+};
+
