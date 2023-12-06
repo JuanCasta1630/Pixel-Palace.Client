@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useFormik, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { ThemeProvider } from "next-themes";
@@ -11,6 +11,7 @@ import { descargarCSV, generarPDF } from "../utils/reportsFunctions";
 import HeaderLayout from "../components/Header";
 import usePlatformAndCategories from "../hooks/usePlatformAndCategories";
 import useUser from "../hooks/useUser";
+import { getReportForRating, getTransactionAll } from "../servers/requestProducts";
 const Reportes: React.FC = () => {
   const [reportResult, setReportResult] = useState<ReportData[] | null>(null);
   const { plataformas, categorias } = usePlatformAndCategories();
@@ -42,38 +43,55 @@ const Reportes: React.FC = () => {
       { setSubmitting }: FormikHelpers<FormValues>
     ) => {
       try {
-        const juegos = ["Juego1", "Juego2", "Juego3"];
-        const quantity = 100;
-        console.log(values);
-
-        // Crear dinámicamente el reportData usando map para cada juego
-        const reportData: ReportData[] = juegos.map((juego, index) => ({
-          game: juego,
-          quantity: quantity,
-          category: values.category,
-          platform: values.platform,
-          selectedDate: values.dateRange[0],
-        }));
-        reportData.forEach((item) => {
+        const dateRange = values.dateRange;
+    
+        if (values.topRated) {
+          const reportResultTopRated = await getReportForRating(
+            dateRange[0],
+            dateRange[1],
+            values.category,
+            values.platform
+          );
+    
+          console.log(reportResultTopRated, 'reportResultTopRated');
+    
+          if (Array.isArray(reportResultTopRated)) {
+            const reportData = reportResultTopRated.map((item, index) => {
+              console.log(item);
+            
+              return {
+                game: item.name,
+                quantity: item.stock || null,
+                category: values.category,
+                platform: values.platform,
+                selectedDate: values.dateRange[0],
+              };
+            });
+            
+reportData.forEach((item) => {
           item.platform = values.platform;
           item.selectedDate = values.dateRange;
         });
-
-        setReportResult(reportData);
-        console.log(reportData);
-        console.log(reportResult);
-
-        if (values.fileFormat === "pdf") {
-          await generarPDF(reportData);
-        } else if (values.fileFormat === "csv") {
-          const archivo = "informe.csv";
-          descargarCSV(reportData, archivo);
+            setReportResult(reportData);
+            console.log(reportResult, 'reportDatsa');
+    
+            if (values.fileFormat === "pdf") {
+              await generarPDF(reportData);
+            } else if (values.fileFormat === "csv") {
+              const archivo = "informe.csv";
+              descargarCSV(reportData, archivo);
+            }
+          }
+        } else {
+          // Si values.topRated es falso y no tienes datos específicos para reportData, puedes dejarlo vacío o simplemente no hacer nada
+          console.log('Top Rated no está marcado, no hay datos específicos para reportData');
         }
       } catch (error) {
         console.error("Error al generar el informe:", error);
       }
     },
-  });
+    })
+  
   function formatDateRange(dateRange: Date[]) {
     const options: any = { day: "numeric", month: "short", year: "numeric" };
 
@@ -92,7 +110,7 @@ const Reportes: React.FC = () => {
 
     return "";
   }
-
+ 
   return (
     <ThemeProvider enableSystem={true} attribute="class">
       <Layout className="w-full min-h-screen dark:bg-gray-700 bg-white">
@@ -199,7 +217,7 @@ const Reportes: React.FC = () => {
                     <span className="text-sm">Best Sellers</span>
                   </label>
 
-                  {/* <label className="flex items-center">
+                  <label className="flex items-center">
                     <input
                       type="checkbox"
                       id="topRated"
@@ -209,7 +227,7 @@ const Reportes: React.FC = () => {
                       className="mr-2"
                     />
                     <span className="text-sm">Top Rated</span>
-                  </label> */}
+                  </label>
 
                   <label className="flex items-center">
                     <input
