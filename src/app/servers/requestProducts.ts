@@ -85,3 +85,14 @@ export const getTransactionAll = async () => {
         throw error;
     }
 };
+export const getTransactiontByUserId = async (id: any) => {
+    try {
+        const url = `${BASE_URL}/transaction/user/${id}`;
+        console.log(url);
+        
+        return fetchData(url, 'GET');
+    } catch (error) {
+        console.error(`Error fetching transaction:`, error);
+        throw error;
+    }
+};
