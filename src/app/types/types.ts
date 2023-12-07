@@ -23,6 +23,7 @@ export interface AuthModalProps {
   initialTab: number;
 }
 export interface Game  {
+  id?: number;
   categoria: string[];
   desarrollador: string;
   fecha_lanzamiento: string;

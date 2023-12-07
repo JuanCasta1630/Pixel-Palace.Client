@@ -11,12 +11,14 @@ import {
   CloseCircleOutlined,
   ShoppingCartOutlined,
 } from "@ant-design/icons";
-import {useSession, signOut} from 'next-auth/react'
+import { useSession, signOut } from 'next-auth/react'
 import { getGames, searchGamesByName, useAuth } from "@/app/services/firebase";
 import Image from "next/image";
 import { ThemeProvider } from "next-themes";
 import { useTheme } from "next-themes";
 import RandomAvatar from "../Avatars";
+import { useRouter } from 'next/navigation';
+import SearchAutocomplete, { Game } from "@/app/Search/Search";
 
 const HeaderLayout = () => {
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
@@ -24,8 +26,9 @@ const HeaderLayout = () => {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isMobileUserOpen, setMobileUserOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
-  const {data: session} = useSession()
+  const [searchResults, setSearchResults] = useState<Game[]>([]);
+  const { data: session } = useSession()
+  const router = useRouter();
 
   const user = session
 
@@ -41,17 +44,17 @@ const HeaderLayout = () => {
       toggleMobileUser();
     }
   };
-  
+
   const closeLoginModal = () => {
     setLoginModalOpen(false);
   };
-  
+
   const closeRegisterModal = () => {
     setRegisterModalOpen(false);
   };
-  
+
   const handleSignOut = async () => {
-    await signOut({callbackUrl: '/'});
+    await signOut({ callbackUrl: '/' });
   }
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!isMobileMenuOpen);
@@ -60,17 +63,25 @@ const HeaderLayout = () => {
   const toggleMobileUser = () => {
     setMobileUserOpen(!isMobileUserOpen);
   };
+  
   const handleSearch = async () => {
     if (searchQuery.trim() === '') {
-      setSearchResults([]); 
+      setSearchResults([]);
       return;
     }
   
-    const results: any = await searchGamesByName(searchQuery);
-  
-    setSearchResults(results);
+    try {
+      const results: Game[] = await searchGamesByName(searchQuery);
+      if (Array.isArray(results) && results.length > 0) {
+        setSearchResults(results);
+      } else {
+        console.error("Error searching games:", results);
+      }
+    } catch (error) {
+      console.error("Error searching games:", error);
+    }
   };
-  
+
   const { systemTheme, theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
@@ -80,6 +91,12 @@ const HeaderLayout = () => {
 
   if (!mounted) return null;
   const currentTheme = theme === "system" ? systemTheme : theme;
+
+  const handleGameSelection = (event: any, selectedGame: Game | null) => {
+    if (selectedGame) {
+      router.push(`/game-details/${selectedGame.id}`);
+    }
+  };
 
   return (
     <ThemeProvider enableSystem={true} attribute="class">
@@ -140,7 +157,9 @@ const HeaderLayout = () => {
           >
             <ul className="space-y-2">
               <li>
-                <Input
+                <SearchAutocomplete handleGameSelection={handleGameSelection} />
+
+                {/*<Input
                   type="text"
                   placeholder="Search"
                   className="input-field dark:text-white text-white border border-green-500 rounded "
@@ -151,6 +170,7 @@ const HeaderLayout = () => {
                   }
                   onPressEnter={handleSearch}
                 />
+                */}
               </li>
               {user ? (
                 <li>
@@ -190,21 +210,24 @@ const HeaderLayout = () => {
           ) : null}
         </div>
         <div className="lg:flex hidden items-center space-x-4">
-          <Input
-            type="text"
-            placeholder="Search"
-            className=" dark:text-black border border-gray-900 rounded"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            addonBefore={
-              <SearchOutlined className="text-white text-3xl dark:text-white" />
-            }
-            onPressEnter={handleSearch}
-          />
+          <SearchAutocomplete handleGameSelection={handleGameSelection} />
+
+          {/*<Input
+              type="text"
+              placeholder="Search"
+              className="input-field dark:text-white text-white border border-green-500 rounded "
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              addonBefore={
+                <SearchOutlined className="text-white text-3xl" />
+              }
+              onPressEnter={handleSearch}
+            />
+            */}
           <div>
             <button onClick={() => (window.location.href = "/cart")} className="bg-black-700 hover:bg-gray-300 border-2 rounded-md w-12 h-12 text-lg text-violet-600 border-primary dark:border-gray-600">
-                <span className="cart-count"><ShoppingCartOutlined /></span>
-              </button>
+              <span className="cart-count"><ShoppingCartOutlined /></span>
+            </button>
           </div>
           <div>
             {currentTheme === "dark" ? (
@@ -231,7 +254,7 @@ const HeaderLayout = () => {
               <button
                 onClick={openLoginModal}
                 className="text-black dark:text-white"
-                style={{width: '100px'}}
+                style={{ width: '100px' }}
               >
                 Sign in
               </button>
@@ -239,7 +262,7 @@ const HeaderLayout = () => {
               <button
                 onClick={openRegisterModal}
                 className="text-black dark:text-white "
-                style={{width: '100px'}}
+                style={{ width: '100px' }}
               >
                 Sign up
               </button>
