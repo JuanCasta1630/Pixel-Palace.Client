@@ -28,7 +28,21 @@ export const fetchData = async (url: string, method: string = 'GET', data?: any)
         throw error;
     }
 };
-
+export const getReportForRating = async (
+    startMonthYear: string,
+    endMonthYear: string,
+    categories: string,
+    platforms: string
+) => {
+    try {
+        const url = `${BASE_URL}/reports/top-rated-products?startMonthYear=${startMonthYear}&endMonthYear=${endMonthYear}&categories=${categories}&platforms=${platforms}`;
+        const response = await fetchData(url, 'GET');
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching top-rated products report:', error);
+        throw error;
+    }
+};
 // Función para obtener todos los productos
 export const getAllProducts = async () => {
     try {
@@ -60,4 +74,41 @@ export const getTransactionById = async (id: any) => {
         throw error;
     }
 };
+export const getTransactionAll = async () => {
+    try {
+        const url = `${BASE_URL}/transaction/ListTransaction`;
+        console.log(url);
+        
+        return fetchData(url, 'GET');
+    } catch (error) {
+        console.error(`Error fetching transaction:`, error);
+        throw error;
+    }
+};
+export const getTransactiontByUserId = async (id: any) => {
+    try {
+        const url = `${BASE_URL}/transaction/user/${id}`;
+        console.log(url);
+        
+        return fetchData(url, 'GET');
+    } catch (error) {
+        console.error(`Error fetching transaction:`, error);
+        throw error;
+    }
+};
 
+export const getTopSoldProducts = async (
+    startMonthYear: string,
+    endMonthYear: string,
+    categories: string,
+    platforms: string
+) => {
+    try {
+      const url = `${BASE_URL}/reports/top-sold-products?startMonthYear=${startMonthYear}&endMonthYear=${endMonthYear}&categories=${categories}&platforms=${platforms}`;
+      const response = await fetchData(url, 'GET');
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching top sold products:', error);
+      throw error;
+    }
+  };
