@@ -12,10 +12,16 @@ const RecommendationsSection: React.FC<RecommendationsSectionProps> = ({
 }) => {
   const router = useRouter();
   const juegosOrdenados = [...recomendaciones].sort((b, a) => {
-    const dateA: any = new Date(a.fecha_lanzamiento);
-    const dateB: any = new Date(b.fecha_lanzamiento);
+    const dateA: any = new Date(a.release_date);
+    const dateB: any = new Date(b.release_date);
     return dateB - dateA ;
   });
+
+  function formatDate(dateString: any) {
+    const options: any = { day: "numeric", month: "short", year: "numeric" };
+    const formattedDate = new Date(dateString).toLocaleDateString(undefined, options);
+    return formattedDate;
+  }
   return (
     <Card className='dark:bg-gray-400 text-white my-2'>
     <h2 className='text-center text-2xl font-semibold mb-6'>
@@ -37,8 +43,15 @@ const RecommendationsSection: React.FC<RecommendationsSectionProps> = ({
                 />
                 <div className='p-4'>
                   <h2 className='text-xl font-semibold mb-2'>{game.nombre ? game.nombre : game.name}</h2>
-                  <p className='text-gray-100'>{game.categoria ? game.categoria : game.categories}</p>
-                  <p className='text-gray-100'>{game.fecha_lanzamiento}</p>
+                  <p className='text-gray-100'>
+                  {game?.categoria
+                    ? game?.categoria
+                        .split(",")
+                        .map((category: any) => category.trim())
+                        .join(", ")
+                    : game?.categories.join(", ")}
+                    </p>
+                  <p className='text-gray-100'>{game.release_date && formatDate(game.release_date)}</p>
                   <p className='text-red-500 font-semibold mt-2'>
                     ${game.precio ? game.precio : game.price }
                   </p>
@@ -54,7 +67,7 @@ const RecommendationsSection: React.FC<RecommendationsSectionProps> = ({
         block
         size='large'
         className='mt-6 button1 dark:w-full'
-        onClick={() => (router.push('/best-games'))}
+        onClick={() => (router.push('/recommendations'))}
       >
         Read More
       </Button>

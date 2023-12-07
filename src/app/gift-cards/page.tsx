@@ -93,12 +93,12 @@ export default function GiftCards() {
       <Layout className="w-full min-h-screen dark:bg-gray-700 bg-white">
         <HeaderLayout />
         <Content className="p-4 mt-8">
-          <div className="flex flex-row p-8">
-            <div className="flex flex-col items-center">
+          <div className="flex flex-col p-8">
+            {/* <div className="flex flex-col items-center">
               <Filters />
-            </div>
+            </div> */}
             <div className="px-12">
-              <h1 className="text-2xl font-bold mb-4">Gift cards</h1>
+              <h1 className="text-2xl font-bold m-4 text-center">Gift cards</h1>
               <div className="flex flex-col justify-center items-center">
                 <Row
                   gutter={[16, 16]}

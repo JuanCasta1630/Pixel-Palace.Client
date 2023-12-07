@@ -59,11 +59,11 @@ export default function Recommendations() {
         <HeaderLayout />
         <Content className="p-4 mt-8">
           <div className="flex flex-row p-8">
-            <div className="flex flex-col items-center">
+            {/* <div className="flex flex-col items-center">
               <Filters />
-            </div>
+            </div> */}
             <div className="">
-              <h1 className="text-center font-semibold text-4xl">
+              <h1 className="text-center font-semibold text-4xl m-4">
                 Recommendations games
               </h1>
               <div className="l mt-16">
@@ -95,9 +95,12 @@ export default function Recommendations() {
                                 {game.nombre ? game.nombre : game.name}
                               </h2>
                               <p className="text-gray-100">
-                                {game.categoria
-                                  ? game.categoria
-                                  : game.categories}
+                                {game?.categoria
+                                  ? game?.categoria
+                                      .split(",")
+                                      .map((category: any) => category.trim())
+                                      .join(", ")
+                                  : game?.categories.join(", ")}
                               </p>
                               <p className="text-gray-100">
                                 {game.fecha_lanzamiento}

@@ -12,9 +12,11 @@ import { useSession } from "next-auth/react";
 import cookies from "js-cookie";
 import { useGames } from "../hooks/useGames";
 import AuthModal from "../components/AuthModal";
-import { saveTransaction } from "../servers/reques";
+import { getProductById, saveTransaction } from "../servers/reques";
 import { useRouter } from "next/navigation";
 import Loading from "../loading";
+import { createTransaction } from "../servers/requestProducts";
+import usePlatformAndCategories from "../hooks/usePlatformAndCategories";
 
 const Stepper: React.FC = () => {
   const [step, setStep] = useState<number>(1);
@@ -26,6 +28,9 @@ const Stepper: React.FC = () => {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isMobileUserOpen, setMobileUserOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [gameFilter, setGameFilter] = useState<string | null>(null);
+  const [selectedPlatform, setSelectedPlatform] = useState<string | null>(null);
+  const { plataformas } = usePlatformAndCategories();
 
   const openRegisterModal = () => {
     setRegisterModalOpen(true);
@@ -48,36 +53,7 @@ const Stepper: React.FC = () => {
   const toggleMobileUser = () => {
     setMobileUserOpen(!isMobileUserOpen);
   };
-  //   const [user, setUser] = useState([])
-  //   useEffect(() => {
-  //     const fetchUserData = async () => {
-  //       // Verifica que session y session.user existan y tengan un ID antes de realizar la llamada
-  //       if (session && sessionÇ?.user && session.user.userId) {
 
-  //         try {
-  //           // Hacer la llamada a tu endpoint para obtener información adicional del usuario
-  //           const response = await fetch(`http://localhost:8081/user/${session.user.userId
-  //         }`);
-  //           console.log(response, 'RESPONSE');
-
-  //           if (response.ok) {
-  //             const userData = await response.json();
-  //             console.log("Información adicional del usuario:", userData);
-  //             // Asegúrate de que setUser esté dentro del bloque try
-  //             setUser(userData);
-  //             // Realiza las acciones necesarias con la información adicional del usuario
-  //           } else {
-  //             console.error("Error al obtener información del usuario:", response.statusText);
-  //           }
-  //         } catch (error) {
-  //           console.error("Error al obtener información del usuario:", error);
-  //         }
-  //       }
-  //     };
-
-  //     // Llama a fetchUserData solo si session cambia
-  //     fetchUserData();
-  //   }, [session]);
   useEffect(() => {
     if (errorMessage) {
       const timeoutId = setTimeout(() => {
@@ -89,10 +65,32 @@ const Stepper: React.FC = () => {
   }, [errorMessage]);
   const productId = cookies.get("productId");
   const router = useRouter();
-  const filterGame: any = gameAll.filter((game: any) => {
-    return game?.id === productId;
-  });
+  const filterGame: any = gameAll.filter(
+    (game: any) => game?.id === Number(productId)
+  );
+  const numeroAleatorio = String(Math.floor(Math.random() * 7) + 1);
+  const today = new Date();
+  const fechaHoy = today.toISOString().split("T")[0];
 
+  useEffect(() => {
+    const fetchProduct = async () => {
+      if (productId) {
+        try {
+          const game: any = await getProductById(productId);
+          if (game) {
+            setGameFilter(game.data);
+          } else {
+            setGameFilter(null);
+          }
+        } catch (error) {
+          console.error("Error fetching product:", error);
+          setGameFilter(null);
+        }
+      }
+    };
+
+    fetchProduct();
+  }, [productId]);
   const nextStep = () => {
     setStep((prevStep) => prevStep + 1);
   };
@@ -117,10 +115,20 @@ const Stepper: React.FC = () => {
         return;
       }
 
-      const data: any = [];
+      const data: any = {
+        //@ts-ignore
+        user_id: session?.user?.userId,
+        product_id: productId,
+        platform_id: selectedPlatform || null,
+        date: fechaHoy,
+        // @ts-ignore
+        price: gameFilter?.price,
+      };
+
       try {
-        // await saveTransaction(data);
-        router.push("/confirmation-page");
+        const response = await createTransaction(data);
+        const transactionId = response.data.id;
+        router.push(`/confirmation-page/${transactionId}`);
         console.log("Transaction saved successfully!");
         nextStep();
       } catch (error) {
@@ -135,7 +143,7 @@ const Stepper: React.FC = () => {
     email: Yup.string().email("Invalid email").required("Email is required"),
   });
   if (loading) {
-    <Loading/>
+    <Loading />;
   }
   return (
     <ThemeProvider enableSystem={true} attribute="class">
@@ -208,7 +216,8 @@ const Stepper: React.FC = () => {
                       src={
                         filterGame[0]?.imagen
                           ? filterGame[0]?.imagen
-                          : filterGame[0]?.image_url || "https://pixel-palace.netlify.app/logo.png"
+                          : filterGame[0]?.image_url ||
+                            "https://pixel-palace.netlify.app/logo.png"
                       }
                       alt="imagen"
                     />
@@ -229,6 +238,22 @@ const Stepper: React.FC = () => {
                         ? filterGame[0]?.description
                         : null}
                     </p>
+                    <div className="mt-4">
+                      <label className="block text-sm font-medium text-gray-700">
+                        Select Platform:
+                      </label>
+                      <select
+                        className=" p-2 border rounded-md w-full"
+                        value={selectedPlatform || ""}
+                        onChange={(e) => setSelectedPlatform(e.target.value)}
+                      >
+                        {plataformas.map((platform: any) => (
+                          <option key={platform.id} value={platform.id}>
+                            {platform.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
                   <div className="flex justify-between">
                     <button

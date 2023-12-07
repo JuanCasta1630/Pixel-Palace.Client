@@ -11,15 +11,17 @@ import HeaderLayout from "../components/Header";
 import { Content } from "antd/es/layout/layout";
 import FooterLayout from "../components/Footer";
 import { Pagination } from "antd";
-import { deleteProduct } from "../servers/reques";
+import { deleteProduct, updateProduct } from "../servers/reques";
+import EditGameModal from "../components/EditGameModal";
 
 const AdminProducts = () => {
   const { gameAll, cards, loading } = useGames();
   const [currentPage, setCurrentPage] = useState(1);
   const [editModalVisible, setEditModalVisible] = useState(false);
-  const [gameToEdit, setGameToEdit] = useState(null);
   const [isDeleteModalVisible, setDeleteModalVisible] = useState(false);
   const [selectedGameId, setSelectedGameId] = useState(null);
+  const [gameToEdit, setGameToEdit] = useState(null);
+  const [gameAllFilter, setGameAllFilter] = useState()
   const itemsPerPage = 10;
 
   const handlePageChange = (page: any) => {
@@ -94,6 +96,7 @@ const AdminProducts = () => {
                             className="ml-4 cursor-pointer"
                             onClick={() => {
                               setGameToEdit(product.id);
+                              setGameAllFilter(product)
                               setEditModalVisible(true);
                             }}
                           >
@@ -121,7 +124,13 @@ const AdminProducts = () => {
               onChange={handlePageChange}
               className="mt-4"
             />
-
+            <EditGameModal
+              visible={editModalVisible}
+              onCancel={() => setEditModalVisible(false)}
+              // onEdit={() => updateProduct()}
+              game={gameAllFilter}
+              gameId={gameToEdit}
+            />
             <ModalConfirm
               open={isDeleteModalVisible}
               onCancel={() => {
