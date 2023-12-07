@@ -96,3 +96,19 @@ export const getTransactiontByUserId = async (id: any) => {
         throw error;
     }
 };
+
+export const getTopSoldProducts = async (
+    startMonthYear: string,
+    endMonthYear: string,
+    categories: string,
+    platforms: string
+) => {
+    try {
+      const url = `${BASE_URL}/reports/top-sold-products?startMonthYear=${startMonthYear}&endMonthYear=${endMonthYear}&categories=${categories}&platforms=${platforms}`;
+      const response = await fetchData(url, 'GET');
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching top sold products:', error);
+      throw error;
+    }
+  };

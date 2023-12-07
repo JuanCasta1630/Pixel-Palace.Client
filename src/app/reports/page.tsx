@@ -11,12 +11,16 @@ import { descargarCSV, generarPDF } from "../utils/reportsFunctions";
 import HeaderLayout from "../components/Header";
 import usePlatformAndCategories from "../hooks/usePlatformAndCategories";
 import useUser from "../hooks/useUser";
-import { getReportForRating, getTransactionAll } from "../servers/requestProducts";
+import {
+  getReportForRating,
+  getTopSoldProducts,
+  getTransactionAll,
+} from "../servers/requestProducts";
 const Reportes: React.FC = () => {
   const [reportResult, setReportResult] = useState<ReportData[] | null>(null);
   const { plataformas, categorias } = usePlatformAndCategories();
   const { user } = useUser();
-  
+
   const formik = useFormik({
     initialValues: {
       dateRange: [null, null],
@@ -44,7 +48,7 @@ const Reportes: React.FC = () => {
     ) => {
       try {
         const dateRange = values.dateRange;
-    
+
         if (values.topRated) {
           const reportResultTopRated = await getReportForRating(
             dateRange[0],
@@ -52,13 +56,13 @@ const Reportes: React.FC = () => {
             values.category,
             values.platform
           );
-    
-          console.log(reportResultTopRated, 'reportResultTopRated');
-    
+
+          console.log(reportResultTopRated, "reportResultTopRated");
+
           if (Array.isArray(reportResultTopRated)) {
             const reportData = reportResultTopRated.map((item, index) => {
               console.log(item);
-            
+
               return {
                 game: item.name,
                 quantity: item.stock || null,
@@ -67,14 +71,14 @@ const Reportes: React.FC = () => {
                 selectedDate: values.dateRange[0],
               };
             });
-            
-reportData.forEach((item) => {
-          item.platform = values.platform;
-          item.selectedDate = values.dateRange;
-        });
+
+            reportData.forEach((item) => {
+              item.platform = values.platform;
+              item.selectedDate = values.dateRange;
+            });
             setReportResult(reportData);
-            console.log(reportResult, 'reportDatsa');
-    
+            console.log(reportResult, "reportDatsa");
+
             if (values.fileFormat === "pdf") {
               await generarPDF(reportData);
             } else if (values.fileFormat === "csv") {
@@ -83,17 +87,49 @@ reportData.forEach((item) => {
             }
           }
         } else {
-          // Si values.topRated es falso y no tienes datos específicos para reportData, puedes dejarlo vacío o simplemente no hacer nada
-          console.log('Top Rated no está marcado, no hay datos específicos para reportData');
+          const reportResultTopRated = await getTopSoldProducts(
+            dateRange[0],
+            dateRange[1],
+            values.category,
+            values.platform
+          );
+          console.log(reportResultTopRated, "reportResultTopRated");
+          if (Array.isArray(reportResultTopRated)) {
+            const reportData = reportResultTopRated.map((item, index) => {
+              console.log(item);
+
+              return {
+                game: item.name,
+                quantity: item.stock || null,
+                category: values.category,
+                platform: values.platform,
+                selectedDate: values.dateRange[0],
+              };
+            });
+
+            reportData.forEach((item) => {
+              item.platform = values.platform;
+              item.selectedDate = values.dateRange;
+            });
+            setReportResult(reportData);
+            console.log(reportResult, "reportDatsa");
+
+            if (values.fileFormat === "pdf") {
+              await generarPDF(reportData);
+            } else if (values.fileFormat === "csv") {
+              const archivo = "informe.csv";
+              descargarCSV(reportData, archivo);
+            }
+          }
         }
       } catch (error) {
         console.error("Error al generar el informe:", error);
       }
     },
-    })
-  
+  });
+
   function formatDateRange(dateRange: Date[]) {
-    const options: any = { day: "numeric", month: "short", year: "numeric" };
+    const options: any = { month: "short", year: "numeric" };
 
     if (dateRange && dateRange.length === 2) {
       const startDate = new Date(dateRange[0]).toLocaleDateString(
@@ -110,7 +146,7 @@ reportData.forEach((item) => {
 
     return "";
   }
- 
+
   return (
     <ThemeProvider enableSystem={true} attribute="class">
       <Layout className="w-full min-h-screen dark:bg-gray-700 bg-white">
@@ -267,7 +303,9 @@ reportData.forEach((item) => {
 
             {reportResult && (
               <div>
-                <h2 className="text-xl font-bold">Report Result Game Best Sellers</h2>
+                <h2 className="text-xl font-bold">
+                  Report Result Game Best Sellers
+                </h2>
                 <table
                   id="my-table"
                   className="w-full border-collapse border border-gray-900"
@@ -303,8 +341,8 @@ reportData.forEach((item) => {
                         </td>
                         <td className="p-2 border border-gray-300">
                           {item.selectedDate
-                          // @ts-ignore
-                            ? formatDateRange(item.selectedDate)
+                            ? // @ts-ignore
+                              formatDateRange(item.selectedDate)
                             : null}
                         </td>
                       </tr>
